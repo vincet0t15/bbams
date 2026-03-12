@@ -4,7 +4,6 @@ export interface Course {
     code: string;
     description: string;
     created_by: number;
-
 }
 export interface CourseCreateRequest {
     name: string;

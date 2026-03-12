@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import {
     BookOpen,
     FolderGit2,
@@ -6,6 +6,7 @@ import {
     LayoutGrid,
     Palette,
     Settings,
+    Shield,
     ShieldCheck,
     Users,
 } from 'lucide-react';
@@ -31,54 +32,6 @@ import { edit as editPassword } from '@/routes/user-password';
 import { index as usersIndex } from '@/routes/users';
 import type { NavGroup, NavItem } from '@/types';
 
-const mainNavItems = [
-    {
-        title: 'General',
-        children: [
-            {
-                title: 'Dashboard',
-                href: dashboard(),
-                icon: LayoutGrid,
-            },
-            {
-                title: 'Accounts',
-                href: usersIndex.url(),
-                icon: Users,
-            },
-            {
-                title: 'Courses',
-                href: courses.index.url(),
-                icon: BookOpen,
-            },
-        ],
-    },
-    {
-        title: 'Settings',
-        children: [
-            {
-                title: 'Profile',
-                href: editProfile(),
-                icon: Settings,
-            },
-            {
-                title: 'Password',
-                href: editPassword(),
-                icon: KeyRound,
-            },
-            {
-                title: 'Two-factor auth',
-                href: showTwoFactor(),
-                icon: ShieldCheck,
-            },
-            {
-                title: 'Appearance',
-                href: editAppearance(),
-                icon: Palette,
-            },
-        ],
-    },
-] satisfies NavGroup[];
-
 const footerNavItems: NavItem[] = [
     {
         title: 'Repository',
@@ -93,6 +46,73 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const { props } = usePage();
+    const canManageRoles = Boolean(
+        (props as any)?.auth?.permissions?.includes?.('roles.manage'),
+    );
+
+    const mainNavItems: NavGroup[] = [
+        {
+            title: 'General',
+            children: [
+                {
+                    title: 'Dashboard',
+                    href: dashboard(),
+                    icon: LayoutGrid,
+                },
+            ],
+        },
+        {
+            title: 'Management',
+            children: [
+                {
+                    title: 'Accounts',
+                    href: usersIndex.url(),
+                    icon: Users,
+                },
+                {
+                    title: 'Courses',
+                    href: courses.index.url(),
+                    icon: BookOpen,
+                },
+                ...(canManageRoles
+                    ? [
+                          {
+                              title: 'Permissions & Roles',
+                              href: '/roles',
+                              icon: Shield,
+                          },
+                      ]
+                    : []),
+            ],
+        },
+        {
+            title: 'Settings',
+            children: [
+                {
+                    title: 'Profile',
+                    href: editProfile(),
+                    icon: Settings,
+                },
+                {
+                    title: 'Password',
+                    href: editPassword(),
+                    icon: KeyRound,
+                },
+                {
+                    title: 'Two-factor auth',
+                    href: showTwoFactor(),
+                    icon: ShieldCheck,
+                },
+                {
+                    title: 'Appearance',
+                    href: editAppearance(),
+                    icon: Palette,
+                },
+            ],
+        },
+    ];
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>

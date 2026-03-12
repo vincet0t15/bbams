@@ -1,6 +1,9 @@
 import { Head, router, useForm } from '@inertiajs/react';
-import { useState, type ChangeEventHandler, type KeyboardEventHandler } from 'react';
+import { PlusIcon } from 'lucide-react';
+import { useState } from 'react';
+import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import Pagination from '@/components/paginationData';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
     Table,
@@ -17,10 +20,8 @@ import type { Course } from '@/types/course';
 import type { FilterProps } from '@/types/filter';
 import type { PaginatedDataResponse } from '@/types/pagination';
 import CourseCreateDialog from './create';
-import { Button } from '@/components/ui/button';
-import { PlusIcon } from 'lucide-react';
-import CourseEditDialog from './edit';
 import CourseDeleteDialog from './delete';
+import CourseEditDialog from './edit';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -70,12 +71,18 @@ export default function CoursesIndex({ courseList, filters }: Props) {
         setSelectedCourse(course);
         setOpenDelete(true);
     };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Courses" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                    <Button variant="outline" size="sm" className="cursor-pointer" onClick={() => setOpenCreate(true)}>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="cursor-pointer"
+                        onClick={() => setOpenCreate(true)}
+                    >
                         <PlusIcon />
                         <span className="rounded-sm lg:inline">Course</span>
                     </Button>
@@ -109,17 +116,27 @@ export default function CoursesIndex({ courseList, filters }: Props) {
                             {courseList.data.length > 0 ? (
                                 courseList.data.map((course, index) => (
                                     <TableRow key={index} className="text-sm">
-                                        <TableCell className=" text-sm uppercase ">
+                                        <TableCell className="text-sm uppercase">
                                             {course.name}
                                         </TableCell>
                                         <TableCell className="text-sm uppercase">
                                             {course.code}
                                         </TableCell>
                                         <TableCell className="flex gap-2 text-sm">
-                                            <span onClick={() => handleEditClick(course)} className="cursor-pointer text-green-500 hover:text-green-700 hover:underline">
+                                            <span
+                                                onClick={() =>
+                                                    handleEditClick(course)
+                                                }
+                                                className="cursor-pointer text-green-500 hover:text-green-700 hover:underline"
+                                            >
                                                 Edit
                                             </span>
-                                            <span onClick={() => handleDeleteClick(course)} className="cursor-pointer text-red-500 hover:text-orange-700 hover:underline">
+                                            <span
+                                                onClick={() =>
+                                                    handleDeleteClick(course)
+                                                }
+                                                className="cursor-pointer text-red-500 hover:text-orange-700 hover:underline"
+                                            >
                                                 Delete
                                             </span>
                                         </TableCell>
@@ -143,10 +160,7 @@ export default function CoursesIndex({ courseList, filters }: Props) {
                 </div>
             </div>
             {openCreate && (
-                <CourseCreateDialog
-                    open={openCreate}
-                    setOpen={setOpenCreate}
-                />
+                <CourseCreateDialog open={openCreate} setOpen={setOpenCreate} />
             )}
             {openEdit && selectedCourse && (
                 <CourseEditDialog
