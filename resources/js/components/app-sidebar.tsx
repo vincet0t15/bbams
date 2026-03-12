@@ -29,6 +29,7 @@ import { show as showTwoFactor } from '@/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
 import { index as usersIndex } from '@/routes/users';
 import type { NavGroup, NavItem } from '@/types';
+import courses from '@/routes/courses';
 
 const mainNavItems = [
     {
@@ -43,6 +44,11 @@ const mainNavItems = [
                 title: 'Accounts',
                 href: usersIndex.url(),
                 icon: Users,
+            },
+            {
+                title: 'Courses',
+                href: courses.index.url(),
+                icon: BookOpen,
             },
         ],
     },
