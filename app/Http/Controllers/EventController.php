@@ -15,24 +15,24 @@ class EventController extends Controller
 
         $events = Event::query()
             ->when($search, function ($query, $search) {
-                $query->where('title', 'like', "%{$search}%")
+                $query->where('name', 'like', "%{$search}%")
                     ->orWhere('location', 'like', "%{$search}%");
             })
-            ->orderByDesc('start_at')
+            ->orderByDesc('date_from')
             ->paginate(10)
             ->withQueryString();
 
         return Inertia::render('events/index', [
-            'eventList' => $events->through(fn(Event $event) => [
+            'eventList' => $events->through(fn (Event $event) => [
                 'id' => $event->id,
-                'title' => $event->title,
+                'title' => $event->name,
                 'location' => $event->location,
                 'description' => $event->description,
-                'start_at' => $event->start_at
-                    ? Carbon::parse($event->start_at)->format('Y-m-d\TH:i')
+                'start_at' => $event->date_from
+                    ? Carbon::parse($event->date_from)->format('Y-m-d\TH:i')
                     : null,
-                'end_at' => $event->end_at
-                    ? Carbon::parse($event->end_at)->format('Y-m-d\TH:i')
+                'end_at' => $event->date_to
+                    ? Carbon::parse($event->date_to)->format('Y-m-d\TH:i')
                     : null,
                 'created_by' => $event->created_by,
             ]),
@@ -53,10 +53,12 @@ class EventController extends Controller
         ]);
 
         Event::create([
-            ...$validated,
+            'name' => $validated['title'],
+            'location' => $validated['location'] ?? null,
+            'description' => $validated['description'] ?? null,
             'created_by' => $request->user()?->id,
-            'start_at' => Carbon::parse($validated['start_at'])->toDateTimeString(),
-            'end_at' => $validated['end_at']
+            'date_from' => Carbon::parse($validated['start_at'])->toDateTimeString(),
+            'date_to' => $validated['end_at']
                 ? Carbon::parse($validated['end_at'])->toDateTimeString()
                 : null,
         ]);
@@ -75,9 +77,11 @@ class EventController extends Controller
         ]);
 
         $event->update([
-            ...$validated,
-            'start_at' => Carbon::parse($validated['start_at'])->toDateTimeString(),
-            'end_at' => $validated['end_at']
+            'name' => $validated['title'],
+            'location' => $validated['location'] ?? null,
+            'description' => $validated['description'] ?? null,
+            'date_from' => Carbon::parse($validated['start_at'])->toDateTimeString(),
+            'date_to' => $validated['end_at']
                 ? Carbon::parse($validated['end_at'])->toDateTimeString()
                 : null,
         ]);

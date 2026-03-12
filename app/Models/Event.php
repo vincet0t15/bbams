@@ -11,11 +11,12 @@ class Event extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'title',
+        'name',
         'location',
         'description',
-        'start_at',
-        'end_at',
+        'date_from',
+        'date_to',
+        'is_active',
         'created_by',
     ];
 
@@ -28,8 +29,10 @@ class Event extends Model
     {
         parent::boot();
 
-        static::creating(function ($course) {
-            $course->created_by = Auth::id();
+        static::creating(function (self $event) {
+            if (! $event->created_by) {
+                $event->created_by = Auth::id();
+            }
         });
     }
 }
