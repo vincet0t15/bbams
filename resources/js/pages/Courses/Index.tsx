@@ -20,6 +20,7 @@ import CourseCreateDialog from './create';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
 import CourseEditDialog from './edit';
+import CourseDeleteDialog from './delete';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -39,6 +40,7 @@ interface Props {
 export default function CoursesIndex({ courseList, filters }: Props) {
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
     const { data, setData } = useForm({
         search: filters.search || '',
@@ -63,6 +65,10 @@ export default function CoursesIndex({ courseList, filters }: Props) {
     const handleEditClick = (course: Course) => {
         setSelectedCourse(course);
         setOpenEdit(true);
+    };
+    const handleDeleteClick = (course: Course) => {
+        setSelectedCourse(course);
+        setOpenDelete(true);
     };
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -113,7 +119,7 @@ export default function CoursesIndex({ courseList, filters }: Props) {
                                             <span onClick={() => handleEditClick(course)} className="cursor-pointer text-green-500 hover:text-green-700 hover:underline">
                                                 Edit
                                             </span>
-                                            <span className="cursor-pointer text-red-500 hover:text-orange-700 hover:underline">
+                                            <span onClick={() => handleDeleteClick(course)} className="cursor-pointer text-red-500 hover:text-orange-700 hover:underline">
                                                 Delete
                                             </span>
                                         </TableCell>
@@ -146,6 +152,13 @@ export default function CoursesIndex({ courseList, filters }: Props) {
                 <CourseEditDialog
                     open={openEdit}
                     setOpen={setOpenEdit}
+                    course={selectedCourse}
+                />
+            )}
+            {openDelete && selectedCourse && (
+                <CourseDeleteDialog
+                    open={openDelete}
+                    setOpen={setOpenDelete}
                     course={selectedCourse}
                 />
             )}
