@@ -1,6 +1,7 @@
 import { Link, usePage } from '@inertiajs/react';
 import {
     BookOpen,
+    CalendarDays,
     FolderGit2,
     KeyRound,
     LayoutGrid,
@@ -11,7 +12,6 @@ import {
     Users,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
-import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
@@ -75,14 +75,19 @@ export function AppSidebar() {
                     href: courses.index.url(),
                     icon: BookOpen,
                 },
+                {
+                    title: 'Events',
+                    href: '/events',
+                    icon: CalendarDays,
+                },
                 ...(canManageRoles
                     ? [
-                        {
-                            title: 'Permissions & Roles',
-                            href: '/roles',
-                            icon: Shield,
-                        },
-                    ]
+                          {
+                              title: 'Permissions & Roles',
+                              href: '/roles',
+                              icon: Shield,
+                          },
+                      ]
                     : []),
             ],
         },
@@ -118,7 +123,6 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                {/* <NavFooter items={footerNavItems} className="mt-auto" /> */}
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -35,6 +36,12 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
     Route::post('courses', [CourseController::class, 'store'])->name('courses.store');
     Route::put('courses/{course}', [CourseController::class, 'update'])->name('courses.update');
     Route::delete('courses/{course}', [CourseController::class, 'destroy'])->name('courses.destroy');
+
+    // Events
+    Route::get('events', [EventController::class, 'index'])->name('events.index');
+    Route::post('events', [EventController::class, 'store'])->name('events.store');
+    Route::put('events/{event}', [EventController::class, 'update'])->name('events.update');
+    Route::delete('events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';
