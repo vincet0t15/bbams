@@ -15,4 +15,4 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
     Route::get('users', [UserController::class, 'index'])->name('users.index');
 });
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';

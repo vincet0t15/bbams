@@ -8,7 +8,6 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-
     public function index(Request $request)
     {
         $search = $request->input('search');
