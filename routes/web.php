@@ -7,6 +7,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoleController;
+use App\Http\Controllers\YearLevelController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -44,6 +45,12 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
     Route::put('courses/{course}', [CourseController::class, 'update'])->name('courses.update');
     Route::delete('courses/{course}', [CourseController::class, 'destroy'])->name('courses.destroy');
 
+    // Year Levels
+    Route::get('year-levels', [YearLevelController::class, 'index'])->name('year-levels.index');
+    Route::post('year-levels', [YearLevelController::class, 'store'])->name('year-levels.store');
+    Route::put('year-levels/{yearLevel}', [YearLevelController::class, 'update'])->name('year-levels.update');
+    Route::delete('year-levels/{yearLevel}', [YearLevelController::class, 'destroy'])->name('year-levels.destroy');
+
     // Events
     Route::get('events', [EventController::class, 'index'])->name('events.index');
     Route::post('events', [EventController::class, 'store'])->name('events.store');
@@ -51,4 +58,4 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
     Route::delete('events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';
