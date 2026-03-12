@@ -19,8 +19,8 @@ import type { FilterProps } from '@/types/filter';
 import type { PaginatedDataResponse } from '@/types/pagination';
 import type { YearLevel } from '@/types/year-level';
 import YearLevelCreateDialog from './create';
-import YearLevelEditDialog from './edit';
 import YearLevelDeleteDialog from './delete';
+import YearLevelEditDialog from './edit';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
