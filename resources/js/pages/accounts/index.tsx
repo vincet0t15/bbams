@@ -14,6 +14,13 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import {
     Table,
     TableBody,
     TableCell,
@@ -64,9 +71,24 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
 
     const { data, setData } = useForm({
         search: filters.search || '',
+        role: filters.role || 'all',
     });
 
     const availableRoles = useMemo(() => roles, [roles]);
+
+    const buildQuery = (values: { search: string; role: string }) => {
+        const query: Record<string, string> = {};
+
+        if (values.search) {
+            query.search = values.search;
+        }
+
+        if (values.role && values.role !== 'all') {
+            query.role = values.role;
+        }
+
+        return Object.keys(query).length ? query : undefined;
+    };
 
     const openAssignDialog = (user: AccountRow) => {
         setSelectedUser(user);
@@ -109,6 +131,35 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
                     </div>
 
                     <div className="flex items-center gap-2">
+                        <Select
+                            value={data.role}
+                            onValueChange={(value) => {
+                                setData('role', value);
+                                router.get(
+                                    users.index.url(),
+                                    buildQuery({
+                                        search: data.search,
+                                        role: value,
+                                    }),
+                                    {
+                                        preserveScroll: true,
+                                        preserveState: true,
+                                    },
+                                );
+                            }}
+                        >
+                            <SelectTrigger className="w-44">
+                                <SelectValue placeholder="Role" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">All roles</SelectItem>
+                                {availableRoles.map((role) => (
+                                    <SelectItem key={role} value={role}>
+                                        {role}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                         <Input
                             placeholder="Search..."
                             value={data.search}
@@ -118,13 +169,14 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
                                     return;
                                 }
 
-                                const queryString = data.search
-                                    ? { search: data.search }
-                                    : undefined;
-                                router.get(users.index.url(), queryString, {
-                                    preserveState: true,
-                                    preserveScroll: true,
-                                });
+                                router.get(
+                                    users.index.url(),
+                                    buildQuery(data),
+                                    {
+                                        preserveState: true,
+                                        preserveScroll: true,
+                                    },
+                                );
                             }}
                         />
                         <Button
@@ -132,9 +184,7 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
                             onClick={() =>
                                 router.get(
                                     users.index.url(),
-                                    data.search
-                                        ? { search: data.search }
-                                        : undefined,
+                                    buildQuery(data),
                                     {
                                         preserveScroll: true,
                                         preserveState: true,
