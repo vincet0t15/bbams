@@ -288,7 +288,6 @@ export default function Welcome({
                             © {new Date().getFullYear()} Palawan State
                             University San Vicente Campus
                         </div>
-
                     </div>
                 </footer>
             </div>
