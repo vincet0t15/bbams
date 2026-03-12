@@ -54,7 +54,7 @@ export default function FacultyEditDialog({ open, setOpen, faculty }: Props) {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="min-w-2xl ">
+            <DialogContent className="min-w-2xl">
                 <DialogHeader>
                     <DialogTitle>Edit faculty</DialogTitle>
                     <DialogDescription>
@@ -73,8 +73,8 @@ export default function FacultyEditDialog({ open, setOpen, faculty }: Props) {
                             />
                             <InputError message={errors.name as any} />
                         </div>
-                        <div className="flex justify-between items-center space-x-4">
-                            <div className="space-y-2 w-1/2">
+                        <div className="flex items-center justify-between space-x-4">
+                            <div className="w-1/2 space-y-2">
                                 <Label htmlFor="username">Username</Label>
                                 <Input
                                     id="username"
@@ -84,7 +84,7 @@ export default function FacultyEditDialog({ open, setOpen, faculty }: Props) {
                                 />
                                 <InputError message={errors.username as any} />
                             </div>
-                            <div className="space-y-2 w-1/2">
+                            <div className="w-1/2 space-y-2">
                                 <Label htmlFor="email">Email</Label>
                                 <Input
                                     id="email"
@@ -96,8 +96,8 @@ export default function FacultyEditDialog({ open, setOpen, faculty }: Props) {
                                 <InputError message={errors.email as any} />
                             </div>
                         </div>
-                        <div className="flex justify-between items-center space-x-4">
-                            <div className="space-y-2 w-1/2">
+                        <div className="flex items-center justify-between space-x-4">
+                            <div className="w-1/2 space-y-2">
                                 <Label htmlFor="password">Password</Label>
                                 <Input
                                     id="password"
@@ -108,7 +108,7 @@ export default function FacultyEditDialog({ open, setOpen, faculty }: Props) {
                                 />
                                 <InputError message={errors.password as any} />
                             </div>
-                            <div className="space-y-2 w-1/2">
+                            <div className="w-1/2 space-y-2">
                                 <Label htmlFor="password_confirmation">
                                     Confirm Password
                                 </Label>
@@ -121,8 +121,8 @@ export default function FacultyEditDialog({ open, setOpen, faculty }: Props) {
                                 />
                             </div>
                         </div>
-                        <div className="flex justify-between items-center space-x-4">
-                            <div className="space-y-2 w-1/2">
+                        <div className="flex items-center justify-between space-x-4">
+                            <div className="w-1/2 space-y-2">
                                 <Label htmlFor="employee_no">Employee No</Label>
                                 <Input
                                     id="employee_no"
@@ -130,9 +130,11 @@ export default function FacultyEditDialog({ open, setOpen, faculty }: Props) {
                                     value={data.employee_no ?? ''}
                                     onChange={handleTextChange}
                                 />
-                                <InputError message={errors.employee_no as any} />
+                                <InputError
+                                    message={errors.employee_no as any}
+                                />
                             </div>
-                            <div className="space-y-2 w-1/2">
+                            <div className="w-1/2 space-y-2">
                                 <Label htmlFor="department">Department</Label>
                                 <Input
                                     id="department"
@@ -140,7 +142,9 @@ export default function FacultyEditDialog({ open, setOpen, faculty }: Props) {
                                     value={data.department ?? ''}
                                     onChange={handleTextChange}
                                 />
-                                <InputError message={errors.department as any} />
+                                <InputError
+                                    message={errors.department as any}
+                                />
                             </div>
                         </div>
                         <div className="space-y-2">

@@ -89,8 +89,8 @@ export default function StudentEditDialog({
                             />
                             <InputError message={errors.name as any} />
                         </div>
-                        <div className="flex justify-between items-center space-x-4">
-                            <div className="space-y-2 w-1/2">
+                        <div className="flex items-center justify-between space-x-4">
+                            <div className="w-1/2 space-y-2">
                                 <Label htmlFor="username">Username</Label>
                                 <Input
                                     id="username"
@@ -100,7 +100,7 @@ export default function StudentEditDialog({
                                 />
                                 <InputError message={errors.username as any} />
                             </div>
-                            <div className="space-y-2 w-1/2">
+                            <div className="w-1/2 space-y-2">
                                 <Label htmlFor="email">Email</Label>
                                 <Input
                                     id="email"
@@ -112,8 +112,8 @@ export default function StudentEditDialog({
                                 <InputError message={errors.email as any} />
                             </div>
                         </div>
-                        <div className="flex justify-between items-center space-x-4">
-                            <div className="space-y-2 w-1/2">
+                        <div className="flex items-center justify-between space-x-4">
+                            <div className="w-1/2 space-y-2">
                                 <Label htmlFor="password">Password</Label>
                                 <Input
                                     id="password"
@@ -124,7 +124,7 @@ export default function StudentEditDialog({
                                 />
                                 <InputError message={errors.password as any} />
                             </div>
-                            <div className="space-y-2 w-1/2">
+                            <div className="w-1/2 space-y-2">
                                 <Label htmlFor="password_confirmation">
                                     Confirm Password
                                 </Label>
@@ -137,8 +137,8 @@ export default function StudentEditDialog({
                                 />
                             </div>
                         </div>
-                        <div className="flex justify-between items-center space-x-4">
-                            <div className="space-y-2 w-1/2">
+                        <div className="flex items-center justify-between space-x-4">
+                            <div className="w-1/2 space-y-2">
                                 <Label htmlFor="student_no">Student No</Label>
                                 <Input
                                     id="student_no"
@@ -146,9 +146,11 @@ export default function StudentEditDialog({
                                     value={data.student_no ?? ''}
                                     onChange={handleTextChange}
                                 />
-                                <InputError message={errors.student_no as any} />
+                                <InputError
+                                    message={errors.student_no as any}
+                                />
                             </div>
-                            <div className="space-y-2 w-1/2">
+                            <div className="w-1/2 space-y-2">
                                 <Label>Course</Label>
                                 <Select
                                     value={
@@ -167,7 +169,9 @@ export default function StudentEditDialog({
                                         <SelectValue placeholder="Select course" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="none">None</SelectItem>
+                                        <SelectItem value="none">
+                                            None
+                                        </SelectItem>
                                         {courses.map((c) => (
                                             <SelectItem
                                                 key={c.id}
@@ -181,8 +185,8 @@ export default function StudentEditDialog({
                                 <InputError message={errors.course_id as any} />
                             </div>
                         </div>
-                        <div className="flex justify-between items-center space-x-4">
-                            <div className="space-y-2 w-1/2">
+                        <div className="flex items-center justify-between space-x-4">
+                            <div className="w-1/2 space-y-2">
                                 <Label>Year Level</Label>
                                 <Select
                                     value={
@@ -201,7 +205,9 @@ export default function StudentEditDialog({
                                         <SelectValue placeholder="Select year level" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="none">None</SelectItem>
+                                        <SelectItem value="none">
+                                            None
+                                        </SelectItem>
                                         {yearLevels.map((yl) => (
                                             <SelectItem
                                                 key={yl.id}
@@ -212,9 +218,11 @@ export default function StudentEditDialog({
                                         ))}
                                     </SelectContent>
                                 </Select>
-                                <InputError message={errors.year_level_id as any} />
+                                <InputError
+                                    message={errors.year_level_id as any}
+                                />
                             </div>
-                            <div className="space-y-2 w-1/2">
+                            <div className="w-1/2 space-y-2">
                                 <Label htmlFor="section">Section</Label>
                                 <Input
                                     id="section"
