@@ -14,7 +14,16 @@ class UserRoleController extends Controller
             'roles.*' => ['string', 'exists:roles,name'],
         ]);
 
-        $user->syncRoles($validated['roles'] ?? []);
+        $roles = $validated['roles'] ?? [];
+        $classRoles = ['student', 'faculty', 'staff'];
+        $selectedClassRoles = array_values(array_intersect($roles, $classRoles));
+        if (count($selectedClassRoles) > 1) {
+            return back()->withErrors([
+                'roles' => 'Select only one among student, faculty, or staff.',
+            ]);
+        }
+
+        $user->syncRoles($roles);
 
         return back()->with('success', 'User roles updated successfully.');
     }

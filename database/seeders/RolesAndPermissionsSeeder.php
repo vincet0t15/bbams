@@ -28,6 +28,8 @@ class RolesAndPermissionsSeeder extends Seeder
 
         $admin = Role::findOrCreate('admin');
         $staff = Role::findOrCreate('staff');
+        $faculty = Role::findOrCreate('faculty');
+        $student = Role::findOrCreate('student');
         $user = Role::findOrCreate('user');
 
         $admin->syncPermissions($permissions);
@@ -36,7 +38,15 @@ class RolesAndPermissionsSeeder extends Seeder
             'courses.view',
             'courses.manage',
         ]);
+        $faculty->syncPermissions([
+            'accounts.view',
+            'courses.view',
+            'courses.manage',
+        ]);
         $user->syncPermissions([
+            'courses.view',
+        ]);
+        $student->syncPermissions([
             'courses.view',
         ]);
 

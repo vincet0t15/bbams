@@ -77,14 +77,25 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
     const toggleRole = (role: string) => {
         const current = assignForm.data.roles;
 
+        const classRoles = ['student', 'faculty', 'staff'];
+
         if (current.includes(role)) {
             assignForm.setData(
                 'roles',
                 current.filter((r) => r !== role),
             );
-        } else {
-            assignForm.setData('roles', [...current, role]);
+
+            return;
         }
+
+        if (classRoles.includes(role)) {
+            const filtered = current.filter((r) => !classRoles.includes(r));
+            assignForm.setData('roles', [...filtered, role]);
+
+            return;
+        }
+
+        assignForm.setData('roles', [...current, role]);
     };
 
     return (
