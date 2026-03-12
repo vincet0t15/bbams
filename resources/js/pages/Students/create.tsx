@@ -134,89 +134,93 @@ export default function StudentCreateDialog({
                                 />
                             </div>
                         </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="student_no">Student No</Label>
-                            <Input
-                                id="student_no"
-                                placeholder="e.g., 2026-00001"
-                                value={data.student_no ?? ''}
-                                onChange={handleTextChange}
-                            />
-                            <InputError message={errors.student_no as any} />
+                        <div className="flex justify-between items-center space-x-4">
+                            <div className="space-y-2 w-1/2">
+                                <Label htmlFor="student_no">Student No</Label>
+                                <Input
+                                    id="student_no"
+                                    placeholder="e.g., 2026-00001"
+                                    value={data.student_no ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError message={errors.student_no as any} />
+                            </div>
+                            <div className="space-y-2 w-1/2">
+                                <Label>Course</Label>
+                                <Select
+                                    value={
+                                        data.course_id
+                                            ? String(data.course_id)
+                                            : 'none'
+                                    }
+                                    onValueChange={(val) =>
+                                        setData(
+                                            'course_id',
+                                            val === 'none' ? null : Number(val),
+                                        )
+                                    }
+                                >
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Select course" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">None</SelectItem>
+                                        {courses.map((c) => (
+                                            <SelectItem
+                                                key={c.id}
+                                                value={String(c.id)}
+                                            >
+                                                {c.name} ({c.code})
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <InputError message={errors.course_id as any} />
+                            </div>
                         </div>
-                        <div className="space-y-2">
-                            <Label>Course</Label>
-                            <Select
-                                value={
-                                    data.course_id
-                                        ? String(data.course_id)
-                                        : 'none'
-                                }
-                                onValueChange={(val) =>
-                                    setData(
-                                        'course_id',
-                                        val === 'none' ? null : Number(val),
-                                    )
-                                }
-                            >
-                                <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select course" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="none">None</SelectItem>
-                                    {courses.map((c) => (
-                                        <SelectItem
-                                            key={c.id}
-                                            value={String(c.id)}
-                                        >
-                                            {c.name} ({c.code})
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <InputError message={errors.course_id as any} />
-                        </div>
-                        <div className="space-y-2">
-                            <Label>Year Level</Label>
-                            <Select
-                                value={
-                                    data.year_level_id
-                                        ? String(data.year_level_id)
-                                        : 'none'
-                                }
-                                onValueChange={(val) =>
-                                    setData(
-                                        'year_level_id',
-                                        val === 'none' ? null : Number(val),
-                                    )
-                                }
-                            >
-                                <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select year level" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="none">None</SelectItem>
-                                    {yearLevels.map((yl) => (
-                                        <SelectItem
-                                            key={yl.id}
-                                            value={String(yl.id)}
-                                        >
-                                            {yl.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <InputError message={errors.year_level_id as any} />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="section">Section</Label>
-                            <Input
-                                id="section"
-                                placeholder="e.g., A"
-                                value={data.section ?? ''}
-                                onChange={handleTextChange}
-                            />
-                            <InputError message={errors.section as any} />
+                        <div className="flex justify-between items-center space-x-4">
+                            <div className="space-y-2 w-1/2">
+                                <Label>Year Level</Label>
+                                <Select
+                                    value={
+                                        data.year_level_id
+                                            ? String(data.year_level_id)
+                                            : 'none'
+                                    }
+                                    onValueChange={(val) =>
+                                        setData(
+                                            'year_level_id',
+                                            val === 'none' ? null : Number(val),
+                                        )
+                                    }
+                                >
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Select year level" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">None</SelectItem>
+                                        {yearLevels.map((yl) => (
+                                            <SelectItem
+                                                key={yl.id}
+                                                value={String(yl.id)}
+                                            >
+                                                {yl.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <InputError message={errors.year_level_id as any} />
+                            </div>
+                            <div className="space-y-2 w-1/2">
+                                <Label htmlFor="section">Section</Label>
+                                <Input
+                                    id="section"
+                                    placeholder="e.g., A"
+                                    value={data.section ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError message={errors.section as any} />
+                            </div>
                         </div>
                         <Button
                             className="w-full"
