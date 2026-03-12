@@ -1,16 +1,25 @@
 import { Head, router, useForm } from '@inertiajs/react';
+import { useState, type ChangeEventHandler, type KeyboardEventHandler } from 'react';
+import Pagination from '@/components/paginationData';
+import { Input } from '@/components/ui/input';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, User } from '@/types';
+import courses from '@/routes/courses';
+import type { BreadcrumbItem } from '@/types';
+import type { Course } from '@/types/course';
+import type { FilterProps } from '@/types/filter';
 import type { PaginatedDataResponse } from '@/types/pagination';
-import { Course } from '@/types/course';
-import { ChangeEventHandler, KeyboardEventHandler, useState } from 'react';
+import CourseCreateDialog from './create';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import courses from '@/routes/courses';
-import { FilterProps } from '@/types/filter';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import Pagination from '@/components/paginationData';
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
@@ -18,7 +27,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
     {
         title: 'Courses',
-        href: '/courses',
+        href: courses.index.url(),
     },
 ];
 
@@ -31,10 +40,13 @@ export default function CoursesIndex({ courseList, filters }: Props) {
     const { data, setData } = useForm({
         search: filters.search || '',
     });
+
     const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
         if (e.key === 'Enter') {
-            const queryString = data.search ? { search: data.search } : undefined;
-            router.get((courses.index().url), queryString, {
+            const queryString = data.search
+                ? { search: data.search }
+                : undefined;
+            router.get(courses.index.url(), queryString, {
                 preserveState: true,
                 preserveScroll: true,
             });
@@ -44,6 +56,7 @@ export default function CoursesIndex({ courseList, filters }: Props) {
     const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         setData('search', e.target.value);
     };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Courses" />
@@ -55,7 +68,12 @@ export default function CoursesIndex({ courseList, filters }: Props) {
                     </Button>
 
                     <div className="flex items-center gap-2">
-                        <Input onKeyDown={handleKeyDown} onChange={handleSearchChange} placeholder="Search..." value={data.search} />
+                        <Input
+                            onKeyDown={handleKeyDown}
+                            onChange={handleSearchChange}
+                            placeholder="Search..."
+                            value={data.search}
+                        />
                     </div>
                 </div>
 
@@ -63,39 +81,43 @@ export default function CoursesIndex({ courseList, filters }: Props) {
                     <Table>
                         <TableHeader className="bg-muted/50">
                             <TableRow>
-                                <TableHead className="text-primary font-bold">Course Name</TableHead>
-                                <TableHead className="text-primary font-bold">Course Code</TableHead>
-                                <TableHead className="text-primary font-bold">Action</TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Course Name
+                                </TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Course Code
+                                </TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Action
+                                </TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {courseList.data.length > 0 ? (
                                 courseList.data.map((course, index) => (
                                     <TableRow key={index} className="text-sm">
-                                        <TableCell className="cursor-pointer text-sm uppercase hover:font-bold hover:underline">
+                                        <TableCell className=" text-sm uppercase ">
                                             {course.name}
                                         </TableCell>
-                                        <TableCell className="text-sm uppercase">{course.description}</TableCell>
-                                        <TableCell className="text-sm gap-2 flex">
-                                            <span
-                                                className="cursor-pointer text-green-500 hover:text-orange-700 hover:underline"
-
-                                            >
+                                        <TableCell className="text-sm uppercase">
+                                            {course.code}
+                                        </TableCell>
+                                        <TableCell className="flex gap-2 text-sm">
+                                            <span className="cursor-pointer text-green-500 hover:text-orange-700 hover:underline">
                                                 Edit
                                             </span>
-                                            <span
-                                                className="text-red-500 cursor-pointer hover:text-orange-700 hover:underline"
-
-                                            >
+                                            <span className="cursor-pointer text-red-500 hover:text-orange-700 hover:underline">
                                                 Delete
                                             </span>
-
                                         </TableCell>
                                     </TableRow>
                                 ))
                             ) : (
                                 <TableRow>
-                                    <TableCell colSpan={7} className="py-3 text-center text-gray-500">
+                                    <TableCell
+                                        colSpan={7}
+                                        className="py-3 text-center text-gray-500"
+                                    >
                                         No data available.
                                     </TableCell>
                                 </TableRow>
@@ -107,7 +129,12 @@ export default function CoursesIndex({ courseList, filters }: Props) {
                     <Pagination data={courseList} />
                 </div>
             </div>
-
+            {openCreate && (
+                <CourseCreateDialog
+                    open={openCreate}
+                    setOpen={setOpenCreate}
+                />
+            )}
         </AppLayout>
     );
 }

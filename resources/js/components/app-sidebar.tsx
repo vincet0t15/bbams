@@ -24,12 +24,12 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { edit as editAppearance } from '@/routes/appearance';
+import courses from '@/routes/courses';
 import { edit as editProfile } from '@/routes/profile';
 import { show as showTwoFactor } from '@/routes/two-factor';
 import { edit as editPassword } from '@/routes/user-password';
 import { index as usersIndex } from '@/routes/users';
 import type { NavGroup, NavItem } from '@/types';
-import courses from '@/routes/courses';
 
 const mainNavItems = [
     {

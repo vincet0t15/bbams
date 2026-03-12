@@ -13,7 +13,8 @@ class CourseController extends Controller
         $search = $request->input('search');
         $courseList = Course::query()
             ->when($search, function ($query, $search) {
-                $query->where('name', 'like', "%{$search}%");
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('code', 'like', "%{$search}%");
             })
             ->paginate(10)
             ->withQueryString();
@@ -22,7 +23,7 @@ class CourseController extends Controller
             'courseList' => $courseList,
             'filters' => [
                 'search' => $search,
-            ]
+            ],
         ]);
     }
 
@@ -35,10 +36,11 @@ class CourseController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'code' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
         ]);
 
-        Course::create($request->all());
+        Course::create($request->only(['name', 'code', 'description']));
 
         return redirect()->route('courses.index')->with('success', 'Course created successfully');
     }
@@ -47,10 +49,11 @@ class CourseController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'code' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
         ]);
 
-        $course->update($request->all());
+        $course->update($request->only(['name', 'code', 'description']));
 
         return redirect()->route('courses.index')->with('success', 'Course updated successfully');
     }
