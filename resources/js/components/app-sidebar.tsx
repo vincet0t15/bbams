@@ -7,6 +7,7 @@ import {
     Settings,
     Shield,
     Users,
+    ClipboardList,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavMain } from '@/components/nav-main';
@@ -82,19 +83,24 @@ export function AppSidebar() {
                     href: '/events',
                     icon: CalendarDays,
                 },
+                {
+                    title: 'Attendance Logs',
+                    href: '/attendance-logs',
+                    icon: ClipboardList,
+                },
                 ...(canManageRoles
                     ? [
-                        {
-                            title: 'Permissions & Roles',
-                            href: '/roles',
-                            icon: Shield,
-                        },
-                        {
-                            title: 'Bin',
-                            href: '/bin',
-                            icon: Trash2,
-                        },
-                    ]
+                          {
+                              title: 'Permissions & Roles',
+                              href: '/roles',
+                              icon: Shield,
+                          },
+                          {
+                              title: 'Bin',
+                              href: '/bin',
+                              icon: Trash2,
+                          },
+                      ]
                     : []),
             ],
         },

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceLogController;
 use App\Http\Controllers\BinController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EventController;
@@ -59,6 +60,10 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
     Route::post('events', [EventController::class, 'store'])->name('events.store');
     Route::put('events/{event}', [EventController::class, 'update'])->name('events.update');
     Route::delete('events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
+
+    // Attendance Logs
+    Route::get('attendance-logs', [AttendanceLogController::class, 'index'])->name('attendance-logs.index');
+    Route::post('attendance-logs', [AttendanceLogController::class, 'store'])->name('attendance-logs.store');
 
     // Students
     Route::get('students', [StudentController::class, 'index'])->name('students.index');

@@ -31,6 +31,11 @@ class Event extends Model
         return $this->belongsTo(User::class, 'deleted_by');
     }
 
+    public function attendanceLogs()
+    {
+        return $this->hasMany(AttendanceLog::class);
+    }
+
     public static function boot()
     {
         parent::boot();
