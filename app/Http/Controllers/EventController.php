@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class EventController extends Controller
@@ -49,7 +50,7 @@ class EventController extends Controller
             'location' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'start_at' => ['required', 'date'],
-            'end_at' => ['nullable', 'date', 'after_or_equal:start_at'],
+            'end_at' => ['required', 'date', 'after_or_equal:start_at'],
         ]);
 
         Event::create([
@@ -58,9 +59,7 @@ class EventController extends Controller
             'description' => $validated['description'] ?? null,
             'created_by' => $request->user()?->id,
             'date_from' => Carbon::parse($validated['start_at'])->toDateTimeString(),
-            'date_to' => $validated['end_at']
-                ? Carbon::parse($validated['end_at'])->toDateTimeString()
-                : null,
+            'date_to' => Carbon::parse($validated['end_at'])->toDateTimeString(),
         ]);
 
         return redirect()->back()->with('success', 'Event created successfully');
@@ -73,7 +72,7 @@ class EventController extends Controller
             'location' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'start_at' => ['required', 'date'],
-            'end_at' => ['nullable', 'date', 'after_or_equal:start_at'],
+            'end_at' => ['required', 'date', 'after_or_equal:start_at'],
         ]);
 
         $event->update([
@@ -81,9 +80,7 @@ class EventController extends Controller
             'location' => $validated['location'] ?? null,
             'description' => $validated['description'] ?? null,
             'date_from' => Carbon::parse($validated['start_at'])->toDateTimeString(),
-            'date_to' => $validated['end_at']
-                ? Carbon::parse($validated['end_at'])->toDateTimeString()
-                : null,
+            'date_to' => Carbon::parse($validated['end_at'])->toDateTimeString(),
         ]);
 
         return redirect()->back()->with('success', 'Event updated successfully');
@@ -91,6 +88,8 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
+        $event->deleted_by = $event->deleted_by ?? Auth::id();
+        $event->save();
         $event->delete();
 
         return redirect()->route('events.index')->with('success', 'Event deleted successfully');

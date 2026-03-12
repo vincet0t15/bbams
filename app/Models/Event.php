@@ -18,11 +18,17 @@ class Event extends Model
         'date_to',
         'is_active',
         'created_by',
+        'deleted_by',
     ];
 
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function deletedBy()
+    {
+        return $this->belongsTo(User::class, 'deleted_by');
     }
 
     public static function boot()

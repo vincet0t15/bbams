@@ -15,6 +15,7 @@ class Course extends Model
         'code',
         'description',
         'created_by',
+        'deleted_by',
     ];
 
     public function createdBy()
@@ -22,12 +23,19 @@ class Course extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function deletedBy()
+    {
+        return $this->belongsTo(User::class, 'deleted_by');
+    }
+
     public static function boot()
     {
         parent::boot();
 
-        static::creating(function ($course) {
-            $course->created_by = Auth::id();
+        static::creating(function (self $course) {
+            if (! $course->created_by) {
+                $course->created_by = Auth::id();
+            }
         });
     }
 }

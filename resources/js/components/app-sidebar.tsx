@@ -2,6 +2,7 @@ import { Link, usePage } from '@inertiajs/react';
 import {
     BookOpen,
     CalendarDays,
+    Trash2,
     LayoutGrid,
     Settings,
     Shield,
@@ -66,6 +67,11 @@ export function AppSidebar() {
                               title: 'Permissions & Roles',
                               href: '/roles',
                               icon: Shield,
+                          },
+                          {
+                              title: 'Bin',
+                              href: '/bin',
+                              icon: Trash2,
                           },
                       ]
                     : []),

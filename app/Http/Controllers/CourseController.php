@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class CourseController extends Controller
@@ -60,6 +61,8 @@ class CourseController extends Controller
 
     public function destroy(Course $course)
     {
+        $course->deleted_by = $course->deleted_by ?? Auth::id();
+        $course->save();
         $course->delete();
 
         return redirect()->route('courses.index')->with('success', 'Course deleted successfully');

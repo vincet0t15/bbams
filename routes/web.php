@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BinController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\PermissionController;
@@ -29,6 +30,12 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
         Route::delete('permissions/{permission}', [PermissionController::class, 'destroy'])->name('permissions.destroy');
 
         Route::put('users/{user}/roles', [UserRoleController::class, 'update'])->name('users.roles.update');
+
+        Route::get('bin', [BinController::class, 'index'])->name('bin.index');
+        Route::put('bin/courses/{course}/restore', [BinController::class, 'restoreCourse'])->name('bin.courses.restore');
+        Route::delete('bin/courses/{course}/force', [BinController::class, 'forceDeleteCourse'])->name('bin.courses.force');
+        Route::put('bin/events/{event}/restore', [BinController::class, 'restoreEvent'])->name('bin.events.restore');
+        Route::delete('bin/events/{event}/force', [BinController::class, 'forceDeleteEvent'])->name('bin.events.force');
     });
 
     // Courses
