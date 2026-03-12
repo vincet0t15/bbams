@@ -6,6 +6,13 @@ import Pagination from '@/components/paginationData';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import {
     Table,
     TableBody,
     TableCell,
@@ -123,36 +130,54 @@ export default function StudentsIndex({
                         />
                         <div className="hidden items-center gap-2 sm:flex">
                             <div className="w-52">
-                                <select
+                                <Select
                                     value={data.course_id}
-                                    onChange={(e) =>
-                                        setData('course_id', e.target.value)
+                                    onValueChange={(val) =>
+                                        setData('course_id', val)
                                     }
-                                    className="w-full rounded-md border bg-background p-2 text-sm"
                                 >
-                                    <option value="all">All courses</option>
-                                    {courses.map((c) => (
-                                        <option key={c.id} value={c.id}>
-                                            {c.name} ({c.code})
-                                        </option>
-                                    ))}
-                                </select>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="All courses" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">
+                                            All courses
+                                        </SelectItem>
+                                        {courses.map((c) => (
+                                            <SelectItem
+                                                key={c.id}
+                                                value={String(c.id)}
+                                            >
+                                                {c.name} ({c.code})
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                             </div>
                             <div className="w-44">
-                                <select
+                                <Select
                                     value={data.year_level_id}
-                                    onChange={(e) =>
-                                        setData('year_level_id', e.target.value)
+                                    onValueChange={(val) =>
+                                        setData('year_level_id', val)
                                     }
-                                    className="w-full rounded-md border bg-background p-2 text-sm"
                                 >
-                                    <option value="all">All years</option>
-                                    {yearLevels.map((yl) => (
-                                        <option key={yl.id} value={yl.id}>
-                                            {yl.name}
-                                        </option>
-                                    ))}
-                                </select>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="All years" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">
+                                            All years
+                                        </SelectItem>
+                                        {yearLevels.map((yl) => (
+                                            <SelectItem
+                                                key={yl.id}
+                                                value={String(yl.id)}
+                                            >
+                                                {yl.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                             </div>
                         </div>
                         <Button
