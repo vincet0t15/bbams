@@ -9,10 +9,10 @@ type Props = React.ComponentProps<'main'> & {
 export function AppContent({ variant = 'sidebar', children, ...props }: Props) {
     if (variant === 'sidebar') {
         return (
-            <SidebarInset {...props} >
+            <SidebarInset {...props}>
                 <div
                     aria-hidden
-                    className="pointer-events-none absolute inset-0 overflow-hidden "
+                    className="pointer-events-none absolute inset-0 overflow-hidden"
                 >
                     <div className="absolute -top-40 -left-40 size-[520px] rounded-full bg-primary/12 blur-3xl" />
                     <div className="absolute -right-40 -bottom-40 size-[520px] rounded-full bg-primary/10 blur-3xl" />

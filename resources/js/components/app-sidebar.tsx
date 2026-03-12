@@ -61,7 +61,7 @@ export function AppSidebar() {
             ],
         },
         {
-            title: 'People',
+            title: 'Academic Setup',
             children: [
                 {
                     title: 'Courses',
@@ -73,6 +73,11 @@ export function AppSidebar() {
                     href: yearLevels.index.url(),
                     icon: BookOpen,
                 },
+            ],
+        },
+        {
+            title: 'Directory',
+            children: [
                 {
                     title: 'Students',
                     href: '/students',
@@ -100,17 +105,17 @@ export function AppSidebar() {
                 },
                 ...(canManageRoles
                     ? [
-                        {
-                            title: 'Permissions & Roles',
-                            href: '/roles',
-                            icon: Shield,
-                        },
-                        {
-                            title: 'Bin',
-                            href: '/bin',
-                            icon: Trash2,
-                        },
-                    ]
+                          {
+                              title: 'Permissions & Roles',
+                              href: '/roles',
+                              icon: Shield,
+                          },
+                          {
+                              title: 'Bin',
+                              href: '/bin',
+                              icon: Trash2,
+                          },
+                      ]
                     : []),
             ],
         },
