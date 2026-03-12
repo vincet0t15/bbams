@@ -5,6 +5,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
@@ -37,6 +45,8 @@ export default function RolesIndex({ roles, permissions }: Props) {
     const [selectedPermissions, setSelectedPermissions] = useState<string[]>(
         [],
     );
+    const [openEditRole, setOpenEditRole] = useState(false);
+    const [roleToEdit, setRoleToEdit] = useState<RoleDto | null>(null);
 
     const permissionNames = useMemo(
         () => permissions.map((p) => p.name),
@@ -52,6 +62,11 @@ export default function RolesIndex({ roles, permissions }: Props) {
         permissions: [] as string[],
     });
 
+    const updateRoleForm = useForm({
+        name: '',
+        permissions: [] as string[],
+    });
+
     const togglePermission = (permission: string) => {
         setSelectedPermissions((prev) => {
             if (prev.includes(permission)) {
@@ -60,6 +75,31 @@ export default function RolesIndex({ roles, permissions }: Props) {
 
             return [...prev, permission];
         });
+    };
+
+    const openEditRoleDialog = (role: RoleDto) => {
+        setRoleToEdit(role);
+        updateRoleForm.setData('name', role.name);
+        updateRoleForm.setData(
+            'permissions',
+            role.permissions.map((p) => p.name),
+        );
+        setOpenEditRole(true);
+    };
+
+    const toggleEditPermission = (permission: string) => {
+        const current = updateRoleForm.data.permissions;
+
+        if (current.includes(permission)) {
+            updateRoleForm.setData(
+                'permissions',
+                current.filter((p) => p !== permission),
+            );
+
+            return;
+        }
+
+        updateRoleForm.setData('permissions', [...current, permission]);
     };
 
     return (
@@ -254,20 +294,49 @@ export default function RolesIndex({ roles, permissions }: Props) {
                                         <div className="font-medium">
                                             {role.name}
                                         </div>
-                                        <Button
-                                            variant="destructive"
-                                            size="sm"
-                                            onClick={() =>
-                                                router.delete(
-                                                    `/roles/${role.id}`,
-                                                    {
-                                                        preserveScroll: true,
-                                                    },
-                                                )
-                                            }
-                                        >
-                                            Delete
-                                        </Button>
+                                        <div className="flex items-center gap-2">
+                                            <Button
+                                                size="sm"
+                                                variant="outline"
+                                                disabled={role.name === 'admin'}
+                                                onClick={() => {
+                                                    if (role.name === 'admin') {
+                                                        return;
+                                                    }
+
+                                                    openEditRoleDialog(role);
+                                                }}
+                                            >
+                                                Update
+                                            </Button>
+                                            <Button
+                                                variant="destructive"
+                                                size="sm"
+                                                disabled={role.name === 'admin'}
+                                                onClick={() => {
+                                                    if (role.name === 'admin') {
+                                                        return;
+                                                    }
+
+                                                    if (
+                                                        !window.confirm(
+                                                            `Delete role "${role.name}"?`,
+                                                        )
+                                                    ) {
+                                                        return;
+                                                    }
+
+                                                    router.delete(
+                                                        `/roles/${role.id}`,
+                                                        {
+                                                            preserveScroll: true,
+                                                        },
+                                                    );
+                                                }}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </div>
                                     </div>
 
                                     <div className="flex flex-wrap gap-2">
@@ -292,6 +361,100 @@ export default function RolesIndex({ roles, permissions }: Props) {
                     </CardContent>
                 </Card>
             </div>
+
+            <Dialog
+                open={openEditRole}
+                onOpenChange={(open) => {
+                    if (!open) {
+                        setRoleToEdit(null);
+                        updateRoleForm.reset();
+                    }
+
+                    setOpenEditRole(open);
+                }}
+            >
+                <DialogContent className="sm:max-w-lg">
+                    <DialogHeader>
+                        <DialogTitle>Update Role</DialogTitle>
+                        <DialogDescription>
+                            {roleToEdit
+                                ? `Update role "${roleToEdit.name}"`
+                                : 'Update role'}
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="edit-role-name">Role name</Label>
+                            <Input
+                                id="edit-role-name"
+                                value={updateRoleForm.data.name}
+                                onChange={(e) =>
+                                    updateRoleForm.setData(
+                                        'name',
+                                        e.target.value,
+                                    )
+                                }
+                                autoComplete="off"
+                            />
+                            <InputError message={updateRoleForm.errors.name} />
+                        </div>
+
+                        <div className="space-y-2">
+                            <div className="text-sm font-medium">
+                                Permissions
+                            </div>
+                            <div className="grid gap-2 sm:grid-cols-2">
+                                {permissionNames.map((name) => (
+                                    <label
+                                        key={name}
+                                        className="flex cursor-pointer items-center gap-2 text-sm"
+                                    >
+                                        <Checkbox
+                                            checked={updateRoleForm.data.permissions.includes(
+                                                name,
+                                            )}
+                                            onCheckedChange={() =>
+                                                toggleEditPermission(name)
+                                            }
+                                        />
+                                        <span>{name}</span>
+                                    </label>
+                                ))}
+                            </div>
+                            <InputError
+                                message={updateRoleForm.errors.permissions}
+                            />
+                        </div>
+                    </div>
+
+                    <DialogFooter>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => setOpenEditRole(false)}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            type="button"
+                            disabled={!roleToEdit || updateRoleForm.processing}
+                            onClick={() => {
+                                if (!roleToEdit) {
+                                    return;
+                                }
+
+                                updateRoleForm.put(`/roles/${roleToEdit.id}`, {
+                                    preserveScroll: true,
+                                    onSuccess: () => setOpenEditRole(false),
+                                });
+                            }}
+                        >
+                            Save
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </AppLayout>
     );
 }

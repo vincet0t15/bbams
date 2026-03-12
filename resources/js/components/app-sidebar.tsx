@@ -77,12 +77,12 @@ export function AppSidebar() {
                 },
                 ...(canManageRoles
                     ? [
-                          {
-                              title: 'Permissions & Roles',
-                              href: '/roles',
-                              icon: Shield,
-                          },
-                      ]
+                        {
+                            title: 'Permissions & Roles',
+                            href: '/roles',
+                            icon: Shield,
+                        },
+                    ]
                     : []),
             ],
         },
@@ -94,21 +94,7 @@ export function AppSidebar() {
                     href: editProfile(),
                     icon: Settings,
                 },
-                {
-                    title: 'Password',
-                    href: editPassword(),
-                    icon: KeyRound,
-                },
-                {
-                    title: 'Two-factor auth',
-                    href: showTwoFactor(),
-                    icon: ShieldCheck,
-                },
-                {
-                    title: 'Appearance',
-                    href: editAppearance(),
-                    icon: Palette,
-                },
+
             ],
         },
     ];
@@ -132,7 +118,7 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
+                {/* <NavFooter items={footerNavItems} className="mt-auto" /> */}
                 <NavUser />
             </SidebarFooter>
         </Sidebar>
