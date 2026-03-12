@@ -84,17 +84,17 @@ export function AppSidebar() {
                 },
                 ...(canManageRoles
                     ? [
-                          {
-                              title: 'Permissions & Roles',
-                              href: '/roles',
-                              icon: Shield,
-                          },
-                          {
-                              title: 'Bin',
-                              href: '/bin',
-                              icon: Trash2,
-                          },
-                      ]
+                        {
+                            title: 'Permissions & Roles',
+                            href: '/roles',
+                            icon: Shield,
+                        },
+                        {
+                            title: 'Bin',
+                            href: '/bin',
+                            icon: Trash2,
+                        },
+                    ]
                     : []),
             ],
         },
@@ -112,29 +112,42 @@ export function AppSidebar() {
 
     return (
         <Sidebar collapsible="icon" variant="inset">
-            <SidebarHeader>
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton
-                            size="lg"
-                            className="h-auto py-3"
-                            asChild
-                        >
-                            <Link href={dashboard()} prefetch>
-                                <AppLogo />
-                            </Link>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                </SidebarMenu>
-            </SidebarHeader>
+            <div className="relative flex h-full w-full flex-col overflow-hidden rounded-sm">
+                <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0"
+                >
+                    <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-primary/12 to-transparent" />
+                    <div className="absolute -top-28 -left-28 size-72 rounded-full bg-primary/12 blur-3xl" />
+                    <div className="absolute -right-40 -bottom-40 size-96 rounded-full bg-primary/10 blur-3xl" />
+                </div>
 
-            <SidebarContent>
-                <NavMain items={mainNavItems} />
-            </SidebarContent>
+                <div className="relative z-10 flex h-full w-full flex-col">
+                    <SidebarHeader>
+                        <SidebarMenu>
+                            <SidebarMenuItem>
+                                <SidebarMenuButton
+                                    size="lg"
+                                    className="h-auto py-3"
+                                    asChild
+                                >
+                                    <Link href={dashboard()} prefetch>
+                                        <AppLogo />
+                                    </Link>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        </SidebarMenu>
+                    </SidebarHeader>
 
-            <SidebarFooter>
-                <NavUser />
-            </SidebarFooter>
+                    <SidebarContent>
+                        <NavMain items={mainNavItems} />
+                    </SidebarContent>
+
+                    <SidebarFooter>
+                        <NavUser />
+                    </SidebarFooter>
+                </div>
+            </div>
         </Sidebar>
     );
 }
