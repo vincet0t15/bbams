@@ -1,5 +1,4 @@
 import { Link } from '@inertiajs/react';
-import AppLogoIcon from '@/components/app-logo-icon';
 import { home } from '@/routes';
 import type { AuthLayoutProps } from '@/types';
 
@@ -17,15 +16,24 @@ export default function AuthSimpleLayout({
                             href={home()}
                             className="flex flex-col items-center gap-2 font-medium"
                         >
-                            <div className="mb-1 flex h-9 w-9 items-center justify-center rounded-md">
-                                <AppLogoIcon className="size-9 fill-current text-[var(--foreground)] dark:text-white" />
-                            </div>
+                            <img
+                                src="/logos/psu_logo.png"
+                                alt="PSU Logo"
+                                className="mb-1 h-16 w-16 rounded-full object-contain"
+                            />
                             <span className="sr-only">{title}</span>
                         </Link>
 
                         <div className="space-y-2 text-center">
-                            <h1 className="text-xl font-medium">{title}</h1>
-                            <p className="text-center text-sm text-muted-foreground">
+                            <h2 className="text-base font-semibold tracking-tight">
+                                Palawan State University- San Vicente Campus
+                            </h2>
+                            <h1 className="text-2xl leading-tight font-extrabold">
+                                Biometric-Based Attendance
+                                <br />
+                                Monitoring System
+                            </h1>
+                            <p className="text-center text-xs text-muted-foreground">
                                 {description}
                             </p>
                         </div>
