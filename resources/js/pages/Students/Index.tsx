@@ -15,7 +15,6 @@ import {
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
-import type { FilterProps } from '@/types/filter';
 import type { PaginatedDataResponse } from '@/types/pagination';
 import type { Student } from '@/types/student';
 import StudentCreateDialog from './create';
@@ -37,7 +36,11 @@ interface Props {
     studentList: PaginatedDataResponse<Student>;
     courses: { id: number; name: string; code: string }[];
     yearLevels: { id: number; name: string }[];
-    filters: FilterProps;
+    filters: {
+        search?: string;
+        course_id?: string;
+        year_level_id?: string;
+    };
 }
 
 export default function StudentsIndex({
@@ -52,6 +55,8 @@ export default function StudentsIndex({
     const [selected, setSelected] = useState<Student | null>(null);
     const { data, setData } = useForm({
         search: filters.search || '',
+        course_id: filters.course_id || 'all',
+        year_level_id: filters.year_level_id || 'all',
     });
 
     const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
@@ -60,6 +65,14 @@ export default function StudentsIndex({
 
             if (data.search) {
                 query.search = data.search;
+            }
+
+            if (data.course_id && data.course_id !== 'all') {
+                query.course_id = data.course_id;
+            }
+
+            if (data.year_level_id && data.year_level_id !== 'all') {
+                query.year_level_id = data.year_level_id;
             }
 
             router.get(
@@ -108,6 +121,40 @@ export default function StudentsIndex({
                             placeholder="Search by name, email, or student no..."
                             value={data.search}
                         />
+                        <div className="hidden items-center gap-2 sm:flex">
+                            <div className="w-52">
+                                <select
+                                    value={data.course_id}
+                                    onChange={(e) =>
+                                        setData('course_id', e.target.value)
+                                    }
+                                    className="w-full rounded-md border bg-background p-2 text-sm"
+                                >
+                                    <option value="all">All courses</option>
+                                    {courses.map((c) => (
+                                        <option key={c.id} value={c.id}>
+                                            {c.name} ({c.code})
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="w-44">
+                                <select
+                                    value={data.year_level_id}
+                                    onChange={(e) =>
+                                        setData('year_level_id', e.target.value)
+                                    }
+                                    className="w-full rounded-md border bg-background p-2 text-sm"
+                                >
+                                    <option value="all">All years</option>
+                                    {yearLevels.map((yl) => (
+                                        <option key={yl.id} value={yl.id}>
+                                            {yl.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
                         <Button
                             variant="outline"
                             onClick={() => {
@@ -115,6 +162,20 @@ export default function StudentsIndex({
 
                                 if (data.search) {
                                     query.search = data.search;
+                                }
+
+                                if (
+                                    data.course_id &&
+                                    data.course_id !== 'all'
+                                ) {
+                                    query.course_id = data.course_id;
+                                }
+
+                                if (
+                                    data.year_level_id &&
+                                    data.year_level_id !== 'all'
+                                ) {
+                                    query.year_level_id = data.year_level_id;
                                 }
 
                                 router.get(
@@ -130,6 +191,22 @@ export default function StudentsIndex({
                             }}
                         >
                             Search
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            onClick={() => {
+                                setData({
+                                    search: '',
+                                    course_id: 'all',
+                                    year_level_id: 'all',
+                                } as any);
+                                router.get('/students', undefined, {
+                                    preserveScroll: true,
+                                    preserveState: true,
+                                });
+                            }}
+                        >
+                            Reset
                         </Button>
                     </div>
                 </div>

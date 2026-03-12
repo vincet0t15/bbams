@@ -22,6 +22,8 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $courseId = $request->input('course_id');
+        $yearLevelId = $request->input('year_level_id');
 
         $students = Student::query()
             ->with(['user', 'course', 'yearLevel'])
@@ -33,6 +35,8 @@ class StudentController extends Controller
                             ->orWhere('username', 'like', "%{$search}%");
                     });
             })
+            ->when($courseId, fn ($q) => $q->where('course_id', $courseId))
+            ->when($yearLevelId, fn ($q) => $q->where('year_level_id', $yearLevelId))
             ->latest('id')
             ->paginate(10)
             ->withQueryString();
@@ -60,7 +64,7 @@ class StudentController extends Controller
                     ] : null,
                 ];
             }),
-            'filters' => $request->only(['search']),
+            'filters' => $request->only(['search', 'course_id', 'year_level_id']),
             'courses' => Course::orderBy('name')->get(['id', 'name', 'code']),
             'yearLevels' => YearLevel::orderBy('name')->get(['id', 'name']),
         ]);
