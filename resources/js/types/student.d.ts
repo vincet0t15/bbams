@@ -1,0 +1,16 @@
+export interface Student {
+    id: number;
+    student_no?: string;
+    section?: string;
+    user: { id: number; name: string; email: string; username: string };
+    course?: { id: number; name: string; code: string } | null;
+    year_level?: { id: number; name: string } | null;
+}
+
+export interface StudentCreateRequest {
+    user_id: number;
+    student_no?: string;
+    course_id?: number | null;
+    year_level_id?: number | null;
+    section?: string;
+}

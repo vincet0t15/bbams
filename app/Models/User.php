@@ -52,4 +52,19 @@ class User extends Authenticatable
             'two_factor_confirmed_at' => 'datetime',
         ];
     }
+
+    public function student()
+    {
+        return $this->hasOne(Student::class);
+    }
+
+    public function faculty()
+    {
+        return $this->hasOne(Faculty::class);
+    }
+
+    public function staff()
+    {
+        return $this->hasOne(Staff::class);
+    }
 }

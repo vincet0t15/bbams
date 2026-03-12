@@ -63,6 +63,21 @@ export function AppSidebar() {
                     icon: BookOpen,
                 },
                 {
+                    title: 'Students',
+                    href: '/students',
+                    icon: Users,
+                },
+                {
+                    title: 'Faculty',
+                    href: '/faculties',
+                    icon: Users,
+                },
+                {
+                    title: 'Staff',
+                    href: '/staff',
+                    icon: Users,
+                },
+                {
                     title: 'Events',
                     href: '/events',
                     icon: CalendarDays,
