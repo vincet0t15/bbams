@@ -1,6 +1,6 @@
 import { Head, router, useForm } from '@inertiajs/react';
 import { PlusIcon } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import Pagination from '@/components/paginationData';
 import { Button } from '@/components/ui/button';
@@ -35,7 +35,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface Props {
     studentList: PaginatedDataResponse<Student>;
-    users: { id: number; name: string; email: string; username: string }[];
     courses: { id: number; name: string; code: string }[];
     yearLevels: { id: number; name: string }[];
     filters: FilterProps;
@@ -43,7 +42,6 @@ interface Props {
 
 export default function StudentsIndex({
     studentList,
-    users,
     courses,
     yearLevels,
     filters,
@@ -55,8 +53,6 @@ export default function StudentsIndex({
     const { data, setData } = useForm({
         search: filters.search || '',
     });
-
-    const userOptions = useMemo(() => users, [users]);
 
     const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
         if (e.key === 'Enter') {
@@ -236,7 +232,6 @@ export default function StudentsIndex({
                 <StudentCreateDialog
                     open={openCreate}
                     setOpen={setOpenCreate}
-                    users={userOptions}
                     courses={courses}
                     yearLevels={yearLevels}
                 />
@@ -246,7 +241,6 @@ export default function StudentsIndex({
                     open={openEdit}
                     setOpen={setOpenEdit}
                     student={selected}
-                    users={userOptions}
                     courses={courses}
                     yearLevels={yearLevels}
                 />

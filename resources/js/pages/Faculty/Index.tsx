@@ -35,11 +35,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface Props {
     facultyList: PaginatedDataResponse<Faculty>;
-    users: { id: number; name: string; email: string; username: string }[];
     filters: FilterProps;
 }
 
-export default function FacultyIndex({ facultyList, users, filters }: Props) {
+export default function FacultyIndex({ facultyList, filters }: Props) {
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
@@ -218,7 +217,6 @@ export default function FacultyIndex({ facultyList, users, filters }: Props) {
                 <FacultyCreateDialog
                     open={openCreate}
                     setOpen={setOpenCreate}
-                    users={users}
                 />
             )}
             {openEdit && selected && (
@@ -226,7 +224,6 @@ export default function FacultyIndex({ facultyList, users, filters }: Props) {
                     open={openEdit}
                     setOpen={setOpenEdit}
                     faculty={selected}
-                    users={users}
                 />
             )}
             {openDelete && selected && (

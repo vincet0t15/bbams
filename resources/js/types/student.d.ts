@@ -8,7 +8,23 @@ export interface Student {
 }
 
 export interface StudentCreateRequest {
-    user_id: number;
+    name: string;
+    username: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+    student_no?: string;
+    course_id?: number | null;
+    year_level_id?: number | null;
+    section?: string;
+}
+
+export interface StudentUpdateRequest {
+    name: string;
+    username: string;
+    email: string;
+    password?: string;
+    password_confirmation?: string;
     student_no?: string;
     course_id?: number | null;
     year_level_id?: number | null;

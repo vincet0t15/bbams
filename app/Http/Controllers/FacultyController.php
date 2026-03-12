@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Concerns\PasswordValidationRules;
+use App\Concerns\ProfileValidationRules;
 use App\Models\Faculty;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
 
 class FacultyController extends Controller
 {
+    use PasswordValidationRules, ProfileValidationRules;
+
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -45,36 +52,76 @@ class FacultyController extends Controller
                 ];
             }),
             'filters' => $request->only(['search']),
-            'users' => User::whereDoesntHave('faculty')
-                ->orderBy('name')
-                ->get(['id', 'name', 'email', 'username']),
         ]);
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => ['required', 'exists:users,id', 'unique:faculties,user_id'],
+            ...$this->profileRules(),
+            'password' => $this->passwordRules(),
             'employee_no' => ['nullable', 'string', 'max:50', 'unique:faculties,employee_no'],
             'department' => ['nullable', 'string', 'max:100'],
             'position' => ['nullable', 'string', 'max:100'],
         ]);
 
-        Faculty::create($validated);
+        DB::transaction(function () use ($validated) {
+            $user = User::create([
+                'name' => $validated['name'],
+                'username' => $validated['username'],
+                'email' => $validated['email'],
+                'password' => $validated['password'],
+            ]);
+
+            $user->forceFill(['is_active' => true])->save();
+
+            if (Role::query()->where('name', 'faculty')->exists()) {
+                $user->assignRole('faculty');
+            }
+
+            Faculty::create([
+                'user_id' => $user->id,
+                'employee_no' => $validated['employee_no'] ?? null,
+                'department' => $validated['department'] ?? null,
+                'position' => $validated['position'] ?? null,
+            ]);
+        });
 
         return back()->with('success', 'Faculty created successfully');
     }
 
     public function update(Request $request, Faculty $faculty)
     {
+        $request->merge([
+            'password' => $request->input('password') ?: null,
+            'password_confirmation' => $request->input('password_confirmation') ?: null,
+        ]);
+
         $validated = $request->validate([
-            'user_id' => ['required', 'exists:users,id', 'unique:faculties,user_id,'.$faculty->id],
+            ...$this->profileRules($faculty->user_id),
+            'password' => ['nullable', 'string', Password::default(), 'confirmed'],
             'employee_no' => ['nullable', 'string', 'max:50', 'unique:faculties,employee_no,'.$faculty->id],
             'department' => ['nullable', 'string', 'max:100'],
             'position' => ['nullable', 'string', 'max:100'],
         ]);
 
-        $faculty->update($validated);
+        DB::transaction(function () use ($faculty, $validated) {
+            $faculty->user->update([
+                'name' => $validated['name'],
+                'username' => $validated['username'],
+                'email' => $validated['email'],
+            ]);
+
+            if (! empty($validated['password'])) {
+                $faculty->user->update(['password' => $validated['password']]);
+            }
+
+            $faculty->update([
+                'employee_no' => $validated['employee_no'] ?? null,
+                'department' => $validated['department'] ?? null,
+                'position' => $validated['position'] ?? null,
+            ]);
+        });
 
         return back()->with('success', 'Faculty updated successfully');
     }

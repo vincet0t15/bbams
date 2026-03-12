@@ -35,11 +35,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface Props {
     staffList: PaginatedDataResponse<Staff>;
-    users: { id: number; name: string; email: string; username: string }[];
     filters: FilterProps;
 }
 
-export default function StaffIndex({ staffList, users, filters }: Props) {
+export default function StaffIndex({ staffList, filters }: Props) {
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
@@ -215,18 +214,13 @@ export default function StaffIndex({ staffList, users, filters }: Props) {
                 </div>
             </div>
             {openCreate && (
-                <StaffCreateDialog
-                    open={openCreate}
-                    setOpen={setOpenCreate}
-                    users={users}
-                />
+                <StaffCreateDialog open={openCreate} setOpen={setOpenCreate} />
             )}
             {openEdit && selected && (
                 <StaffEditDialog
                     open={openEdit}
                     setOpen={setOpenEdit}
                     staff={selected}
-                    users={users}
                 />
             )}
             {openDelete && selected && (

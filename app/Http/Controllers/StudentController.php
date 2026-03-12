@@ -2,16 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Concerns\PasswordValidationRules;
+use App\Concerns\ProfileValidationRules;
 use App\Models\Course;
 use App\Models\Student;
 use App\Models\User;
 use App\Models\YearLevel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
 
 class StudentController extends Controller
 {
+    use PasswordValidationRules, ProfileValidationRules;
+
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -54,9 +61,6 @@ class StudentController extends Controller
                 ];
             }),
             'filters' => $request->only(['search']),
-            'users' => User::whereDoesntHave('student')
-                ->orderBy('name')
-                ->get(['id', 'name', 'email', 'username']),
             'courses' => Course::orderBy('name')->get(['id', 'name', 'code']),
             'yearLevels' => YearLevel::orderBy('name')->get(['id', 'name']),
         ]);
@@ -65,29 +69,74 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => ['required', 'exists:users,id', 'unique:students,user_id'],
+            ...$this->profileRules(),
+            'password' => $this->passwordRules(),
             'student_no' => ['nullable', 'string', 'max:50', 'unique:students,student_no'],
             'course_id' => ['nullable', 'exists:courses,id'],
             'year_level_id' => ['nullable', 'exists:year_levels,id'],
             'section' => ['nullable', 'string', 'max:50'],
         ]);
 
-        Student::create($validated);
+        DB::transaction(function () use ($validated) {
+            $user = User::create([
+                'name' => $validated['name'],
+                'username' => $validated['username'],
+                'email' => $validated['email'],
+                'password' => $validated['password'],
+            ]);
+
+            $user->forceFill(['is_active' => true])->save();
+
+            if (Role::query()->where('name', 'student')->exists()) {
+                $user->assignRole('student');
+            }
+
+            Student::create([
+                'user_id' => $user->id,
+                'student_no' => $validated['student_no'] ?? null,
+                'course_id' => $validated['course_id'] ?? null,
+                'year_level_id' => $validated['year_level_id'] ?? null,
+                'section' => $validated['section'] ?? null,
+            ]);
+        });
 
         return back()->with('success', 'Student created successfully');
     }
 
     public function update(Request $request, Student $student)
     {
+        $request->merge([
+            'password' => $request->input('password') ?: null,
+            'password_confirmation' => $request->input('password_confirmation') ?: null,
+        ]);
+
         $validated = $request->validate([
-            'user_id' => ['required', 'exists:users,id', 'unique:students,user_id,'.$student->id],
+            ...$this->profileRules($student->user_id),
+            'password' => ['nullable', 'string', Password::default(), 'confirmed'],
             'student_no' => ['nullable', 'string', 'max:50', 'unique:students,student_no,'.$student->id],
             'course_id' => ['nullable', 'exists:courses,id'],
             'year_level_id' => ['nullable', 'exists:year_levels,id'],
             'section' => ['nullable', 'string', 'max:50'],
         ]);
 
-        $student->update($validated);
+        DB::transaction(function () use ($student, $validated) {
+            $student->user->update([
+                'name' => $validated['name'],
+                'username' => $validated['username'],
+                'email' => $validated['email'],
+            ]);
+
+            if (! empty($validated['password'])) {
+                $student->user->update(['password' => $validated['password']]);
+            }
+
+            $student->update([
+                'student_no' => $validated['student_no'] ?? null,
+                'course_id' => $validated['course_id'] ?? null,
+                'year_level_id' => $validated['year_level_id'] ?? null,
+                'section' => $validated['section'] ?? null,
+            ]);
+        });
 
         return back()->with('success', 'Student updated successfully');
     }

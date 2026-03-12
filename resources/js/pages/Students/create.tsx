@@ -25,20 +25,22 @@ import type { StudentCreateRequest } from '@/types/student';
 interface Props {
     open: boolean;
     setOpen: (open: boolean) => void;
-    users: { id: number; name: string; email: string; username: string }[];
     courses: { id: number; name: string; code: string }[];
     yearLevels: { id: number; name: string }[];
 }
 export default function StudentCreateDialog({
     open,
     setOpen,
-    users,
     courses,
     yearLevels,
 }: Props) {
     const { data, setData, post, reset, processing, errors } =
         useForm<StudentCreateRequest>({
-            user_id: (users[0]?.id as number) ?? 0,
+            name: '',
+            username: '',
+            email: '',
+            password: '',
+            password_confirmation: '',
             student_no: '',
             course_id: null,
             year_level_id: null,
@@ -75,28 +77,58 @@ export default function StudentCreateDialog({
                 <form onSubmit={submit}>
                     <div className="space-y-4">
                         <div className="space-y-2">
-                            <Label>User</Label>
-                            <Select
-                                value={String(data.user_id)}
-                                onValueChange={(val) =>
-                                    setData('user_id', Number(val))
-                                }
-                            >
-                                <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select user" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {users.map((u) => (
-                                        <SelectItem
-                                            key={u.id}
-                                            value={String(u.id)}
-                                        >
-                                            {u.name} ({u.username}) - {u.email}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <InputError message={errors.user_id as any} />
+                            <Label htmlFor="name">Name</Label>
+                            <Input
+                                id="name"
+                                placeholder="Full name"
+                                value={data.name}
+                                onChange={handleTextChange}
+                            />
+                            <InputError message={errors.name as any} />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="username">Username</Label>
+                            <Input
+                                id="username"
+                                placeholder="Username"
+                                value={data.username}
+                                onChange={handleTextChange}
+                            />
+                            <InputError message={errors.username as any} />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="email">Email</Label>
+                            <Input
+                                id="email"
+                                type="email"
+                                placeholder="Email"
+                                value={data.email}
+                                onChange={handleTextChange}
+                            />
+                            <InputError message={errors.email as any} />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="password">Password</Label>
+                            <Input
+                                id="password"
+                                type="password"
+                                placeholder="Password"
+                                value={data.password}
+                                onChange={handleTextChange}
+                            />
+                            <InputError message={errors.password as any} />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="password_confirmation">
+                                Confirm Password
+                            </Label>
+                            <Input
+                                id="password_confirmation"
+                                type="password"
+                                placeholder="Confirm password"
+                                value={data.password_confirmation}
+                                onChange={handleTextChange}
+                            />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="student_no">Student No</Label>
