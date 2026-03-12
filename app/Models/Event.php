@@ -24,7 +24,7 @@ class Event extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public  static function boot()
+    public static function boot()
     {
         parent::boot();
 

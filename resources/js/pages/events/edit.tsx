@@ -117,7 +117,11 @@ export default function EventEditDialog({ open, setOpen, event }: Props) {
                             <InputError message={errors.description} />
                         </div>
 
-                        <Button className="w-full" type="submit" disabled={processing}>
+                        <Button
+                            className="w-full"
+                            type="submit"
+                            disabled={processing}
+                        >
                             {processing ? (
                                 <span className="flex items-center gap-2">
                                     <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />

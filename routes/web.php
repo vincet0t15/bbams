@@ -44,4 +44,4 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
     Route::delete('events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
 });
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';

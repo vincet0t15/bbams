@@ -2,13 +2,9 @@ import { Link, usePage } from '@inertiajs/react';
 import {
     BookOpen,
     CalendarDays,
-    FolderGit2,
-    KeyRound,
     LayoutGrid,
-    Palette,
     Settings,
     Shield,
-    ShieldCheck,
     Users,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
@@ -24,26 +20,10 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { edit as editAppearance } from '@/routes/appearance';
 import courses from '@/routes/courses';
 import { edit as editProfile } from '@/routes/profile';
-import { show as showTwoFactor } from '@/routes/two-factor';
-import { edit as editPassword } from '@/routes/user-password';
 import { index as usersIndex } from '@/routes/users';
-import type { NavGroup, NavItem } from '@/types';
-
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
-];
+import type { NavGroup } from '@/types';
 
 export function AppSidebar() {
     const { props } = usePage();
@@ -99,7 +79,6 @@ export function AppSidebar() {
                     href: editProfile(),
                     icon: Settings,
                 },
-
             ],
         },
     ];

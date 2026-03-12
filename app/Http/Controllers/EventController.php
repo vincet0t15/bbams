@@ -23,7 +23,7 @@ class EventController extends Controller
             ->withQueryString();
 
         return Inertia::render('events/index', [
-            'eventList' => $events->through(fn (Event $event) => [
+            'eventList' => $events->through(fn(Event $event) => [
                 'id' => $event->id,
                 'title' => $event->title,
                 'location' => $event->location,
@@ -61,7 +61,7 @@ class EventController extends Controller
                 : null,
         ]);
 
-        return redirect()->route('events.index')->with('success', 'Event created successfully');
+        return redirect()->back()->with('success', 'Event created successfully');
     }
 
     public function update(Request $request, Event $event)
