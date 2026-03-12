@@ -55,7 +55,7 @@ class CourseController extends Controller
 
         $course->update($request->only(['name', 'code', 'description']));
 
-        return redirect()->route('courses.index')->with('success', 'Course updated successfully');
+        return redirect()->back()->with('success', 'Course updated successfully');
     }
 
     public function destroy(Course $course)

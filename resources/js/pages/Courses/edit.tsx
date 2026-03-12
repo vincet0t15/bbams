@@ -15,20 +15,21 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { CourseCreateRequest } from '@/types/course';
+import { Course, CourseCreateRequest } from '@/types/course';
 import courses from '@/routes/courses';
 import { toast } from 'sonner';
 import { LoaderCircle } from 'lucide-react';
 interface Props {
     open: boolean;
     setOpen: (open: boolean) => void;
+    course: Course
 }
-export default function CourseCreateDialog({ open, setOpen }: Props) {
+export default function CourseEditDialog({ open, setOpen, course }: Props) {
 
-    const { data, setData, post, reset, processing, errors } = useForm<CourseCreateRequest>({
-        name: '',
-        code: '',
-        description: '',
+    const { data, setData, put, reset, processing, errors } = useForm<CourseCreateRequest>({
+        name: course.name,
+        code: course.code,
+        description: course.description,
     })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -40,7 +41,7 @@ export default function CourseCreateDialog({ open, setOpen }: Props) {
 
     const submit: SubmitEventHandler = (e) => {
         e.preventDefault();
-        post((courses.store().url), {
+        put((courses.update(course.id).url), {
             onSuccess: (response: { props: FlashProps }) => {
                 toast.success(response.props.flash?.success);
                 reset();
@@ -53,9 +54,9 @@ export default function CourseCreateDialog({ open, setOpen }: Props) {
 
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Create course</DialogTitle>
+                    <DialogTitle>Edit course</DialogTitle>
                     <DialogDescription>
-                        Enter your details below to create your account.
+                        Edit the details of the course below.
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={submit}>
@@ -77,7 +78,7 @@ export default function CourseCreateDialog({ open, setOpen }: Props) {
                         </div>
                         <Button className="w-full" type="submit" disabled={processing}>
                             {processing ? <span className='flex gap-2 items-center'><LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                                Creating...</span> : 'Create Course'}
+                                Updating...</span> : 'Update Course'}
                         </Button>
                     </div>
                 </form>

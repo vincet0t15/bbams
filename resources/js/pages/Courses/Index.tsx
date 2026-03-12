@@ -19,6 +19,7 @@ import type { PaginatedDataResponse } from '@/types/pagination';
 import CourseCreateDialog from './create';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
+import CourseEditDialog from './edit';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -37,6 +38,8 @@ interface Props {
 }
 export default function CoursesIndex({ courseList, filters }: Props) {
     const [openCreate, setOpenCreate] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
+    const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
     const { data, setData } = useForm({
         search: filters.search || '',
     });
@@ -57,6 +60,10 @@ export default function CoursesIndex({ courseList, filters }: Props) {
         setData('search', e.target.value);
     };
 
+    const handleEditClick = (course: Course) => {
+        setSelectedCourse(course);
+        setOpenEdit(true);
+    };
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Courses" />
@@ -103,7 +110,7 @@ export default function CoursesIndex({ courseList, filters }: Props) {
                                             {course.code}
                                         </TableCell>
                                         <TableCell className="flex gap-2 text-sm">
-                                            <span className="cursor-pointer text-green-500 hover:text-orange-700 hover:underline">
+                                            <span onClick={() => handleEditClick(course)} className="cursor-pointer text-green-500 hover:text-green-700 hover:underline">
                                                 Edit
                                             </span>
                                             <span className="cursor-pointer text-red-500 hover:text-orange-700 hover:underline">
@@ -133,6 +140,13 @@ export default function CoursesIndex({ courseList, filters }: Props) {
                 <CourseCreateDialog
                     open={openCreate}
                     setOpen={setOpenCreate}
+                />
+            )}
+            {openEdit && selectedCourse && (
+                <CourseEditDialog
+                    open={openEdit}
+                    setOpen={setOpenEdit}
+                    course={selectedCourse}
                 />
             )}
         </AppLayout>
