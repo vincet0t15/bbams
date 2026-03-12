@@ -119,6 +119,16 @@ export function AppSidebar() {
                     : []),
             ],
         },
+        {
+            title: 'Settings',
+            children: [
+                {
+                    title: 'Profile',
+                    href: editProfile(),
+                    icon: Settings,
+                },
+            ],
+        },
 
     ];
 

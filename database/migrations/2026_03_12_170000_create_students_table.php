@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('student_no')->nullable()->unique();
             $table->foreignId('course_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('year_level_id')->nullable()->constrained()->nullOnDelete();
