@@ -29,6 +29,8 @@ import YearLevelCreateDialog from './create';
 import YearLevelEditDialog from './edit';
 import YearLevelDeleteDialog from './delete';
 
+
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
@@ -46,7 +48,11 @@ interface Props {
     filters: FilterProps & { course_id?: string };
 }
 
-export default function YearLevelsIndex({ yearLevelList, courses, filters }: Props) {
+export default function YearLevelsIndex({
+    yearLevelList,
+    courses,
+    filters,
+}: Props) {
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
@@ -57,19 +63,33 @@ export default function YearLevelsIndex({ yearLevelList, courses, filters }: Pro
     });
 
     const courseOptions = useMemo(
-        () => [{ id: 'all', name: 'All courses', code: '' } as any].concat(courses as any),
+        () =>
+            [{ id: 'all', name: 'All courses', code: '' } as any].concat(
+                courses as any,
+            ),
         [courses],
     );
 
     const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
         if (e.key === 'Enter') {
             const query: Record<string, string> = {};
-            if (data.search) query.search = data.search;
-            if (data.course_id && data.course_id !== 'all') query.course_id = data.course_id;
-            router.get('/year-levels', Object.keys(query).length ? query : undefined, {
-                preserveState: true,
-                preserveScroll: true,
-            });
+
+            if (data.search) {
+                query.search = data.search;
+            }
+
+            if (data.course_id && data.course_id !== 'all') {
+                query.course_id = data.course_id;
+            }
+
+            router.get(
+                '/year-levels',
+                Object.keys(query).length ? query : undefined,
+                {
+                    preserveState: true,
+                    preserveScroll: true,
+                },
+            );
         }
     };
 
@@ -107,12 +127,25 @@ export default function YearLevelsIndex({ yearLevelList, courses, filters }: Pro
                             onValueChange={(val) => {
                                 setData('course_id', val);
                                 const query: Record<string, string> = {};
-                                if (data.search) query.search = data.search;
-                                if (val && val !== 'all') query.course_id = val;
-                                router.get('/year-levels', Object.keys(query).length ? query : undefined, {
-                                    preserveState: true,
-                                    preserveScroll: true,
-                                });
+
+                                if (data.search) {
+                                    query.search = data.search;
+                                }
+
+                                if (val && val !== 'all') {
+                                    query.course_id = val;
+                                }
+
+                                router.get(
+                                    '/year-levels',
+                                    Object.keys(query).length
+                                        ? query
+                                        : undefined,
+                                    {
+                                        preserveState: true,
+                                        preserveScroll: true,
+                                    },
+                                );
                             }}
                         >
                             <SelectTrigger className="w-48">
@@ -121,7 +154,9 @@ export default function YearLevelsIndex({ yearLevelList, courses, filters }: Pro
                             <SelectContent>
                                 {courseOptions.map((c) => (
                                     <SelectItem key={c.id} value={String(c.id)}>
-                                        {c.name === 'All courses' ? c.name : `${c.name} (${c.code})`}
+                                        {c.name === 'All courses'
+                                            ? c.name
+                                            : `${c.name} (${c.code})`}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
@@ -136,13 +171,28 @@ export default function YearLevelsIndex({ yearLevelList, courses, filters }: Pro
                             variant="outline"
                             onClick={() => {
                                 const query: Record<string, string> = {};
-                                if (data.search) query.search = data.search;
-                                if (data.course_id && data.course_id !== 'all')
+
+                                if (data.search) {
+                                    query.search = data.search;
+                                }
+
+                                if (
+                                    data.course_id &&
+                                    data.course_id !== 'all'
+                                ) {
                                     query.course_id = data.course_id;
-                                router.get('/year-levels', Object.keys(query).length ? query : undefined, {
-                                    preserveScroll: true,
-                                    preserveState: true,
-                                });
+                                }
+
+                                router.get(
+                                    '/year-levels',
+                                    Object.keys(query).length
+                                        ? query
+                                        : undefined,
+                                    {
+                                        preserveScroll: true,
+                                        preserveState: true,
+                                    },
+                                );
                             }}
                         >
                             Search
@@ -154,28 +204,41 @@ export default function YearLevelsIndex({ yearLevelList, courses, filters }: Pro
                     <Table>
                         <TableHeader className="bg-muted/50">
                             <TableRow>
-                                <TableHead className="font-bold text-primary">Year Level</TableHead>
-                                <TableHead className="font-bold text-primary">Course</TableHead>
-                                <TableHead className="font-bold text-primary">Action</TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Year Level
+                                </TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Course
+                                </TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Action
+                                </TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {yearLevelList.data.length > 0 ? (
                                 yearLevelList.data.map((yl) => (
                                     <TableRow key={yl.id} className="text-sm">
-                                        <TableCell className="text-sm">{yl.name}</TableCell>
                                         <TableCell className="text-sm">
-                                            {yl.course?.name} ({yl.course?.code})
+                                            {yl.name}
+                                        </TableCell>
+                                        <TableCell className="text-sm">
+                                            {yl.course?.name} ({yl.course?.code}
+                                            )
                                         </TableCell>
                                         <TableCell className="flex gap-2 text-sm">
                                             <span
-                                                onClick={() => handleEditClick(yl)}
+                                                onClick={() =>
+                                                    handleEditClick(yl)
+                                                }
                                                 className="cursor-pointer text-green-500 hover:text-green-700 hover:underline"
                                             >
                                                 Edit
                                             </span>
                                             <span
-                                                onClick={() => handleDeleteClick(yl)}
+                                                onClick={() =>
+                                                    handleDeleteClick(yl)
+                                                }
                                                 className="cursor-pointer text-red-500 hover:text-orange-700 hover:underline"
                                             >
                                                 Delete

@@ -24,6 +24,7 @@ import { dashboard } from '@/routes';
 import courses from '@/routes/courses';
 import { edit as editProfile } from '@/routes/profile';
 import { index as usersIndex } from '@/routes/users';
+import yearLevels from '@/routes/year-levels';
 import type { NavGroup } from '@/types';
 
 export function AppSidebar() {
@@ -54,6 +55,11 @@ export function AppSidebar() {
                 {
                     title: 'Courses',
                     href: courses.index.url(),
+                    icon: BookOpen,
+                },
+                {
+                    title: 'Year Levels',
+                    href: yearLevels.index.url(),
                     icon: BookOpen,
                 },
                 {

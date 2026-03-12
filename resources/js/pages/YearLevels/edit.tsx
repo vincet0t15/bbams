@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import {
     Select,
     SelectContent,
@@ -21,6 +20,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import type { YearLevel, YearLevelCreateRequest } from '@/types/year-level';
 
 interface Props {
@@ -30,7 +30,12 @@ interface Props {
     courses: { id: number; name: string; code: string }[];
 }
 
-export default function YearLevelEditDialog({ open, setOpen, yearLevel, courses }: Props) {
+export default function YearLevelEditDialog({
+    open,
+    setOpen,
+    yearLevel,
+    courses,
+}: Props) {
     const { data, setData, put, reset, processing, errors } =
         useForm<YearLevelCreateRequest>({
             course_id: yearLevel.course.id,
@@ -63,7 +68,9 @@ export default function YearLevelEditDialog({ open, setOpen, yearLevel, courses 
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>Edit year level</DialogTitle>
-                    <DialogDescription>Update year level details.</DialogDescription>
+                    <DialogDescription>
+                        Update year level details.
+                    </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={submit}>
                     <div className="space-y-4">
@@ -80,7 +87,10 @@ export default function YearLevelEditDialog({ open, setOpen, yearLevel, courses 
                                 </SelectTrigger>
                                 <SelectContent>
                                     {courses.map((c) => (
-                                        <SelectItem key={c.id} value={String(c.id)}>
+                                        <SelectItem
+                                            key={c.id}
+                                            value={String(c.id)}
+                                        >
                                             {c.name} ({c.code})
                                         </SelectItem>
                                     ))}
@@ -108,7 +118,11 @@ export default function YearLevelEditDialog({ open, setOpen, yearLevel, courses 
                             />
                             <InputError message={errors.description as any} />
                         </div>
-                        <Button className="w-full" type="submit" disabled={processing}>
+                        <Button
+                            className="w-full"
+                            type="submit"
+                            disabled={processing}
+                        >
                             {processing ? (
                                 <span className="flex items-center gap-2">
                                     <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />

@@ -38,7 +38,7 @@ class YearLevel extends Model
         parent::boot();
 
         static::creating(function (self $yearLevel) {
-            if (!$yearLevel->created_by) {
+            if (! $yearLevel->created_by) {
                 $yearLevel->created_by = Auth::id();
             }
         });
