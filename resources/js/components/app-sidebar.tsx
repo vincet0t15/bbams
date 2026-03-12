@@ -36,7 +36,7 @@ export function AppSidebar() {
 
     const mainNavItems: NavGroup[] = [
         {
-            title: 'General',
+            title: 'Overview',
             children: [
                 {
                     title: 'Dashboard',
@@ -46,13 +46,23 @@ export function AppSidebar() {
             ],
         },
         {
-            title: 'Management',
+            title: 'Attendance',
             children: [
                 {
-                    title: 'Accounts',
-                    href: usersIndex.url(),
-                    icon: Users,
+                    title: 'Events',
+                    href: '/events',
+                    icon: CalendarDays,
                 },
+                {
+                    title: 'Attendance Logs',
+                    href: '/attendance-logs',
+                    icon: ClipboardList,
+                },
+            ],
+        },
+        {
+            title: 'People',
+            children: [
                 {
                     title: 'Courses',
                     href: courses.index.url(),
@@ -78,29 +88,29 @@ export function AppSidebar() {
                     href: '/staff',
                     icon: Users,
                 },
+            ],
+        },
+        {
+            title: 'Administration',
+            children: [
                 {
-                    title: 'Events',
-                    href: '/events',
-                    icon: CalendarDays,
-                },
-                {
-                    title: 'Attendance Logs',
-                    href: '/attendance-logs',
-                    icon: ClipboardList,
+                    title: 'Accounts',
+                    href: usersIndex.url(),
+                    icon: Users,
                 },
                 ...(canManageRoles
                     ? [
-                          {
-                              title: 'Permissions & Roles',
-                              href: '/roles',
-                              icon: Shield,
-                          },
-                          {
-                              title: 'Bin',
-                              href: '/bin',
-                              icon: Trash2,
-                          },
-                      ]
+                        {
+                            title: 'Permissions & Roles',
+                            href: '/roles',
+                            icon: Shield,
+                        },
+                        {
+                            title: 'Bin',
+                            href: '/bin',
+                            icon: Trash2,
+                        },
+                    ]
                     : []),
             ],
         },
