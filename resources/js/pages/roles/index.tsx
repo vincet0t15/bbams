@@ -126,7 +126,9 @@ export default function RolesIndex({ roles, permissions }: Props) {
                                     e.preventDefault();
                                     createRoleForm.setData(
                                         'permissions',
-                                        selectedPermissions,
+                                        selectedPermissions.filter((p) =>
+                                            permissionNames.includes(p),
+                                        ),
                                     );
                                     createRoleForm.post('/roles', {
                                         preserveScroll: true,
@@ -194,6 +196,48 @@ export default function RolesIndex({ roles, permissions }: Props) {
                         </CardContent>
                     </Card>
                 </div>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Permissions</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-2">
+                            {permissions.map((permission) => (
+                                <div
+                                    key={permission.id}
+                                    className="flex items-center justify-between gap-3 rounded-lg border px-3 py-2"
+                                >
+                                    <div className="text-sm font-medium">
+                                        {permission.name}
+                                    </div>
+                                    <Button
+                                        variant="destructive"
+                                        size="sm"
+                                        onClick={() => {
+                                            if (
+                                                !window.confirm(
+                                                    `Delete permission "${permission.name}"?`,
+                                                )
+                                            ) {
+                                                return;
+                                            }
+
+                                            router.delete(
+                                                `/permissions/${permission.id}`,
+                                                {
+                                                    preserveScroll: true,
+                                                },
+                                            );
+                                        }}
+                                    >
+                                        Delete
+                                    </Button>
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
 
                 <Card>
                     <CardHeader>
