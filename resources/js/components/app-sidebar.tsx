@@ -1,5 +1,14 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
+import {
+    BookOpen,
+    FolderGit2,
+    KeyRound,
+    LayoutGrid,
+    Palette,
+    Settings,
+    ShieldCheck,
+    Users,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -14,15 +23,55 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import type { NavItem } from '@/types';
+import { edit as editAppearance } from '@/routes/appearance';
+import { edit as editProfile } from '@/routes/profile';
+import { show as showTwoFactor } from '@/routes/two-factor';
+import { edit as editPassword } from '@/routes/user-password';
+import { index as usersIndex } from '@/routes/users';
+import type { NavGroup, NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
+const mainNavItems = [
     {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
+        title: 'General',
+        children: [
+            {
+                title: 'Dashboard',
+                href: dashboard(),
+                icon: LayoutGrid,
+            },
+            {
+                title: 'Accounts',
+                href: usersIndex.url(),
+                icon: Users,
+            },
+        ],
     },
-];
+    {
+        title: 'Settings',
+        children: [
+            {
+                title: 'Profile',
+                href: editProfile(),
+                icon: Settings,
+            },
+            {
+                title: 'Password',
+                href: editPassword(),
+                icon: KeyRound,
+            },
+            {
+                title: 'Two-factor auth',
+                href: showTwoFactor(),
+                icon: ShieldCheck,
+            },
+            {
+                title: 'Appearance',
+                href: editAppearance(),
+                icon: Palette,
+            },
+        ],
+    },
+] satisfies NavGroup[];
 
 const footerNavItems: NavItem[] = [
     {
