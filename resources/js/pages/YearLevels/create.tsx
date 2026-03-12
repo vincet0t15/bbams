@@ -13,29 +13,16 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import type { YearLevelCreateRequest } from '@/types/year-level';
 
 interface Props {
     open: boolean;
     setOpen: (open: boolean) => void;
-    courses: { id: number; name: string; code: string }[];
 }
-export default function YearLevelCreateDialog({
-    open,
-    setOpen,
-    courses,
-}: Props) {
+export default function YearLevelCreateDialog({ open, setOpen }: Props) {
     const { data, setData, post, reset, processing, errors } =
         useForm<YearLevelCreateRequest>({
-            course_id: (courses[0]?.id as number) ?? 0,
             name: '',
             description: '',
         });
@@ -71,30 +58,6 @@ export default function YearLevelCreateDialog({
                 </DialogHeader>
                 <form onSubmit={submit}>
                     <div className="space-y-4">
-                        <div className="space-y-2">
-                            <Label>Course</Label>
-                            <Select
-                                value={String(data.course_id)}
-                                onValueChange={(val) =>
-                                    setData('course_id', Number(val))
-                                }
-                            >
-                                <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select course" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {courses.map((c) => (
-                                        <SelectItem
-                                            key={c.id}
-                                            value={String(c.id)}
-                                        >
-                                            {c.name} ({c.code})
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <InputError message={errors.course_id as any} />
-                        </div>
                         <div className="space-y-2">
                             <Label htmlFor="name">Year Level</Label>
                             <Input

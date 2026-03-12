@@ -1,17 +1,10 @@
 import { Head, router, useForm } from '@inertiajs/react';
 import { PlusIcon } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import Pagination from '@/components/paginationData';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import {
     Table,
     TableBody,
@@ -29,8 +22,6 @@ import YearLevelCreateDialog from './create';
 import YearLevelEditDialog from './edit';
 import YearLevelDeleteDialog from './delete';
 
-
-
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
@@ -44,31 +35,17 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface Props {
     yearLevelList: PaginatedDataResponse<YearLevel>;
-    courses: { id: number; name: string; code: string }[];
-    filters: FilterProps & { course_id?: string };
+    filters: FilterProps;
 }
 
-export default function YearLevelsIndex({
-    yearLevelList,
-    courses,
-    filters,
-}: Props) {
+export default function YearLevelsIndex({ yearLevelList, filters }: Props) {
     const [openCreate, setOpenCreate] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [selected, setSelected] = useState<YearLevel | null>(null);
     const { data, setData } = useForm({
         search: filters.search || '',
-        course_id: filters.course_id || 'all',
     });
-
-    const courseOptions = useMemo(
-        () =>
-            [{ id: 'all', name: 'All courses', code: '' } as any].concat(
-                courses as any,
-            ),
-        [courses],
-    );
 
     const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
         if (e.key === 'Enter') {
@@ -76,10 +53,6 @@ export default function YearLevelsIndex({
 
             if (data.search) {
                 query.search = data.search;
-            }
-
-            if (data.course_id && data.course_id !== 'all') {
-                query.course_id = data.course_id;
             }
 
             router.get(
@@ -122,45 +95,6 @@ export default function YearLevelsIndex({
                     </Button>
 
                     <div className="flex items-center gap-2">
-                        <Select
-                            value={data.course_id}
-                            onValueChange={(val) => {
-                                setData('course_id', val);
-                                const query: Record<string, string> = {};
-
-                                if (data.search) {
-                                    query.search = data.search;
-                                }
-
-                                if (val && val !== 'all') {
-                                    query.course_id = val;
-                                }
-
-                                router.get(
-                                    '/year-levels',
-                                    Object.keys(query).length
-                                        ? query
-                                        : undefined,
-                                    {
-                                        preserveState: true,
-                                        preserveScroll: true,
-                                    },
-                                );
-                            }}
-                        >
-                            <SelectTrigger className="w-48">
-                                <SelectValue placeholder="Filter by course" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {courseOptions.map((c) => (
-                                    <SelectItem key={c.id} value={String(c.id)}>
-                                        {c.name === 'All courses'
-                                            ? c.name
-                                            : `${c.name} (${c.code})`}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
                         <Input
                             onKeyDown={handleKeyDown}
                             onChange={handleSearchChange}
@@ -174,13 +108,6 @@ export default function YearLevelsIndex({
 
                                 if (data.search) {
                                     query.search = data.search;
-                                }
-
-                                if (
-                                    data.course_id &&
-                                    data.course_id !== 'all'
-                                ) {
-                                    query.course_id = data.course_id;
                                 }
 
                                 router.get(
@@ -208,7 +135,7 @@ export default function YearLevelsIndex({
                                     Year Level
                                 </TableHead>
                                 <TableHead className="font-bold text-primary">
-                                    Course
+                                    Description
                                 </TableHead>
                                 <TableHead className="font-bold text-primary">
                                     Action
@@ -223,8 +150,11 @@ export default function YearLevelsIndex({
                                             {yl.name}
                                         </TableCell>
                                         <TableCell className="text-sm">
-                                            {yl.course?.name} ({yl.course?.code}
-                                            )
+                                            {yl.description || (
+                                                <span className="text-muted-foreground">
+                                                    -
+                                                </span>
+                                            )}
                                         </TableCell>
                                         <TableCell className="flex gap-2 text-sm">
                                             <span
@@ -267,7 +197,6 @@ export default function YearLevelsIndex({
                 <YearLevelCreateDialog
                     open={openCreate}
                     setOpen={setOpenCreate}
-                    courses={courses}
                 />
             )}
             {openEdit && selected && (
@@ -275,7 +204,6 @@ export default function YearLevelsIndex({
                     open={openEdit}
                     setOpen={setOpenEdit}
                     yearLevel={selected}
-                    courses={courses}
                 />
             )}
             {openDelete && selected && (

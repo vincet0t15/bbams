@@ -11,17 +11,11 @@ class YearLevel extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'course_id',
         'name',
         'description',
         'created_by',
         'deleted_by',
     ];
-
-    public function course()
-    {
-        return $this->belongsTo(Course::class);
-    }
 
     public function createdBy()
     {

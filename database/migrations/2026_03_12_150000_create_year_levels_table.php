@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::create('year_levels', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('description')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
