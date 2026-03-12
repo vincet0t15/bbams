@@ -105,30 +105,21 @@ export function AppSidebar() {
                 },
                 ...(canManageRoles
                     ? [
-                          {
-                              title: 'Permissions & Roles',
-                              href: '/roles',
-                              icon: Shield,
-                          },
-                          {
-                              title: 'Bin',
-                              href: '/bin',
-                              icon: Trash2,
-                          },
-                      ]
+                        {
+                            title: 'Permissions & Roles',
+                            href: '/roles',
+                            icon: Shield,
+                        },
+                        {
+                            title: 'Bin',
+                            href: '/bin',
+                            icon: Trash2,
+                        },
+                    ]
                     : []),
             ],
         },
-        {
-            title: 'Settings',
-            children: [
-                {
-                    title: 'Profile',
-                    href: editProfile(),
-                    icon: Settings,
-                },
-            ],
-        },
+
     ];
 
     return (
