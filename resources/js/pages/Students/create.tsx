@@ -67,7 +67,7 @@ export default function StudentCreateDialog({
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="min-w-2xl">
                 <DialogHeader>
                     <DialogTitle>Create student</DialogTitle>
                     <DialogDescription>
@@ -86,49 +86,53 @@ export default function StudentCreateDialog({
                             />
                             <InputError message={errors.name as any} />
                         </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="username">Username</Label>
-                            <Input
-                                id="username"
-                                placeholder="Username"
-                                value={data.username}
-                                onChange={handleTextChange}
-                            />
-                            <InputError message={errors.username as any} />
+                        <div className="flex justify-between items-center space-x-4">
+                            <div className="space-y-2 w-1/2">
+                                <Label htmlFor="username">Username</Label>
+                                <Input
+                                    id="username"
+                                    placeholder="Username"
+                                    value={data.username}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError message={errors.username as any} />
+                            </div>
+                            <div className="space-y-2 w-1/2">
+                                <Label htmlFor="email">Email</Label>
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    placeholder="Email"
+                                    value={data.email}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError message={errors.email as any} />
+                            </div>
                         </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                placeholder="Email"
-                                value={data.email}
-                                onChange={handleTextChange}
-                            />
-                            <InputError message={errors.email as any} />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
-                            <Input
-                                id="password"
-                                type="password"
-                                placeholder="Password"
-                                value={data.password}
-                                onChange={handleTextChange}
-                            />
-                            <InputError message={errors.password as any} />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="password_confirmation">
-                                Confirm Password
-                            </Label>
-                            <Input
-                                id="password_confirmation"
-                                type="password"
-                                placeholder="Confirm password"
-                                value={data.password_confirmation}
-                                onChange={handleTextChange}
-                            />
+                        <div className="flex justify-between items-center space-x-4">
+                            <div className="space-y-2 w-1/2">
+                                <Label htmlFor="password">Password</Label>
+                                <Input
+                                    id="password"
+                                    type="password"
+                                    placeholder="Password"
+                                    value={data.password}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError message={errors.password as any} />
+                            </div>
+                            <div className="space-y-2 w-1/2">
+                                <Label htmlFor="password_confirmation">
+                                    Confirm Password
+                                </Label>
+                                <Input
+                                    id="password_confirmation"
+                                    type="password"
+                                    placeholder="Confirm password"
+                                    value={data.password_confirmation}
+                                    onChange={handleTextChange}
+                                />
+                            </div>
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="student_no">Student No</Label>
