@@ -245,6 +245,51 @@ class AttendanceLogController extends Controller
         ]);
     }
 
+    public function dtr(Request $request)
+    {
+        $search = $request->input('search');
+        $role = $request->input('role');
+
+        $users = User::query()
+            ->with('roles')
+            ->when($search, function ($q, $search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('username', 'like', "%{$search}%");
+            })
+            ->when($role && $role !== 'all', function ($q) use ($role) {
+                $q->whereHas('roles', fn ($rq) => $rq->where('name', $role));
+            })
+            ->orderBy('name')
+            ->paginate(10)
+            ->withQueryString();
+
+        $eventTitleColumn = Schema::hasColumn('events', 'title') ? 'title' : 'name';
+        $eventStartColumn = Schema::hasColumn('events', 'start_at') ? 'start_at' : 'date_from';
+        $events = Event::query()
+            ->orderByDesc($eventStartColumn)
+            ->get(['id', $eventTitleColumn])
+            ->map(fn (Event $event) => [
+                'id' => $event->id,
+                'title' => $event->getAttribute($eventTitleColumn),
+            ]);
+
+        return Inertia::render('DTR/Select', [
+            'userList' => $users->through(function (User $u) {
+                return [
+                    'id' => $u->id,
+                    'name' => $u->name,
+                    'email' => $u->email,
+                    'username' => $u->username,
+                    'role' => $u->getRoleNames()->first() ?? null,
+                ];
+            }),
+            'events' => $events,
+            'filters' => $request->only(['search', 'role']),
+            'defaultMonth' => now()->format('Y-m'),
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([

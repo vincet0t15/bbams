@@ -8,6 +8,7 @@ import {
     Shield,
     Users,
     ClipboardList,
+    FileSpreadsheet,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavMain } from '@/components/nav-main';
@@ -57,6 +58,11 @@ export function AppSidebar() {
                     title: 'Attendance Logs',
                     href: '/attendance-logs',
                     icon: ClipboardList,
+                },
+                {
+                    title: 'DTR',
+                    href: '/dtr',
+                    icon: FileSpreadsheet,
                 },
             ],
         },
