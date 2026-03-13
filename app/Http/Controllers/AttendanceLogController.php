@@ -13,6 +13,98 @@ use Inertia\Inertia;
 
 class AttendanceLogController extends Controller
 {
+    protected function buildDtrPayload(User $user, ?int $eventId, Carbon $start, Carbon $end): array
+    {
+        $logs = AttendanceLog::query()
+            ->where('user_id', $user->id)
+            ->when($eventId, fn ($q) => $q->where('event_id', $eventId))
+            ->whereBetween('date_time', [$start, $end])
+            ->orderBy('date_time')
+            ->get();
+
+        $grouped = $logs->groupBy(fn (AttendanceLog $l) => Carbon::parse($l->date_time)->toDateString());
+
+        $records = [];
+        $totalIn = 0;
+        $totalOut = 0;
+
+        foreach ($grouped as $day => $dayLogs) {
+            $amIn = null;
+            $amOut = null;
+            $pmIn = null;
+            $pmOut = null;
+
+            $entries = [];
+
+            foreach ($dayLogs as $l) {
+                $dt = Carbon::parse($l->date_time);
+                $type = (int) $l->check_type === 1 ? 'in' : 'out';
+                $entries[] = [
+                    'datetime' => $dt->toDateTimeString(),
+                    'type' => $type,
+                ];
+                if ($type === 'in') {
+                    $totalIn++;
+                } elseif ($type === 'out') {
+                    $totalOut++;
+                }
+
+                if ($dt->hour < 12) {
+                    if ($type === 'in') {
+                        $amIn = $amIn ? min($amIn, $dt) : $dt;
+                    } else {
+                        $amOut = $amOut ? max($amOut, $dt) : $dt;
+                    }
+                } else {
+                    if ($type === 'in') {
+                        $pmIn = $pmIn ? min($pmIn, $dt) : $dt;
+                    } else {
+                        $pmOut = $pmOut ? max($pmOut, $dt) : $dt;
+                    }
+                }
+            }
+
+            $records[] = [
+                'date' => $day,
+                'am_in' => $amIn?->format('H:i'),
+                'am_out' => $amOut?->format('H:i'),
+                'pm_in' => $pmIn?->format('H:i'),
+                'pm_out' => $pmOut?->format('H:i'),
+                'late_minutes' => 0,
+                'logs' => $entries,
+                'hasUnmatched' => false,
+            ];
+        }
+
+        $prevStart = $start->copy()->subMonth()->startOfMonth();
+        $prevEnd = $prevStart->copy()->endOfMonth();
+        $prevLogs = AttendanceLog::query()
+            ->where('user_id', $user->id)
+            ->when($eventId, fn ($q) => $q->where('event_id', $eventId))
+            ->whereBetween('date_time', [$prevStart, $prevEnd])
+            ->orderBy('date_time')
+            ->get()
+            ->map(function (AttendanceLog $l) {
+                return [
+                    'datetime' => Carbon::parse($l->date_time)->toDateTimeString(),
+                    'type' => (int) $l->check_type === 1 ? 'in' : 'out',
+                ];
+            });
+
+        return [
+            'student_id' => $user->id,
+            'student_name' => $user->name,
+            'records' => $records,
+            'forTheMonthOf' => $start->format('F Y'),
+            'totalOut' => $totalOut,
+            'totalIn' => $totalIn,
+            'previousLogs' => $prevLogs,
+            'PrevForTheMonth' => $prevStart->format('F Y'),
+            'PrevTotalIn' => $prevLogs->where('type', 'in')->count(),
+            'PreveTotalOut' => $prevLogs->where('type', 'out')->count(),
+        ];
+    }
+
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -116,97 +208,39 @@ class AttendanceLogController extends Controller
                 : now()->startOfMonth());
         $end = $start->copy()->endOfMonth();
 
-        $logs = AttendanceLog::query()
-            ->where('user_id', $user->id)
-            ->when($eventId, fn ($q) => $q->where('event_id', $eventId))
-            ->whereBetween('date_time', [$start, $end])
-            ->orderBy('date_time')
-            ->get();
-
-        $grouped = $logs->groupBy(fn (AttendanceLog $l) => Carbon::parse($l->date_time)->toDateString());
-
-        $records = [];
-        $totalIn = 0;
-        $totalOut = 0;
-
-        foreach ($grouped as $day => $dayLogs) {
-            $amIn = null;
-            $amOut = null;
-            $pmIn = null;
-            $pmOut = null;
-
-            $entries = [];
-
-            foreach ($dayLogs as $l) {
-                $dt = Carbon::parse($l->date_time);
-                $type = (int) $l->check_type === 1 ? 'in' : 'out';
-                $entries[] = [
-                    'datetime' => $dt->toDateTimeString(),
-                    'type' => $type,
-                ];
-                if ($type === 'in') {
-                    $totalIn++;
-                } elseif ($type === 'out') {
-                    $totalOut++;
-                }
-
-                if ($dt->hour < 12) {
-                    if ($type === 'in') {
-                        $amIn = $amIn ? min($amIn, $dt) : $dt;
-                    } else {
-                        $amOut = $amOut ? max($amOut, $dt) : $dt;
-                    }
-                } else {
-                    if ($type === 'in') {
-                        $pmIn = $pmIn ? min($pmIn, $dt) : $dt;
-                    } else {
-                        $pmOut = $pmOut ? max($pmOut, $dt) : $dt;
-                    }
-                }
-            }
-
-            $records[] = [
-                'date' => $day,
-                'am_in' => $amIn?->format('H:i'),
-                'am_out' => $amOut?->format('H:i'),
-                'pm_in' => $pmIn?->format('H:i'),
-                'pm_out' => $pmOut?->format('H:i'),
-                'late_minutes' => 0,
-                'logs' => $entries,
-                'hasUnmatched' => false,
-            ];
-        }
-
-        $prevStart = $start->copy()->subMonth()->startOfMonth();
-        $prevEnd = $prevStart->copy()->endOfMonth();
-        $prevLogs = AttendanceLog::query()
-            ->where('user_id', $user->id)
-            ->when($eventId, fn ($q) => $q->where('event_id', $eventId))
-            ->whereBetween('date_time', [$prevStart, $prevEnd])
-            ->orderBy('date_time')
-            ->get()
-            ->map(function (AttendanceLog $l) {
-                return [
-                    'datetime' => Carbon::parse($l->date_time)->toDateTimeString(),
-                    'type' => (int) $l->check_type === 1 ? 'in' : 'out',
-                ];
-            });
-
-        $dtrPayload = [
-            'student_id' => $user->id,
-            'student_name' => $user->name,
-            'records' => $records,
-            'forTheMonthOf' => $start->format('F Y'),
-            'totalOut' => $totalOut,
-            'totalIn' => $totalIn,
-            'previousLogs' => $prevLogs,
-            'PrevForTheMonth' => $prevStart->format('F Y'),
-            'PrevTotalIn' => $prevLogs->where('type', 'in')->count(),
-            'PreveTotalOut' => $prevLogs->where('type', 'out')->count(),
-        ];
+        $dtrPayload = $this->buildDtrPayload($user, $eventId, $start, $end);
 
         return Inertia::render('DTR/index', [
             'dtr' => [$dtrPayload],
+        ]);
+    }
+
+    public function printDtrBatch(Request $request)
+    {
+        $validated = $request->validate([
+            'user_ids' => ['required', 'array'],
+            'user_ids.*' => ['integer', 'exists:users,id'],
+            'event_id' => ['nullable', 'exists:events,id'],
+            'month' => ['nullable', 'regex:/^\d{4}-\d{2}$/'],
+            'date' => ['nullable', 'date'],
+        ]);
+
+        $eventId = $validated['event_id'] ?? null;
+        $start = isset($validated['month'])
+            ? Carbon::createFromFormat('Y-m', $validated['month'])->startOfMonth()
+            : (isset($validated['date'])
+                ? Carbon::parse($validated['date'])->startOfMonth()
+                : now()->startOfMonth());
+        $end = $start->copy()->endOfMonth();
+
+        $users = User::whereIn('id', $validated['user_ids'])->get();
+        $dtr = [];
+        foreach ($users as $user) {
+            $dtr[] = $this->buildDtrPayload($user, $eventId, $start, $end);
+        }
+
+        return Inertia::render('DTR/index', [
+            'dtr' => $dtr,
         ]);
     }
 

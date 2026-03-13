@@ -65,6 +65,7 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
     Route::get('attendance-logs', [AttendanceLogController::class, 'index'])->name('attendance-logs.index');
     Route::post('attendance-logs', [AttendanceLogController::class, 'store'])->name('attendance-logs.store');
     Route::get('attendance-logs/print-dtr', [AttendanceLogController::class, 'printDtr'])->name('attendance-logs.print-dtr');
+    Route::get('attendance-logs/print-dtr-batch', [AttendanceLogController::class, 'printDtrBatch'])->name('attendance-logs.print-dtr-batch');
 
     // Students
     Route::get('students', [StudentController::class, 'index'])->name('students.index');

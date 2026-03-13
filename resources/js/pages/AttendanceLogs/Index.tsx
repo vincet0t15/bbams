@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import Pagination from '@/components/paginationData';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -66,6 +67,33 @@ export default function AttendanceLogsIndex({
     });
 
     const [isFiltering, setIsFiltering] = useState(false);
+    const [selected, setSelected] = useState<number[]>([]);
+
+    const toggleSelected = (id: number) => {
+        setSelected((prev) =>
+            prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+        );
+    };
+
+    const printAll = () => {
+        if (selected.length === 0) {
+            return;
+        }
+
+        const params = new URLSearchParams();
+        selected.forEach((id) => params.append('user_ids[]', String(id)));
+
+        if (data.event_id && data.event_id !== 'all') {
+            params.set('event_id', String(data.event_id));
+        }
+
+        if (data.date) {
+            params.set('month', dayjs(data.date).format('YYYY-MM'));
+        }
+
+        const url = `/attendance-logs/print-dtr-batch?${params.toString()}`;
+        window.open(url, '_blank', 'noopener,noreferrer');
+    };
 
     const buildQuery = (overrides?: Partial<typeof data>) => {
         const current = { ...data, ...(overrides ?? {}) };
@@ -270,6 +298,12 @@ export default function AttendanceLogsIndex({
                         <Button variant="ghost" onClick={reset}>
                             Reset
                         </Button>
+                        <Button
+                            onClick={printAll}
+                            disabled={selected.length === 0}
+                        >
+                            Print All ({selected.length})
+                        </Button>
                     </div>
                 </div>
 
@@ -296,7 +330,7 @@ export default function AttendanceLogsIndex({
                                     Role
                                 </TableHead>
                                 <TableHead className="font-bold text-primary">
-                                    Actions
+                                    Select
                                 </TableHead>
                             </TableRow>
                         </TableHeader>
@@ -324,33 +358,17 @@ export default function AttendanceLogsIndex({
                                         </TableCell>
                                         <TableCell className="text-sm">
                                             {log.user?.id ? (
-                                                <Button
-                                                    asChild
-                                                    variant="outline"
-                                                    size="sm"
-                                                >
-                                                    <a
-                                                        href={`/attendance-logs/print-dtr?user_id=${log.user.id}${
-                                                            data.event_id &&
-                                                            data.event_id !==
-                                                                'all'
-                                                                ? `&event_id=${data.event_id}`
-                                                                : ''
-                                                        }${
-                                                            data.date
-                                                                ? `&month=${dayjs(
-                                                                      data.date,
-                                                                  ).format(
-                                                                      'YYYY-MM',
-                                                                  )}`
-                                                                : ''
-                                                        }`}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                    >
-                                                        Print DTR
-                                                    </a>
-                                                </Button>
+                                                <Checkbox
+                                                    checked={selected.includes(
+                                                        log.user.id,
+                                                    )}
+                                                    onCheckedChange={() =>
+                                                        toggleSelected(
+                                                            log.user!.id,
+                                                        )
+                                                    }
+                                                    aria-label="Select user"
+                                                />
                                             ) : (
                                                 '-'
                                             )}
