@@ -23,7 +23,9 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
 
     // Users
-    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::get('users', [UserController::class, 'index'])
+        ->middleware('permission:accounts.view')
+        ->name('users.index');
 
     Route::middleware(['permission:roles.manage'])->group(function () {
         Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
@@ -44,47 +46,99 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
     });
 
     // Courses
-    Route::get('courses', [CourseController::class, 'index'])->name('courses.index');
-    Route::post('courses', [CourseController::class, 'store'])->name('courses.store');
-    Route::put('courses/{course}', [CourseController::class, 'update'])->name('courses.update');
-    Route::delete('courses/{course}', [CourseController::class, 'destroy'])->name('courses.destroy');
+    Route::get('courses', [CourseController::class, 'index'])
+        ->middleware('permission:courses.view')
+        ->name('courses.index');
+    Route::post('courses', [CourseController::class, 'store'])
+        ->middleware('permission:courses.create')
+        ->name('courses.store');
+    Route::put('courses/{course}', [CourseController::class, 'update'])
+        ->middleware('permission:courses.update')
+        ->name('courses.update');
+    Route::delete('courses/{course}', [CourseController::class, 'destroy'])
+        ->middleware('permission:courses.delete')
+        ->name('courses.destroy');
 
     // Year Levels
-    Route::get('year-levels', [YearLevelController::class, 'index'])->name('year-levels.index');
-    Route::post('year-levels', [YearLevelController::class, 'store'])->name('year-levels.store');
-    Route::put('year-levels/{yearLevel}', [YearLevelController::class, 'update'])->name('year-levels.update');
-    Route::delete('year-levels/{yearLevel}', [YearLevelController::class, 'destroy'])->name('year-levels.destroy');
+    Route::get('year-levels', [YearLevelController::class, 'index'])
+        ->middleware('permission:year-levels.view')
+        ->name('year-levels.index');
+    Route::post('year-levels', [YearLevelController::class, 'store'])
+        ->middleware('permission:year-levels.create')
+        ->name('year-levels.store');
+    Route::put('year-levels/{yearLevel}', [YearLevelController::class, 'update'])
+        ->middleware('permission:year-levels.update')
+        ->name('year-levels.update');
+    Route::delete('year-levels/{yearLevel}', [YearLevelController::class, 'destroy'])
+        ->middleware('permission:year-levels.delete')
+        ->name('year-levels.destroy');
 
     // Events
-    Route::get('events', [EventController::class, 'index'])->name('events.index');
-    Route::post('events', [EventController::class, 'store'])->name('events.store');
-    Route::put('events/{event}', [EventController::class, 'update'])->name('events.update');
-    Route::delete('events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
+    Route::get('events', [EventController::class, 'index'])
+        ->middleware('permission:events.view')
+        ->name('events.index');
+    Route::post('events', [EventController::class, 'store'])
+        ->middleware('permission:events.create')
+        ->name('events.store');
+    Route::put('events/{event}', [EventController::class, 'update'])
+        ->middleware('permission:events.update')
+        ->name('events.update');
+    Route::delete('events/{event}', [EventController::class, 'destroy'])
+        ->middleware('permission:events.delete')
+        ->name('events.destroy');
 
     // Attendance Logs
-    Route::get('attendance-logs', [AttendanceLogController::class, 'index'])->name('attendance-logs.index');
-    Route::post('attendance-logs', [AttendanceLogController::class, 'store'])->name('attendance-logs.store');
+    Route::get('attendance-logs', [AttendanceLogController::class, 'index'])
+        ->middleware('permission:attendance-logs.view')
+        ->name('attendance-logs.index');
+    Route::post('attendance-logs', [AttendanceLogController::class, 'store'])
+        ->middleware('permission:attendance-logs.create')
+        ->name('attendance-logs.store');
     Route::get('attendance-logs/print-dtr', [AttendanceLogController::class, 'printDtr'])->name('attendance-logs.print-dtr');
     Route::get('attendance-logs/print-dtr-batch', [AttendanceLogController::class, 'printDtrBatch'])->name('attendance-logs.print-dtr-batch');
     Route::get('dtr', [AttendanceLogController::class, 'dtr'])->name('dtr.select');
 
     // Students
-    Route::get('students', [StudentController::class, 'index'])->name('students.index');
-    Route::post('students', [StudentController::class, 'store'])->name('students.store');
-    Route::put('students/{student}', [StudentController::class, 'update'])->name('students.update');
-    Route::delete('students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
+    Route::get('students', [StudentController::class, 'index'])
+        ->middleware('permission:students.view')
+        ->name('students.index');
+    Route::post('students', [StudentController::class, 'store'])
+        ->middleware('permission:students.create')
+        ->name('students.store');
+    Route::put('students/{student}', [StudentController::class, 'update'])
+        ->middleware('permission:students.update')
+        ->name('students.update');
+    Route::delete('students/{student}', [StudentController::class, 'destroy'])
+        ->middleware('permission:students.delete')
+        ->name('students.destroy');
 
     // Faculty
-    Route::get('faculties', [FacultyController::class, 'index'])->name('faculties.index');
-    Route::post('faculties', [FacultyController::class, 'store'])->name('faculties.store');
-    Route::put('faculties/{faculty}', [FacultyController::class, 'update'])->name('faculties.update');
-    Route::delete('faculties/{faculty}', [FacultyController::class, 'destroy'])->name('faculties.destroy');
+    Route::get('faculties', [FacultyController::class, 'index'])
+        ->middleware('permission:faculties.view')
+        ->name('faculties.index');
+    Route::post('faculties', [FacultyController::class, 'store'])
+        ->middleware('permission:faculties.create')
+        ->name('faculties.store');
+    Route::put('faculties/{faculty}', [FacultyController::class, 'update'])
+        ->middleware('permission:faculties.update')
+        ->name('faculties.update');
+    Route::delete('faculties/{faculty}', [FacultyController::class, 'destroy'])
+        ->middleware('permission:faculties.delete')
+        ->name('faculties.destroy');
 
     // Staff
-    Route::get('staff', [StaffController::class, 'index'])->name('staff.index');
-    Route::post('staff', [StaffController::class, 'store'])->name('staff.store');
-    Route::put('staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
-    Route::delete('staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
+    Route::get('staff', [StaffController::class, 'index'])
+        ->middleware('permission:staff.view')
+        ->name('staff.index');
+    Route::post('staff', [StaffController::class, 'store'])
+        ->middleware('permission:staff.create')
+        ->name('staff.store');
+    Route::put('staff/{staff}', [StaffController::class, 'update'])
+        ->middleware('permission:staff.update')
+        ->name('staff.update');
+    Route::delete('staff/{staff}', [StaffController::class, 'destroy'])
+        ->middleware('permission:staff.delete')
+        ->name('staff.destroy');
 });
 
 require __DIR__.'/settings.php';
