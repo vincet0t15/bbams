@@ -26,6 +26,7 @@ class AttendanceLogsSampleSeeder extends Seeder
             'name' => 'BSIT',
             'description' => 'Bachelor of Science in Information Technology',
             'code' => 'BSIT',
+            'created_by' => 1,
         ]);
 
         $yearLevel = YearLevel::query()->first() ?? YearLevel::query()->create([
