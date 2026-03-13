@@ -75,26 +75,6 @@ export default function AttendanceLogsIndex({
         );
     };
 
-    const printAll = () => {
-        if (selected.length === 0) {
-            return;
-        }
-
-        const params = new URLSearchParams();
-        selected.forEach((id) => params.append('user_ids[]', String(id)));
-
-        if (data.event_id && data.event_id !== 'all') {
-            params.set('event_id', String(data.event_id));
-        }
-
-        if (data.date) {
-            params.set('month', dayjs(data.date).format('YYYY-MM'));
-        }
-
-        const url = `/attendance-logs/print-dtr-batch?${params.toString()}`;
-        window.open(url, '_blank', 'noopener,noreferrer');
-    };
-
     const buildQuery = (overrides?: Partial<typeof data>) => {
         const current = { ...data, ...(overrides ?? {}) };
         const query: Record<string, string> = {};
@@ -157,6 +137,42 @@ export default function AttendanceLogsIndex({
 
     const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         setData('search', e.target.value);
+    };
+
+    const printAll = () => {
+        if (selected.length === 0) {
+            return;
+        }
+
+        const userIdSet = new Set<number>();
+
+        for (const rowId of selected) {
+            const row = logList.data.find((l) => l.id === rowId);
+
+            if (row?.user?.id) {
+                userIdSet.add(row.user.id);
+            }
+        }
+
+        if (userIdSet.size === 0) {
+            return;
+        }
+
+        const params = new URLSearchParams();
+        Array.from(userIdSet).forEach((uid) =>
+            params.append('user_ids[]', String(uid)),
+        );
+
+        if (data.event_id && data.event_id !== 'all') {
+            params.set('event_id', String(data.event_id));
+        }
+
+        if (data.date) {
+            params.set('month', dayjs(data.date).format('YYYY-MM'));
+        }
+
+        const url = `/attendance-logs/print-dtr-batch?${params.toString()}`;
+        window.open(url, '_blank', 'noopener,noreferrer');
     };
 
     return (
@@ -357,21 +373,15 @@ export default function AttendanceLogsIndex({
                                             {log.user?.role ?? '-'}
                                         </TableCell>
                                         <TableCell className="text-sm">
-                                            {log.user?.id ? (
-                                                <Checkbox
-                                                    checked={selected.includes(
-                                                        log.user.id,
-                                                    )}
-                                                    onCheckedChange={() =>
-                                                        toggleSelected(
-                                                            log.user!.id,
-                                                        )
-                                                    }
-                                                    aria-label="Select user"
-                                                />
-                                            ) : (
-                                                '-'
-                                            )}
+                                            <Checkbox
+                                                checked={selected.includes(
+                                                    log.id,
+                                                )}
+                                                onCheckedChange={() =>
+                                                    toggleSelected(log.id)
+                                                }
+                                                aria-label="Select row"
+                                            />
                                         </TableCell>
                                     </TableRow>
                                 ))
