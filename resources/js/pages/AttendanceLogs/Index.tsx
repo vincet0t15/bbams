@@ -40,17 +40,20 @@ const breadcrumbs: BreadcrumbItem[] = [
 type Props = {
     logList: PaginatedDataResponse<AttendanceLog>;
     events: { id: number; title: string | null }[];
+    courses: { id: number; name: string; code: string | null }[];
     filters: {
         search?: string;
         event_id?: string;
         date?: string;
         role?: string;
+        course_id?: string;
     };
 };
 
 export default function AttendanceLogsIndex({
     logList,
     events,
+    courses,
     filters,
 }: Props) {
     const { data, setData } = useForm({
@@ -58,6 +61,7 @@ export default function AttendanceLogsIndex({
         event_id: filters.event_id || 'all',
         date: filters.date || '',
         role: filters.role || 'all',
+        course_id: filters.course_id || 'all',
     });
 
     const [isFiltering, setIsFiltering] = useState(false);
@@ -82,6 +86,14 @@ export default function AttendanceLogsIndex({
             query.role = current.role;
         }
 
+        if (
+            current.role === 'student' &&
+            current.course_id &&
+            current.course_id !== 'all'
+        ) {
+            query.course_id = current.course_id;
+        }
+
         return Object.keys(query).length ? query : undefined;
     };
 
@@ -100,6 +112,7 @@ export default function AttendanceLogsIndex({
             event_id: 'all',
             date: '',
             role: 'all',
+            course_id: 'all',
         } as any);
         router.get('/attendance-logs', undefined, {
             preserveScroll: true,
@@ -132,7 +145,13 @@ export default function AttendanceLogsIndex({
                             setData('role', role);
                             router.get(
                                 '/attendance-logs',
-                                buildQuery({ role }),
+                                buildQuery({
+                                    role,
+                                    course_id:
+                                        role === 'student'
+                                            ? data.course_id
+                                            : 'all',
+                                }),
                                 {
                                     preserveScroll: true,
                                     preserveState: true,
@@ -153,7 +172,38 @@ export default function AttendanceLogsIndex({
                 </div>
 
                 <div className="flex w-full flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-                    <div className="grid w-full gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid w-full gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                        {data.role === 'student' ? (
+                            <div className="space-y-2">
+                                <Label>Course</Label>
+                                <Select
+                                    value={data.course_id}
+                                    onValueChange={(val) =>
+                                        setData('course_id', val)
+                                    }
+                                >
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="All courses" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">
+                                            All courses
+                                        </SelectItem>
+                                        {courses.map((course) => (
+                                            <SelectItem
+                                                key={course.id}
+                                                value={String(course.id)}
+                                            >
+                                                {course.name}
+                                                {course.code
+                                                    ? ` (${course.code})`
+                                                    : ''}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        ) : null}
                         <div className="space-y-2">
                             <Label>Event</Label>
                             <Select

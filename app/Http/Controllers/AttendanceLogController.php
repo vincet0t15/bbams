@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AttendanceLog;
+use App\Models\Course;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -17,6 +18,7 @@ class AttendanceLogController extends Controller
         $eventId = $request->input('event_id');
         $date = $request->input('date');
         $role = $request->input('role');
+        $courseId = $request->input('course_id');
 
         $logs = AttendanceLog::query()
             ->with(['user', 'event'])
@@ -30,6 +32,10 @@ class AttendanceLogController extends Controller
             ->when($role && $role !== 'all', function ($query) use ($role) {
                 $query->whereHas('user.roles', fn ($q) => $q->where('name', $role));
             })
+            ->when(
+                $role === 'student' && $courseId && $courseId !== 'all',
+                fn ($query) => $query->whereHas('user.student', fn ($q) => $q->where('course_id', $courseId)),
+            )
             ->when($eventId, fn ($q) => $q->where('event_id', $eventId))
             ->when($date, fn ($q) => $q->whereDate('date_time', $date))
             ->orderByDesc('date_time')
@@ -45,6 +51,15 @@ class AttendanceLogController extends Controller
             ->map(fn (Event $event) => [
                 'id' => $event->id,
                 'title' => $event->getAttribute($eventTitleColumn),
+            ]);
+
+        $courses = Course::query()
+            ->orderBy('name')
+            ->get(['id', 'name', 'code'])
+            ->map(fn (Course $course) => [
+                'id' => $course->id,
+                'name' => $course->name,
+                'code' => $course->code,
             ]);
 
         return Inertia::render('AttendanceLogs/Index', [
@@ -76,7 +91,8 @@ class AttendanceLogController extends Controller
                 ];
             }),
             'events' => $events,
-            'filters' => $request->only(['search', 'event_id', 'date', 'role']),
+            'courses' => $courses,
+            'filters' => $request->only(['search', 'event_id', 'date', 'role', 'course_id']),
         ]);
     }
 
