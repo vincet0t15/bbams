@@ -9,6 +9,8 @@ import {
     Users,
     ClipboardList,
     FileSpreadsheet,
+    FileText,
+    ListOrdered,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavMain } from '@/components/nav-main';
@@ -63,6 +65,21 @@ export function AppSidebar() {
                     title: 'DTR',
                     href: '/dtr',
                     icon: FileSpreadsheet,
+                },
+            ],
+        },
+        {
+            title: 'Reports',
+            children: [
+                {
+                    title: 'Attendance Report',
+                    href: '/reports/attendance',
+                    icon: FileText,
+                },
+                {
+                    title: 'Attendance Count',
+                    href: '/reports/attendance-count',
+                    icon: ListOrdered,
                 },
             ],
         },

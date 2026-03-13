@@ -1,0 +1,364 @@
+import { Head, router, useForm } from '@inertiajs/react';
+import { useState } from 'react';
+import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
+import Pagination from '@/components/paginationData';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import AppLayout from '@/layouts/app-layout';
+import type { BreadcrumbItem } from '@/types';
+
+type AttendanceRow = {
+    id: number;
+    date_time: string | null;
+    check_type_label: string;
+    user: {
+        id: number;
+        name: string;
+        username: string;
+        role: string | null;
+    } | null;
+    event: { id: number; title: string | null } | null;
+};
+
+type Props = {
+    report: {
+        data: AttendanceRow[];
+        current_page: number;
+        last_page: number;
+        total: number;
+        per_page: number;
+        path: string;
+        links: { url: string | null; label: string; active: boolean }[];
+    };
+    events: { id: number; title: string | null }[];
+    courses: { id: number; name: string; code: string | null }[];
+    filters: {
+        search?: string;
+        event_id?: string;
+        start_date?: string;
+        end_date?: string;
+        role?: string;
+        course_id?: string;
+    };
+    range: { start: string; end: string };
+};
+
+const breadcrumbs: BreadcrumbItem[] = [
+    { title: 'Dashboard', href: '/dashboard' },
+    { title: 'Attendance Report', href: '/reports/attendance' },
+];
+
+export default function AttendanceReport({
+    report,
+    events,
+    courses,
+    filters,
+}: Props) {
+    const { data, setData } = useForm({
+        search: filters.search || '',
+        event_id: filters.event_id || 'all',
+        start_date: filters.start_date || '',
+        end_date: filters.end_date || '',
+        role: filters.role || 'all',
+        course_id: filters.course_id || 'all',
+    });
+
+    const [isFiltering, setIsFiltering] = useState(false);
+
+    const buildQuery = (overrides?: Partial<typeof data>) => {
+        const current = { ...data, ...(overrides ?? {}) };
+        const query: Record<string, string> = {};
+
+        if (current.search) {
+            query.search = current.search;
+        }
+
+        if (current.event_id && current.event_id !== 'all') {
+            query.event_id = current.event_id;
+        }
+
+        if (current.start_date) {
+            query.start_date = current.start_date;
+        }
+
+        if (current.end_date) {
+            query.end_date = current.end_date;
+        }
+
+        if (current.role && current.role !== 'all') {
+            query.role = current.role;
+        }
+
+        if (
+            current.role === 'student' &&
+            current.course_id &&
+            current.course_id !== 'all'
+        ) {
+            query.course_id = current.course_id;
+        }
+
+        return Object.keys(query).length ? query : undefined;
+    };
+
+    const submit = () => {
+        setIsFiltering(true);
+        router.get('/reports/attendance', buildQuery(), {
+            preserveScroll: true,
+            preserveState: true,
+            onFinish: () => setIsFiltering(false),
+        });
+    };
+
+    const reset = () => {
+        setData({
+            search: '',
+            event_id: 'all',
+            start_date: '',
+            end_date: '',
+            role: 'all',
+            course_id: 'all',
+        } as any);
+        router.get('/reports/attendance', undefined, {
+            preserveScroll: true,
+            preserveState: true,
+        });
+    };
+
+    const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
+        if (e.key === 'Enter') {
+            submit();
+        }
+    };
+    const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+        setData('search', e.target.value);
+    };
+
+    return (
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title="Attendance Report" />
+            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+                <div className="flex items-center justify-between gap-3">
+                    <ToggleGroup
+                        type="single"
+                        variant="outline"
+                        size="sm"
+                        value={data.role}
+                        onValueChange={(val) => {
+                            if (!val) {
+                                return;
+                            }
+
+                            const role = val;
+                            setData('role', role);
+                            router.get(
+                                '/reports/attendance',
+                                buildQuery({
+                                    role,
+                                    course_id:
+                                        role === 'student'
+                                            ? data.course_id
+                                            : 'all',
+                                }),
+                                { preserveScroll: true, preserveState: true },
+                            );
+                        }}
+                        className="w-full justify-start"
+                    >
+                        <ToggleGroupItem value="all">All</ToggleGroupItem>
+                        <ToggleGroupItem value="student">
+                            Students
+                        </ToggleGroupItem>
+                        <ToggleGroupItem value="faculty">
+                            Faculty
+                        </ToggleGroupItem>
+                        <ToggleGroupItem value="staff">Staff</ToggleGroupItem>
+                    </ToggleGroup>
+                </div>
+
+                <div className="flex w-full flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                    <div className="grid w-full gap-3 sm:grid-cols-2 lg:grid-cols-5">
+                        {data.role === 'student' ? (
+                            <div className="space-y-2">
+                                <Label>Course</Label>
+                                <Select
+                                    value={data.course_id}
+                                    onValueChange={(v) =>
+                                        setData('course_id', v)
+                                    }
+                                >
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="All courses" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">
+                                            All courses
+                                        </SelectItem>
+                                        {courses.map((c) => (
+                                            <SelectItem
+                                                key={c.id}
+                                                value={String(c.id)}
+                                            >
+                                                {c.name}
+                                                {c.code ? ` (${c.code})` : ''}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        ) : null}
+                        <div className="space-y-2">
+                            <Label>Event</Label>
+                            <Select
+                                value={data.event_id}
+                                onValueChange={(val) =>
+                                    setData('event_id', val)
+                                }
+                            >
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="All events" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">
+                                        All events
+                                    </SelectItem>
+                                    {events.map((e) => (
+                                        <SelectItem
+                                            key={e.id}
+                                            value={String(e.id)}
+                                        >
+                                            {e.title ?? `Event #${e.id}`}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Start date</Label>
+                            <Input
+                                type="date"
+                                value={data.start_date}
+                                onChange={(e) =>
+                                    setData('start_date', e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>End date</Label>
+                            <Input
+                                type="date"
+                                value={data.end_date}
+                                onChange={(e) =>
+                                    setData('end_date', e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Search</Label>
+                            <Input
+                                onKeyDown={handleKeyDown}
+                                onChange={handleSearchChange}
+                                placeholder="Search by name, email, or username..."
+                                value={data.search}
+                            />
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <Button
+                            variant="outline"
+                            onClick={submit}
+                            disabled={isFiltering}
+                        >
+                            Search
+                        </Button>
+                        <Button variant="ghost" onClick={reset}>
+                            Reset
+                        </Button>
+                    </div>
+                </div>
+
+                <div className="w-full overflow-hidden rounded-sm border shadow-sm">
+                    <Table>
+                        <TableHeader className="bg-muted/50">
+                            <TableRow>
+                                <TableHead className="font-bold text-primary">
+                                    Date/Time
+                                </TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Type
+                                </TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Event
+                                </TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Name
+                                </TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Username
+                                </TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Role
+                                </TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {report.data.length > 0 ? (
+                                report.data.map((row) => (
+                                    <TableRow key={row.id} className="text-sm">
+                                        <TableCell className="text-sm">
+                                            {row.date_time ?? '-'}
+                                        </TableCell>
+                                        <TableCell className="text-sm">
+                                            {row.check_type_label}
+                                        </TableCell>
+                                        <TableCell className="text-sm">
+                                            {row.event?.title ?? '-'}
+                                        </TableCell>
+                                        <TableCell className="text-sm">
+                                            {row.user?.name ?? '-'}
+                                        </TableCell>
+                                        <TableCell className="text-sm">
+                                            {row.user?.username ?? '-'}
+                                        </TableCell>
+                                        <TableCell className="text-sm">
+                                            {row.user?.role ?? '-'}
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell
+                                        colSpan={6}
+                                        className="py-3 text-center text-gray-500"
+                                    >
+                                        No data available.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </div>
+
+                <div>
+                    <Pagination data={report as any} />
+                </div>
+            </div>
+        </AppLayout>
+    );
+}

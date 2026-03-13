@@ -6,6 +6,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StudentController;
@@ -97,6 +98,12 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
     Route::get('attendance-logs/print-dtr', [AttendanceLogController::class, 'printDtr'])->name('attendance-logs.print-dtr');
     Route::get('attendance-logs/print-dtr-batch', [AttendanceLogController::class, 'printDtrBatch'])->name('attendance-logs.print-dtr-batch');
     Route::get('dtr', [AttendanceLogController::class, 'dtr'])->name('dtr.select');
+
+    // Reports
+    Route::middleware(['permission:attendance-logs.view'])->group(function () {
+        Route::get('reports/attendance', [ReportsController::class, 'attendance'])->name('reports.attendance');
+        Route::get('reports/attendance-count', [ReportsController::class, 'attendanceCount'])->name('reports.attendance-count');
+    });
 
     // Students
     Route::get('students', [StudentController::class, 'index'])
