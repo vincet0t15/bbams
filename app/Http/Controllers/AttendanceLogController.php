@@ -6,6 +6,7 @@ use App\Models\AttendanceLog;
 use App\Models\Course;
 use App\Models\Event;
 use App\Models\User;
+use Carbon\CarbonInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +14,7 @@ use Inertia\Inertia;
 
 class AttendanceLogController extends Controller
 {
-    protected function buildDtrPayload(User $user, ?int $eventId, Carbon $start, Carbon $end): array
+    protected function buildDtrPayload(User $user, ?int $eventId, CarbonInterface $start, CarbonInterface $end): array
     {
         $logs = AttendanceLog::query()
             ->where('user_id', $user->id)
