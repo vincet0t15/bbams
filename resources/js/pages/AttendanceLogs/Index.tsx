@@ -1,4 +1,5 @@
 import { Head, router, useForm } from '@inertiajs/react';
+import dayjs from 'dayjs';
 import { useState } from 'react';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import Pagination from '@/components/paginationData';
@@ -294,6 +295,9 @@ export default function AttendanceLogsIndex({
                                 <TableHead className="font-bold text-primary">
                                     Role
                                 </TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Actions
+                                </TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -318,12 +322,45 @@ export default function AttendanceLogsIndex({
                                         <TableCell className="text-sm">
                                             {log.user?.role ?? '-'}
                                         </TableCell>
+                                        <TableCell className="text-sm">
+                                            {log.user?.id ? (
+                                                <Button
+                                                    asChild
+                                                    variant="outline"
+                                                    size="sm"
+                                                >
+                                                    <a
+                                                        href={`/attendance-logs/print-dtr?user_id=${log.user.id}${
+                                                            data.event_id &&
+                                                            data.event_id !==
+                                                                'all'
+                                                                ? `&event_id=${data.event_id}`
+                                                                : ''
+                                                        }${
+                                                            data.date
+                                                                ? `&month=${dayjs(
+                                                                      data.date,
+                                                                  ).format(
+                                                                      'YYYY-MM',
+                                                                  )}`
+                                                                : ''
+                                                        }`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        Print DTR
+                                                    </a>
+                                                </Button>
+                                            ) : (
+                                                '-'
+                                            )}
+                                        </TableCell>
                                     </TableRow>
                                 ))
                             ) : (
                                 <TableRow>
                                     <TableCell
-                                        colSpan={6}
+                                        colSpan={7}
                                         className="py-3 text-center text-gray-500"
                                     >
                                         No data available.
