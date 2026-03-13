@@ -6,6 +6,7 @@ use App\Models\AttendanceLog;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 
 class AttendanceLogController extends Controller
@@ -31,16 +32,19 @@ class AttendanceLogController extends Controller
             ->paginate(10)
             ->withQueryString();
 
+        $eventTitleColumn = Schema::hasColumn('events', 'title') ? 'title' : 'name';
+        $eventStartColumn = Schema::hasColumn('events', 'start_at') ? 'start_at' : 'date_from';
+
         $events = Event::query()
-            ->orderByDesc('date_from')
-            ->get(['id', 'name'])
+            ->orderByDesc($eventStartColumn)
+            ->get(['id', $eventTitleColumn])
             ->map(fn (Event $event) => [
                 'id' => $event->id,
-                'title' => $event->name,
+                'title' => $event->getAttribute($eventTitleColumn),
             ]);
 
         return Inertia::render('AttendanceLogs/Index', [
-            'logList' => $logs->through(function (AttendanceLog $log) {
+            'logList' => $logs->through(function (AttendanceLog $log) use ($eventTitleColumn) {
                 return [
                     'id' => $log->id,
                     'date_time' => $log->date_time
@@ -63,7 +67,7 @@ class AttendanceLogController extends Controller
                     ],
                     'event' => [
                         'id' => $log->event?->id,
-                        'title' => $log->event?->name ?? null,
+                        'title' => $log->event?->getAttribute($eventTitleColumn),
                     ],
                 ];
             }),
