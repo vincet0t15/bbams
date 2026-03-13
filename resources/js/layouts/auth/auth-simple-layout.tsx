@@ -8,9 +8,19 @@ export default function AuthSimpleLayout({
     description,
 }: AuthLayoutProps) {
     return (
-        <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
+        <div className="relative flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+            <div
+                className="pointer-events-none absolute inset-0 -z-10 bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: 'url(/images/SAN_VICENTE_CAMPUS)' }}
+                aria-hidden
+            />
+            <div
+                className="pointer-events-none absolute inset-0 -z-10 bg-black/40"
+                aria-hidden
+            />
+
             <div className="w-full max-w-sm">
-                <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-8 rounded-lg bg-white/70 p-6 shadow-md backdrop-blur-md dark:bg-black/40">
                     <div className="flex flex-col items-center gap-4">
                         <Link
                             href={home()}
