@@ -20,6 +20,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import type { AttendanceLog } from '@/types/attendance-log';
@@ -43,6 +44,7 @@ type Props = {
         search?: string;
         event_id?: string;
         date?: string;
+        role?: string;
     };
 };
 
@@ -55,23 +57,29 @@ export default function AttendanceLogsIndex({
         search: filters.search || '',
         event_id: filters.event_id || 'all',
         date: filters.date || '',
+        role: filters.role || 'all',
     });
 
     const [isFiltering, setIsFiltering] = useState(false);
 
-    const buildQuery = () => {
+    const buildQuery = (overrides?: Partial<typeof data>) => {
+        const current = { ...data, ...(overrides ?? {}) };
         const query: Record<string, string> = {};
 
-        if (data.search) {
-            query.search = data.search;
+        if (current.search) {
+            query.search = current.search;
         }
 
-        if (data.event_id && data.event_id !== 'all') {
-            query.event_id = data.event_id;
+        if (current.event_id && current.event_id !== 'all') {
+            query.event_id = current.event_id;
         }
 
-        if (data.date) {
-            query.date = data.date;
+        if (current.date) {
+            query.date = current.date;
+        }
+
+        if (current.role && current.role !== 'all') {
+            query.role = current.role;
         }
 
         return Object.keys(query).length ? query : undefined;
@@ -91,6 +99,7 @@ export default function AttendanceLogsIndex({
             search: '',
             event_id: 'all',
             date: '',
+            role: 'all',
         } as any);
         router.get('/attendance-logs', undefined, {
             preserveScroll: true,
@@ -112,6 +121,37 @@ export default function AttendanceLogsIndex({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Attendance Logs" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+                <div className="flex items-center justify-between gap-3">
+                    <ToggleGroup
+                        type="single"
+                        variant="outline"
+                        size="sm"
+                        value={data.role}
+                        onValueChange={(val) => {
+                            const role = val || 'all';
+                            setData('role', role);
+                            router.get(
+                                '/attendance-logs',
+                                buildQuery({ role }),
+                                {
+                                    preserveScroll: true,
+                                    preserveState: true,
+                                },
+                            );
+                        }}
+                        className="w-full justify-start"
+                    >
+                        <ToggleGroupItem value="all">All</ToggleGroupItem>
+                        <ToggleGroupItem value="student">
+                            Students
+                        </ToggleGroupItem>
+                        <ToggleGroupItem value="faculty">
+                            Faculty
+                        </ToggleGroupItem>
+                        <ToggleGroupItem value="staff">Staff</ToggleGroupItem>
+                    </ToggleGroup>
+                </div>
+
                 <div className="flex w-full flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
                     <div className="grid w-full gap-3 sm:grid-cols-2 lg:grid-cols-3">
                         <div className="space-y-2">

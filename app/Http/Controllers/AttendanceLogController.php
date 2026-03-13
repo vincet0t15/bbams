@@ -16,6 +16,7 @@ class AttendanceLogController extends Controller
         $search = $request->input('search');
         $eventId = $request->input('event_id');
         $date = $request->input('date');
+        $role = $request->input('role');
 
         $logs = AttendanceLog::query()
             ->with(['user', 'event'])
@@ -25,6 +26,9 @@ class AttendanceLogController extends Controller
                         ->orWhere('email', 'like', "%{$search}%")
                         ->orWhere('username', 'like', "%{$search}%");
                 });
+            })
+            ->when($role && $role !== 'all', function ($query) use ($role) {
+                $query->whereHas('user.roles', fn ($q) => $q->where('name', $role));
             })
             ->when($eventId, fn ($q) => $q->where('event_id', $eventId))
             ->when($date, fn ($q) => $q->whereDate('date_time', $date))
@@ -72,7 +76,7 @@ class AttendanceLogController extends Controller
                 ];
             }),
             'events' => $events,
-            'filters' => $request->only(['search', 'event_id', 'date']),
+            'filters' => $request->only(['search', 'event_id', 'date', 'role']),
         ]);
     }
 
