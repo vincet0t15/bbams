@@ -7,7 +7,9 @@ export interface Faculty {
 }
 
 export interface FacultyCreateRequest {
-    name: string;
+    last_name?: string;
+    first_name?: string;
+    middle_name?: string;
     username: string;
     email: string;
     password: string;

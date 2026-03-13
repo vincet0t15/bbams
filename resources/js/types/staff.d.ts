@@ -7,7 +7,9 @@ export interface Staff {
 }
 
 export interface StaffCreateRequest {
-    name: string;
+    last_name?: string;
+    first_name?: string;
+    middle_name?: string;
     username: string;
     email: string;
     password: string;

@@ -8,7 +8,9 @@ export interface Student {
 }
 
 export interface StudentCreateRequest {
-    name: string;
+    last_name?: string;
+    first_name?: string;
+    middle_name?: string;
     username: string;
     email: string;
     password: string;

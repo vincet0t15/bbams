@@ -36,7 +36,9 @@ export default function StudentCreateDialog({
 }: Props) {
     const { data, setData, post, reset, processing, errors } =
         useForm<StudentCreateRequest>({
-            name: '',
+            last_name: '',
+            first_name: '',
+            middle_name: '',
             username: '',
             email: '',
             password: '',
@@ -76,15 +78,41 @@ export default function StudentCreateDialog({
                 </DialogHeader>
                 <form onSubmit={submit}>
                     <div className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="name">Name</Label>
-                            <Input
-                                id="name"
-                                placeholder="Full name"
-                                value={data.name}
-                                onChange={handleTextChange}
-                            />
-                            <InputError message={errors.name as any} />
+                        <div className="flex items-center justify-between space-x-4">
+                            <div className="w-1/3 space-y-2">
+                                <Label htmlFor="last_name">Last name</Label>
+                                <Input
+                                    id="last_name"
+                                    placeholder="Last name"
+                                    value={data.last_name ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError message={errors.last_name as any} />
+                            </div>
+                            <div className="w-1/3 space-y-2">
+                                <Label htmlFor="first_name">First name</Label>
+                                <Input
+                                    id="first_name"
+                                    placeholder="First name"
+                                    value={data.first_name ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError
+                                    message={errors.first_name as any}
+                                />
+                            </div>
+                            <div className="w-1/3 space-y-2">
+                                <Label htmlFor="middle_name">Middle name</Label>
+                                <Input
+                                    id="middle_name"
+                                    placeholder="Middle name"
+                                    value={data.middle_name ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError
+                                    message={errors.middle_name as any}
+                                />
+                            </div>
                         </div>
                         <div className="flex items-center justify-between space-x-4">
                             <div className="w-1/2 space-y-2">
