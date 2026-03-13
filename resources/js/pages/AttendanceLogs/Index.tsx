@@ -1,10 +1,8 @@
 import { Head, router, useForm } from '@inertiajs/react';
-import dayjs from 'dayjs';
 import { useState } from 'react';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import Pagination from '@/components/paginationData';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -67,13 +65,6 @@ export default function AttendanceLogsIndex({
     });
 
     const [isFiltering, setIsFiltering] = useState(false);
-    const [selected, setSelected] = useState<number[]>([]);
-
-    const toggleSelected = (id: number) => {
-        setSelected((prev) =>
-            prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
-        );
-    };
 
     const buildQuery = (overrides?: Partial<typeof data>) => {
         const current = { ...data, ...(overrides ?? {}) };
@@ -137,42 +128,6 @@ export default function AttendanceLogsIndex({
 
     const handleSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         setData('search', e.target.value);
-    };
-
-    const printAll = () => {
-        if (selected.length === 0) {
-            return;
-        }
-
-        const userIdSet = new Set<number>();
-
-        for (const rowId of selected) {
-            const row = logList.data.find((l) => l.id === rowId);
-
-            if (row?.user?.id) {
-                userIdSet.add(row.user.id);
-            }
-        }
-
-        if (userIdSet.size === 0) {
-            return;
-        }
-
-        const params = new URLSearchParams();
-        Array.from(userIdSet).forEach((uid) =>
-            params.append('user_ids[]', String(uid)),
-        );
-
-        if (data.event_id && data.event_id !== 'all') {
-            params.set('event_id', String(data.event_id));
-        }
-
-        if (data.date) {
-            params.set('month', dayjs(data.date).format('YYYY-MM'));
-        }
-
-        const url = `/attendance-logs/print-dtr-batch?${params.toString()}`;
-        window.open(url, '_blank', 'noopener,noreferrer');
     };
 
     return (
@@ -314,12 +269,6 @@ export default function AttendanceLogsIndex({
                         <Button variant="ghost" onClick={reset}>
                             Reset
                         </Button>
-                        <Button
-                            onClick={printAll}
-                            disabled={selected.length === 0}
-                        >
-                            Print All ({selected.length})
-                        </Button>
                     </div>
                 </div>
 
@@ -345,9 +294,6 @@ export default function AttendanceLogsIndex({
                                 <TableHead className="font-bold text-primary">
                                     Role
                                 </TableHead>
-                                <TableHead className="font-bold text-primary">
-                                    Select
-                                </TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -372,23 +318,12 @@ export default function AttendanceLogsIndex({
                                         <TableCell className="text-sm">
                                             {log.user?.role ?? '-'}
                                         </TableCell>
-                                        <TableCell className="text-sm">
-                                            <Checkbox
-                                                checked={selected.includes(
-                                                    log.id,
-                                                )}
-                                                onCheckedChange={() =>
-                                                    toggleSelected(log.id)
-                                                }
-                                                aria-label="Select row"
-                                            />
-                                        </TableCell>
                                     </TableRow>
                                 ))
                             ) : (
                                 <TableRow>
                                     <TableCell
-                                        colSpan={7}
+                                        colSpan={6}
                                         className="py-3 text-center text-gray-500"
                                     >
                                         No data available.

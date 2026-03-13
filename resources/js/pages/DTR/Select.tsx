@@ -265,7 +265,7 @@ export default function DtrSelect({
                     <Table>
                         <TableHeader className="bg-muted/50">
                             <TableRow>
-                                <TableHead className="font-bold text-primary">
+                                <TableHead className="w-[40px] font-bold text-primary">
                                     <div className="flex items-center gap-2">
                                         <Checkbox
                                             checked={allOnPageSelected}
@@ -276,7 +276,6 @@ export default function DtrSelect({
                                             }
                                             aria-label="Select all on page"
                                         />
-                                        Select
                                     </div>
                                 </TableHead>
                                 <TableHead className="font-bold text-primary">
