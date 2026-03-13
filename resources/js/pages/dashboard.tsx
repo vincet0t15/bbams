@@ -13,12 +13,76 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Dashboard() {
+type Props = {
+    stats: {
+        students: number;
+        faculties: number;
+        staff: number;
+        events: number;
+        today_in: number;
+        today_out: number;
+        latest_event: { id: number; title: string } | null;
+    };
+};
+
+export default function Dashboard({ stats }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
 
             <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl p-4">
+                {/* Stats */}
+                <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <Card className="bg-gradient-to-r from-primary to-purple-500 text-white">
+                        <CardHeader>
+                            <CardTitle>Students</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-3xl font-bold">
+                            {stats?.students ?? 0}
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white">
+                        <CardHeader>
+                            <CardTitle>Faculty</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-3xl font-bold">
+                            {stats?.faculties ?? 0}
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-gradient-to-r from-orange-500 to-rose-500 text-white">
+                        <CardHeader>
+                            <CardTitle>Staff</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-3xl font-bold">
+                            {stats?.staff ?? 0}
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-gradient-to-r from-cyan-500 to-sky-600 text-white">
+                        <CardHeader>
+                            <CardTitle>Events</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-3xl font-bold">
+                            {stats?.events ?? 0}
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-gradient-to-r from-lime-500 to-green-600 text-white">
+                        <CardHeader>
+                            <CardTitle>Today IN</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-3xl font-bold">
+                            {stats?.today_in ?? 0}
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-gradient-to-r from-fuchsia-500 to-pink-600 text-white">
+                        <CardHeader>
+                            <CardTitle>Today OUT</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-3xl font-bold">
+                            {stats?.today_out ?? 0}
+                        </CardContent>
+                    </Card>
+                </section>
+
                 {/* Hero */}
                 <section className="relative overflow-hidden rounded-xl border bg-gradient-to-r from-muted to-background">
                     <div className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(50%_50%_at_50%_0%,black,transparent)]" />
@@ -36,7 +100,9 @@ export default function Dashboard() {
                                 Biometric-Based Attendance Monitoring System
                             </p>
                             <p className="text-sm text-muted-foreground">
-                                Campus overview and mission-driven information.
+                                {stats?.latest_event
+                                    ? `Latest event: ${stats.latest_event.title}`
+                                    : 'Campus overview and mission-driven information.'}
                             </p>
                         </div>
                     </div>
