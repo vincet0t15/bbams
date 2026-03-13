@@ -11,14 +11,18 @@ class Event extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name',
+        'title',
         'location',
         'description',
-        'date_from',
-        'date_to',
-        'is_active',
+        'start_at',
+        'end_at',
         'created_by',
         'deleted_by',
+    ];
+
+    protected $casts = [
+        'start_at' => 'datetime',
+        'end_at' => 'datetime',
     ];
 
     public function createdBy()
