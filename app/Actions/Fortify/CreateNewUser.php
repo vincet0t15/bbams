@@ -25,15 +25,21 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
         ])->validate();
 
+        $fullName = $this->buildFullNameFromInput($input);
+
         $user = User::create([
-            'name' => $input['name'],
+            'name' => $fullName !== '' ? $fullName : $input['name'],
+            'last_name' => $input['last_name'] ?? null,
+            'first_name' => $input['first_name'] ?? null,
+            'middle_name' => $input['middle_name'] ?? null,
+            'extension_name' => $input['extension_name'] ?? null,
             'username' => $input['username'],
             'email' => $input['email'],
             'password' => $input['password'],
         ]);
 
-        if (Role::query()->where('name', 'student')->exists()) {
-            $user->assignRole('student');
+        if (Role::query()->where('name', 'user')->exists()) {
+            $user->assignRole('user');
         }
 
         return $user;

@@ -66,8 +66,13 @@ class FacultyController extends Controller
         ]);
 
         DB::transaction(function () use ($validated) {
+            $fullName = $this->buildFullNameFromInput($validated);
             $user = User::create([
-                'name' => $validated['name'],
+                'name' => $fullName !== '' ? $fullName : ($validated['name'] ?? ''),
+                'last_name' => $validated['last_name'] ?? null,
+                'first_name' => $validated['first_name'] ?? null,
+                'middle_name' => $validated['middle_name'] ?? null,
+                'extension_name' => $validated['extension_name'] ?? null,
                 'username' => $validated['username'],
                 'email' => $validated['email'],
                 'password' => $validated['password'],
@@ -106,8 +111,13 @@ class FacultyController extends Controller
         ]);
 
         DB::transaction(function () use ($faculty, $validated) {
+            $fullName = $this->buildFullNameFromInput($validated);
             $faculty->user->update([
-                'name' => $validated['name'],
+                'name' => $fullName !== '' ? $fullName : ($validated['name'] ?? $faculty->user->name),
+                'last_name' => $validated['last_name'] ?? $faculty->user->last_name,
+                'first_name' => $validated['first_name'] ?? $faculty->user->first_name,
+                'middle_name' => $validated['middle_name'] ?? $faculty->user->middle_name,
+                'extension_name' => $validated['extension_name'] ?? $faculty->user->extension_name,
                 'username' => $validated['username'],
                 'email' => $validated['email'],
             ]);
