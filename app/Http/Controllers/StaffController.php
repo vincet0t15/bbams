@@ -75,8 +75,8 @@ class StaffController extends Controller
 
             $user->forceFill(['is_active' => true])->save();
 
-            if (Role::query()->where('name', 'staff')->exists()) {
-                $user->assignRole('staff');
+            if (Role::query()->where('name', 'user')->exists()) {
+                $user->assignRole('user');
             }
 
             Staff::create([

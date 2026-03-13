@@ -75,8 +75,8 @@ class FacultyController extends Controller
 
             $user->forceFill(['is_active' => true])->save();
 
-            if (Role::query()->where('name', 'faculty')->exists()) {
-                $user->assignRole('faculty');
+            if (Role::query()->where('name', 'user')->exists()) {
+                $user->assignRole('user');
             }
 
             Faculty::create([

@@ -91,8 +91,8 @@ class StudentController extends Controller
 
             $user->forceFill(['is_active' => true])->save();
 
-            if (Role::query()->where('name', 'student')->exists()) {
-                $user->assignRole('student');
+            if (Role::query()->where('name', 'user')->exists()) {
+                $user->assignRole('user');
             }
 
             Student::create([
