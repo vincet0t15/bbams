@@ -141,7 +141,11 @@ export default function AttendanceLogsIndex({
                         size="sm"
                         value={data.role}
                         onValueChange={(val) => {
-                            const role = val || 'all';
+                            if (!val) {
+                                return;
+                            }
+
+                            const role = val;
                             setData('role', role);
                             router.get(
                                 '/attendance-logs',
