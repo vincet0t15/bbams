@@ -58,12 +58,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function AccountsIndex({ userList, roles, filters }: Props) {
     const { props } = usePage();
-    const canManageRoles = Boolean(
-        (props as any)?.auth?.permissions?.includes?.('roles.manage'),
-    );
-    const canUpdateAccounts = Boolean(
-        (props as any)?.auth?.permissions?.includes?.('accounts.update'),
-    );
+    const isAdmin = (props as any)?.auth?.user?.account_type === 'admin';
 
     const [openAssign, setOpenAssign] = useState(false);
     const [selectedUser, setSelectedUser] = useState<AccountRow | null>(null);
@@ -264,7 +259,7 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex items-center gap-2">
-                                                {canUpdateAccounts && (
+                                                {isAdmin && (
                                                     <Button
                                                         size="sm"
                                                         variant={
@@ -290,7 +285,7 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
                                                             : 'Activate'}
                                                     </Button>
                                                 )}
-                                                {canManageRoles && (
+                                                {isAdmin && (
                                                     <Button
                                                         size="sm"
                                                         variant="outline"
@@ -303,12 +298,11 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
                                                         Assign roles
                                                     </Button>
                                                 )}
-                                                {!canUpdateAccounts &&
-                                                    !canManageRoles && (
-                                                        <span className="text-muted-foreground">
-                                                            -
-                                                        </span>
-                                                    )}
+                                                {!isAdmin && (
+                                                    <span className="text-muted-foreground">
+                                                        -
+                                                    </span>
+                                                )}
                                             </div>
                                         </TableCell>
                                     </TableRow>

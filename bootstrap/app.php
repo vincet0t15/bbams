@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\CheckAccountType;
+use App\Http\Middleware\CheckAccountTypes;
 use App\Http\Middleware\EnsureAccountIsActive;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -7,14 +9,11 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
-use Spatie\Permission\Middleware\PermissionMiddleware;
-use Spatie\Permission\Middleware\RoleMiddleware;
-use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        commands: __DIR__.'/../routes/console.php',
+        web: __DIR__ . '/../routes/web.php',
+        commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
@@ -22,9 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'active' => EnsureAccountIsActive::class,
-            'permission' => PermissionMiddleware::class,
-            'role' => RoleMiddleware::class,
-            'role_or_permission' => RoleOrPermissionMiddleware::class,
+            'account.type' => CheckAccountType::class,
+            'account.types' => CheckAccountTypes::class,
         ]);
 
         $middleware->web(append: [
