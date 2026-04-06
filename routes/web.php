@@ -112,9 +112,17 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
     Route::post('attendance-logs', [AttendanceLogController::class, 'store'])
         ->middleware('permission:attendance-logs.create')
         ->name('attendance-logs.store');
-    Route::get('attendance-logs/print-dtr', [AttendanceLogController::class, 'printDtr'])->name('attendance-logs.print-dtr');
-    Route::get('attendance-logs/print-dtr-batch', [AttendanceLogController::class, 'printDtrBatch'])->name('attendance-logs.print-dtr-batch');
-    Route::get('dtr', [AttendanceLogController::class, 'dtr'])->name('dtr.select');
+
+    // DTR (Daily Time Record)
+    Route::get('dtr', [AttendanceLogController::class, 'dtr'])
+        ->middleware('permission:dtr.view')
+        ->name('dtr.select');
+    Route::get('attendance-logs/print-dtr', [AttendanceLogController::class, 'printDtr'])
+        ->middleware('permission:dtr.print')
+        ->name('attendance-logs.print-dtr');
+    Route::get('attendance-logs/print-dtr-batch', [AttendanceLogController::class, 'printDtrBatch'])
+        ->middleware('permission:dtr.print-batch')
+        ->name('attendance-logs.print-dtr-batch');
 
     // Reports
     Route::middleware(['permission:attendance-logs.view'])->group(function () {

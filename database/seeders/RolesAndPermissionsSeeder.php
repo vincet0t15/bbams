@@ -52,6 +52,10 @@ class RolesAndPermissionsSeeder extends Seeder
             // Attendance Logs
             'attendance-logs.view',
             'attendance-logs.create',
+            // DTR (Daily Time Record)
+            'dtr.view',
+            'dtr.print',
+            'dtr.print-batch',
             // Roles & Permissions
             'roles.manage',
         ];
@@ -103,6 +107,10 @@ class RolesAndPermissionsSeeder extends Seeder
             // Attendance Logs
             'attendance-logs.view',
             'attendance-logs.create',
+            // DTR
+            'dtr.view',
+            'dtr.print',
+            'dtr.print-batch',
         ]);
 
         // staff/faculty: keep simple view + courses manage as before
@@ -112,6 +120,9 @@ class RolesAndPermissionsSeeder extends Seeder
             'courses.create',
             'courses.update',
             'attendance-logs.view',
+            // DTR
+            'dtr.view',
+            'dtr.print',
         ]);
         $faculty->syncPermissions([
             'accounts.view',
@@ -119,6 +130,9 @@ class RolesAndPermissionsSeeder extends Seeder
             'courses.create',
             'courses.update',
             'attendance-logs.view',
+            // DTR
+            'dtr.view',
+            'dtr.print',
         ]);
         // user / student: view-only
         $user->syncPermissions([
@@ -129,10 +143,16 @@ class RolesAndPermissionsSeeder extends Seeder
             'students.view',
             'faculties.view',
             'staff.view',
+            // DTR - view own only
+            'dtr.view',
+            'dtr.print',
         ]);
         $student->syncPermissions([
             'courses.view',
             'attendance-logs.view',
+            // DTR - view own only
+            'dtr.view',
+            'dtr.print',
         ]);
     }
 }
