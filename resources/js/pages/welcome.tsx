@@ -167,8 +167,7 @@ export default function Welcome({
                                                 Analytics
                                             </div>
                                             <div className="mt-2 text-xs text-muted-foreground">
-                                                Track trends and attendance
-                                                consistency.
+                                                Track attendance consistency.
                                             </div>
                                         </div>
                                         <div className="rounded-xl border bg-background p-4">

@@ -71,11 +71,11 @@ export function AppSidebar() {
         {
             title: 'Reports',
             children: [
-                {
-                    title: 'Attendance Report',
-                    href: '/reports/attendance',
-                    icon: FileText,
-                },
+                // {
+                //     title: 'Attendance Report',
+                //     href: '/reports/attendance',
+                //     icon: FileText,
+                // },
                 {
                     title: 'Attendance Count',
                     href: '/reports/attendance-count',

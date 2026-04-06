@@ -33,7 +33,7 @@ export default function Dashboard({ stats }: Props) {
             <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl p-4">
                 {/* Stats */}
                 <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    <Card className="bg-gradient-to-r from-primary to-purple-500 text-white">
+                    <Card className="bg-gradient-to-r from-orange-500 to-rose-500 text-white">
                         <CardHeader>
                             <CardTitle>Students</CardTitle>
                         </CardHeader>
@@ -41,7 +41,7 @@ export default function Dashboard({ stats }: Props) {
                             {stats?.students ?? 0}
                         </CardContent>
                     </Card>
-                    <Card className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white">
+                    <Card className="bg-gradient-to-r from-orange-500 to-rose-500 text-white">
                         <CardHeader>
                             <CardTitle>Faculty</CardTitle>
                         </CardHeader>
@@ -57,7 +57,7 @@ export default function Dashboard({ stats }: Props) {
                             {stats?.staff ?? 0}
                         </CardContent>
                     </Card>
-                    <Card className="bg-gradient-to-r from-cyan-500 to-sky-600 text-white">
+                    <Card className="bg-gradient-to-r from-orange-500 to-rose-500 text-white">
                         <CardHeader>
                             <CardTitle>Events</CardTitle>
                         </CardHeader>
@@ -65,7 +65,7 @@ export default function Dashboard({ stats }: Props) {
                             {stats?.events ?? 0}
                         </CardContent>
                     </Card>
-                    <Card className="bg-gradient-to-r from-lime-500 to-green-600 text-white">
+                    <Card className="bg-gradient-to-r from-orange-500 to-rose-500 text-white">
                         <CardHeader>
                             <CardTitle>Today IN</CardTitle>
                         </CardHeader>
@@ -73,7 +73,7 @@ export default function Dashboard({ stats }: Props) {
                             {stats?.today_in ?? 0}
                         </CardContent>
                     </Card>
-                    <Card className="bg-gradient-to-r from-fuchsia-500 to-pink-600 text-white">
+                    <Card className="bg-gradient-to-r from-orange-500 to-rose-500 text-white">
                         <CardHeader>
                             <CardTitle>Today OUT</CardTitle>
                         </CardHeader>

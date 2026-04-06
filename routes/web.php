@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\AttendanceLogController;
 use App\Http\Controllers\BinController;
 use App\Http\Controllers\CourseController;
@@ -20,6 +21,12 @@ use Laravel\Fortify\Features;
 Route::inertia('/', 'welcome', [
     'canRegister' => Features::enabled(Features::registration()),
 ])->name('home');
+
+Route::prefix('api')->group(function () {
+    Route::get('/users/search', [ForgotPasswordController::class, 'search']);
+    Route::post('/forgot-password/verify', [ForgotPasswordController::class, 'verify']);
+    Route::post('/forgot-password/reset', [ForgotPasswordController::class, 'reset']);
+});
 
 Route::middleware(['auth', 'active', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
