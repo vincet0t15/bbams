@@ -57,7 +57,7 @@ export default function AuthSimpleLayout({
                 className="pointer-events-none absolute inset-0 -z-10 bg-black/40"
                 aria-hidden
             />
-            <div className="w-full max-w-sm">
+            <div className="w-full max-w-md">
                 <div className="flex flex-col gap-8 rounded-xl border border-white/20 bg-white/10 p-6 shadow-lg backdrop-blur-md dark:border-white/25 dark:bg-white/10">
                     <div className="flex flex-col items-center gap-4">
                         <Link

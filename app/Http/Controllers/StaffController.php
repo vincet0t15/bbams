@@ -58,24 +58,26 @@ class StaffController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            ...$this->profileRules(),
+            'username' => ['required', 'string', 'max:255', 'unique:users,username'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => $this->passwordRules(),
             'employee_no' => ['nullable', 'string', 'max:50', 'unique:staff,employee_no'],
             'department' => ['nullable', 'string', 'max:100'],
             'position' => ['nullable', 'string', 'max:100'],
+            'last_name' => ['nullable', 'string', 'max:255'],
+            'first_name' => ['nullable', 'string', 'max:255'],
+            'middle_name' => ['nullable', 'string', 'max:255'],
+            'extension_name' => ['nullable', 'string', 'max:255'],
         ]);
 
         DB::transaction(function () use ($validated) {
-            $fullName = $this->buildFullNameFromInput($validated);
+            $fullName = trim(($validated['first_name'] ?? '').' '.($validated['middle_name'] ?? '').' '.($validated['last_name'] ?? ''));
             $user = User::create([
-                'name' => $fullName !== '' ? $fullName : ($validated['name'] ?? ''),
-                'last_name' => $validated['last_name'] ?? null,
-                'first_name' => $validated['first_name'] ?? null,
-                'middle_name' => $validated['middle_name'] ?? null,
-                'extension_name' => $validated['extension_name'] ?? null,
+                'name' => $fullName ?: $validated['username'],
                 'username' => $validated['username'],
                 'email' => $validated['email'],
                 'password' => $validated['password'],
+                'account_type' => 'staff',
             ]);
 
             $user->forceFill(['is_active' => true])->save();
@@ -89,6 +91,10 @@ class StaffController extends Controller
                 'employee_no' => $validated['employee_no'] ?? null,
                 'department' => $validated['department'] ?? null,
                 'position' => $validated['position'] ?? null,
+                'last_name' => $validated['last_name'] ?? null,
+                'first_name' => $validated['first_name'] ?? null,
+                'middle_name' => $validated['middle_name'] ?? null,
+                'extension_name' => $validated['extension_name'] ?? null,
             ]);
         });
 

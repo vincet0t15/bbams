@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Auth;
 
 class Student extends Model
 {
@@ -20,20 +19,8 @@ class Student extends Model
         'first_name',
         'middle_name',
         'extension_name',
-        'created_by',
         'deleted_by',
     ];
-
-    public static function boot()
-    {
-        parent::boot();
-
-        static::creating(function (self $student) {
-            if (! $student->created_by) {
-                $student->created_by = Auth::id();
-            }
-        });
-    }
 
     public function user()
     {
@@ -48,11 +35,6 @@ class Student extends Model
     public function yearLevel()
     {
         return $this->belongsTo(YearLevel::class);
-    }
-
-    public function createdBy()
-    {
-        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function deletedBy()

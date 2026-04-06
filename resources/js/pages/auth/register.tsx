@@ -1,4 +1,7 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
+import { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'sonner';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import TextLink from '@/components/text-link';
@@ -14,7 +17,7 @@ import {
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
-import { login, register } from '@/routes';
+import { login } from '@/routes';
 
 const SECURITY_QUESTIONS = [
     'What is your favorite pet name?',
@@ -27,8 +30,27 @@ const SECURITY_QUESTIONS = [
     'What is your favorite movie?',
 ];
 
+type Course = {
+    id: number;
+    name: string;
+    code: string;
+};
+
+type YearLevel = {
+    id: number;
+    name: string;
+};
+
+type Props = {
+    courses: Course[];
+    yearLevels: YearLevel[];
+};
+
 export default function Register() {
-    const form = useForm({
+    const { props } = usePage<{ courses: Course[]; yearLevels: YearLevel[] }>();
+    const courses = props.courses || [];
+    const yearLevels = props.yearLevels || [];
+    const [formData, setFormData] = useState({
         account_type: 'student',
         username: '',
         email: '',
@@ -36,15 +58,45 @@ export default function Register() {
         password_confirmation: '',
         security_question: '',
         security_answer: '',
+        last_name: '',
+        first_name: '',
+        middle_name: '',
+        extension_name: '',
+        student_no: '',
+        employee_no: '',
+        course_id: '',
+        year_level_id: '',
+        section: '',
+        department: '',
+        position: '',
     });
+    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [processing, setProcessing] = useState(false);
 
-    const submit = (e: React.FormEvent) => {
+    const handleChange = (field: string, value: string) => {
+        setFormData((prev) => ({ ...prev, [field]: value }));
+    };
+
+    const submit = async (e: React.FormEvent) => {
         e.preventDefault();
-        form.post(register(), {
-            onSuccess: () => {
-                form.reset('password', 'password_confirmation');
-            },
-        });
+        setProcessing(true);
+        setErrors({});
+
+        try {
+            await axios.post('/register', formData);
+            toast.success('Registration successful! Welcome to BBAMS.');
+            window.location.href = '/dashboard';
+        } catch (error: any) {
+            if (error.response?.data?.errors) {
+                setErrors(error.response.data.errors);
+            } else {
+                setErrors({
+                    general: 'Registration failed. Please try again.',
+                });
+            }
+        } finally {
+            setProcessing(false);
+        }
     };
 
     return (
@@ -53,17 +105,15 @@ export default function Register() {
             description="Enter your details below to create your account"
         >
             <Head title="Register" />
-            <form onSubmit={submit} className="flex flex-col gap-6">
+            <form onSubmit={submit} className="flex max-w-md flex-col gap-6">
                 <div className="grid gap-6">
                     <div className="grid gap-2">
                         <Label htmlFor="account_type">Account Type</Label>
                         <Select
-                            value={form.data.account_type}
+                            value={formData.account_type}
                             onValueChange={(value) =>
-                                form.setData('account_type', value)
+                                handleChange('account_type', value)
                             }
-                            name="account_type"
-                            required
                         >
                             <SelectTrigger className="w-full">
                                 <SelectValue placeholder="Select account type" />
@@ -75,8 +125,104 @@ export default function Register() {
                                 <SelectItem value="student">Student</SelectItem>
                             </SelectContent>
                         </Select>
-                        <InputError message={form.errors.account_type} />
+                        <InputError message={errors.account_type} />
                     </div>
+
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div className="grid gap-2">
+                            <Label htmlFor="last_name">Last Name</Label>
+                            <Input
+                                id="last_name"
+                                type="text"
+                                value={formData.last_name}
+                                onChange={(e) =>
+                                    handleChange('last_name', e.target.value)
+                                }
+                                placeholder="Last name"
+                            />
+                            <InputError message={errors.last_name} />
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="first_name">First Name</Label>
+                            <Input
+                                id="first_name"
+                                type="text"
+                                value={formData.first_name}
+                                onChange={(e) =>
+                                    handleChange('first_name', e.target.value)
+                                }
+                                placeholder="First name"
+                            />
+                            <InputError message={errors.first_name} />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div className="grid gap-2">
+                            <Label htmlFor="middle_name">Middle Name</Label>
+                            <Input
+                                id="middle_name"
+                                type="text"
+                                value={formData.middle_name}
+                                onChange={(e) =>
+                                    handleChange('middle_name', e.target.value)
+                                }
+                                placeholder="Middle name"
+                            />
+                            <InputError message={errors.middle_name} />
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="extension_name">
+                                Extension Name
+                            </Label>
+                            <Input
+                                id="extension_name"
+                                type="text"
+                                value={formData.extension_name}
+                                onChange={(e) =>
+                                    handleChange(
+                                        'extension_name',
+                                        e.target.value,
+                                    )
+                                }
+                                placeholder="e.g. Jr., Sr."
+                            />
+                            <InputError message={errors.extension_name} />
+                        </div>
+                    </div>
+
+                    {formData.account_type === 'student' && (
+                        <div className="grid gap-2">
+                            <Label htmlFor="student_no">Student Number</Label>
+                            <Input
+                                id="student_no"
+                                type="text"
+                                value={formData.student_no}
+                                onChange={(e) =>
+                                    handleChange('student_no', e.target.value)
+                                }
+                                placeholder="Student Number"
+                            />
+                            <InputError message={errors.student_no} />
+                        </div>
+                    )}
+
+                    {(formData.account_type === 'faculty' ||
+                        formData.account_type === 'staff') && (
+                        <div className="grid gap-2">
+                            <Label htmlFor="employee_no">Employee Number</Label>
+                            <Input
+                                id="employee_no"
+                                type="text"
+                                value={formData.employee_no}
+                                onChange={(e) =>
+                                    handleChange('employee_no', e.target.value)
+                                }
+                                placeholder="Employee Number"
+                            />
+                            <InputError message={errors.employee_no} />
+                        </div>
+                    )}
 
                     <div className="grid gap-2">
                         <Label htmlFor="username">Username</Label>
@@ -85,13 +231,13 @@ export default function Register() {
                             type="text"
                             required
                             autoFocus
-                            value={form.data.username}
+                            value={formData.username}
                             onChange={(e) =>
-                                form.setData('username', e.target.value)
+                                handleChange('username', e.target.value)
                             }
                             placeholder="Username"
                         />
-                        <InputError message={form.errors.username} />
+                        <InputError message={errors.username} />
                     </div>
 
                     <div className="grid gap-2">
@@ -100,13 +246,13 @@ export default function Register() {
                             id="email"
                             type="email"
                             required
-                            value={form.data.email}
+                            value={formData.email}
                             onChange={(e) =>
-                                form.setData('email', e.target.value)
+                                handleChange('email', e.target.value)
                             }
                             placeholder="email@example.com"
                         />
-                        <InputError message={form.errors.email} />
+                        <InputError message={errors.email} />
                     </div>
 
                     <div className="grid gap-2">
@@ -114,13 +260,13 @@ export default function Register() {
                         <PasswordInput
                             id="password"
                             required
-                            value={form.data.password}
+                            value={formData.password}
                             onChange={(e) =>
-                                form.setData('password', e.target.value)
+                                handleChange('password', e.target.value)
                             }
                             placeholder="Password"
                         />
-                        <InputError message={form.errors.password} />
+                        <InputError message={errors.password} />
                     </div>
 
                     <div className="grid gap-2">
@@ -130,18 +276,16 @@ export default function Register() {
                         <PasswordInput
                             id="password_confirmation"
                             required
-                            value={form.data.password_confirmation}
+                            value={formData.password_confirmation}
                             onChange={(e) =>
-                                form.setData(
+                                handleChange(
                                     'password_confirmation',
                                     e.target.value,
                                 )
                             }
                             placeholder="Confirm password"
                         />
-                        <InputError
-                            message={form.errors.password_confirmation}
-                        />
+                        <InputError message={errors.password_confirmation} />
                     </div>
 
                     <div className="grid gap-2">
@@ -149,12 +293,10 @@ export default function Register() {
                             Security Question
                         </Label>
                         <Select
-                            value={form.data.security_question}
+                            value={formData.security_question}
                             onValueChange={(value) =>
-                                form.setData('security_question', value)
+                                handleChange('security_question', value)
                             }
-                            name="security_question"
-                            required
                         >
                             <SelectTrigger className="w-full">
                                 <SelectValue placeholder="Select a security question" />
@@ -167,7 +309,7 @@ export default function Register() {
                                 ))}
                             </SelectContent>
                         </Select>
-                        <InputError message={form.errors.security_question} />
+                        <InputError message={errors.security_question} />
                     </div>
 
                     <div className="grid gap-2">
@@ -176,22 +318,136 @@ export default function Register() {
                             id="security_answer"
                             type="text"
                             required
-                            value={form.data.security_answer}
+                            value={formData.security_answer}
                             onChange={(e) =>
-                                form.setData('security_answer', e.target.value)
+                                handleChange('security_answer', e.target.value)
                             }
                             placeholder="Your answer"
                         />
-                        <InputError message={form.errors.security_answer} />
+                        <InputError message={errors.security_answer} />
                     </div>
+
+                    {formData.account_type === 'student' && (
+                        <>
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="course_id">Course</Label>
+                                    <Select
+                                        value={formData.course_id}
+                                        onValueChange={(value) =>
+                                            handleChange('course_id', value)
+                                        }
+                                    >
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Select course" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {courses.map((course) => (
+                                                <SelectItem
+                                                    key={course.id}
+                                                    value={String(course.id)}
+                                                >
+                                                    {course.name} ({course.code}
+                                                    )
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError message={errors.course_id} />
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="year_level_id">
+                                        Year Level
+                                    </Label>
+                                    <Select
+                                        value={formData.year_level_id}
+                                        onValueChange={(value) =>
+                                            handleChange('year_level_id', value)
+                                        }
+                                    >
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Select year level" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {yearLevels.map((level) => (
+                                                <SelectItem
+                                                    key={level.id}
+                                                    value={String(level.id)}
+                                                >
+                                                    {level.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError
+                                        message={errors.year_level_id}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="section">Section</Label>
+                                <Input
+                                    id="section"
+                                    type="text"
+                                    value={formData.section}
+                                    onChange={(e) =>
+                                        handleChange('section', e.target.value)
+                                    }
+                                    placeholder="Section"
+                                />
+                                <InputError message={errors.section} />
+                            </div>
+                        </>
+                    )}
+
+                    {(formData.account_type === 'faculty' ||
+                        formData.account_type === 'staff') && (
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div className="grid gap-2">
+                                <Label htmlFor="department">Department</Label>
+                                <Input
+                                    id="department"
+                                    type="text"
+                                    value={formData.department}
+                                    onChange={(e) =>
+                                        handleChange(
+                                            'department',
+                                            e.target.value,
+                                        )
+                                    }
+                                    placeholder="Department"
+                                />
+                                <InputError message={errors.department} />
+                            </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="position">Position</Label>
+                                <Input
+                                    id="position"
+                                    type="text"
+                                    value={formData.position}
+                                    onChange={(e) =>
+                                        handleChange('position', e.target.value)
+                                    }
+                                    placeholder="Position"
+                                />
+                                <InputError message={errors.position} />
+                            </div>
+                        </div>
+                    )}
+
+                    {errors.general && (
+                        <div className="text-sm text-red-500">
+                            {errors.general}
+                        </div>
+                    )}
 
                     <Button
                         type="submit"
                         className="mt-2 w-full"
-                        disabled={form.processing}
+                        disabled={processing}
                     >
-                        {form.processing && <Spinner />}
-                        Create account
+                        {processing ? <Spinner /> : 'Create account'}
                     </Button>
                 </div>
 
