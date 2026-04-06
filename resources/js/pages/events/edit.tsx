@@ -4,6 +4,7 @@ import type { ChangeEvent, SubmitEventHandler } from 'react';
 import { toast } from 'sonner';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
+import { DateTimePicker } from '@/components/ui/date-time-picker';
 import {
     Dialog,
     DialogContent,
@@ -86,22 +87,21 @@ export default function EventEditDialog({ open, setOpen, event }: Props) {
 
                         <div className="space-y-2">
                             <Label htmlFor="start_at">Start</Label>
-                            <Input
+                            <DateTimePicker
                                 id="start_at"
-                                type="datetime-local"
                                 value={data.start_at}
-                                onChange={handleChange}
+                                onChange={(v) => setData('start_at', v)}
                             />
                             <InputError message={errors.start_at} />
                         </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="end_at">End</Label>
-                            <Input
+                            <DateTimePicker
                                 id="end_at"
-                                type="datetime-local"
                                 value={data.end_at || ''}
-                                onChange={handleChange}
+                                min={data.start_at || ''}
+                                onChange={(v) => setData('end_at', v)}
                             />
                             <InputError message={errors.end_at} />
                         </div>
