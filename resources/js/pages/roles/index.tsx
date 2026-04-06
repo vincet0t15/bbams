@@ -23,15 +23,21 @@ type PermissionDto = {
     name: string;
 };
 
+type GroupedPermissions = {
+    [key: string]: PermissionDto[];
+};
+
 type RoleDto = {
     id: number;
     name: string;
+    description: string | null;
     permissions: PermissionDto[];
 };
 
 type Props = {
     roles: RoleDto[];
     permissions: PermissionDto[];
+    groupedPermissions: GroupedPermissions;
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -41,7 +47,11 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function RolesIndex({ roles, permissions }: Props) {
+export default function RolesIndex({
+    roles,
+    permissions,
+    groupedPermissions,
+}: Props) {
     const [selectedPermissions, setSelectedPermissions] = useState<string[]>(
         [],
     );
@@ -201,23 +211,38 @@ export default function RolesIndex({ roles, permissions }: Props) {
                                     <div className="text-sm font-medium">
                                         Permissions
                                     </div>
-                                    <div className="grid gap-2 sm:grid-cols-2">
-                                        {permissionNames.map((name) => (
-                                            <label
-                                                key={name}
-                                                className="flex cursor-pointer items-center gap-2 text-sm"
-                                            >
-                                                <Checkbox
-                                                    checked={selectedPermissions.includes(
-                                                        name,
-                                                    )}
-                                                    onCheckedChange={() =>
-                                                        togglePermission(name)
-                                                    }
-                                                />
-                                                <span>{name}</span>
-                                            </label>
-                                        ))}
+                                    <div className="max-h-[400px] space-y-4 overflow-y-auto rounded-md border p-3">
+                                        {Object.entries(groupedPermissions).map(
+                                            ([group, perms]) => (
+                                                <div key={group}>
+                                                    <div className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                                                        {group}
+                                                    </div>
+                                                    <div className="grid gap-2 sm:grid-cols-2">
+                                                        {perms.map((perm) => (
+                                                            <label
+                                                                key={perm.name}
+                                                                className="flex cursor-pointer items-center gap-2 text-sm"
+                                                            >
+                                                                <Checkbox
+                                                                    checked={selectedPermissions.includes(
+                                                                        perm.name,
+                                                                    )}
+                                                                    onCheckedChange={() =>
+                                                                        togglePermission(
+                                                                            perm.name,
+                                                                        )
+                                                                    }
+                                                                />
+                                                                <span>
+                                                                    {perm.name}
+                                                                </span>
+                                                            </label>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ),
+                                        )}
                                     </div>
                                     <InputError
                                         message={
@@ -290,9 +315,16 @@ export default function RolesIndex({ roles, permissions }: Props) {
                                     key={role.id}
                                     className="flex flex-col gap-2 rounded-lg border p-3"
                                 >
-                                    <div className="flex items-center justify-between gap-3">
-                                        <div className="font-medium">
-                                            {role.name}
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div className="flex-1">
+                                            <div className="font-medium">
+                                                {role.name}
+                                            </div>
+                                            {role.description && (
+                                                <div className="mt-1 text-xs text-muted-foreground">
+                                                    {role.description}
+                                                </div>
+                                            )}
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <Button
@@ -404,23 +436,36 @@ export default function RolesIndex({ roles, permissions }: Props) {
                             <div className="text-sm font-medium">
                                 Permissions
                             </div>
-                            <div className="grid gap-2 sm:grid-cols-2">
-                                {permissionNames.map((name) => (
-                                    <label
-                                        key={name}
-                                        className="flex cursor-pointer items-center gap-2 text-sm"
-                                    >
-                                        <Checkbox
-                                            checked={updateRoleForm.data.permissions.includes(
-                                                name,
-                                            )}
-                                            onCheckedChange={() =>
-                                                toggleEditPermission(name)
-                                            }
-                                        />
-                                        <span>{name}</span>
-                                    </label>
-                                ))}
+                            <div className="max-h-[400px] space-y-4 overflow-y-auto rounded-md border p-3">
+                                {Object.entries(groupedPermissions).map(
+                                    ([group, perms]) => (
+                                        <div key={group}>
+                                            <div className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                                                {group}
+                                            </div>
+                                            <div className="grid gap-2 sm:grid-cols-2">
+                                                {perms.map((perm) => (
+                                                    <label
+                                                        key={perm.name}
+                                                        className="flex cursor-pointer items-center gap-2 text-sm"
+                                                    >
+                                                        <Checkbox
+                                                            checked={updateRoleForm.data.permissions.includes(
+                                                                perm.name,
+                                                            )}
+                                                            onCheckedChange={() =>
+                                                                toggleEditPermission(
+                                                                    perm.name,
+                                                                )
+                                                            }
+                                                        />
+                                                        <span>{perm.name}</span>
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ),
+                                )}
                             </div>
                             <InputError
                                 message={updateRoleForm.errors.permissions}

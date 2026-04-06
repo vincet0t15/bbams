@@ -32,7 +32,7 @@ class ReportsController extends Controller
         $events = Event::query()
             ->orderByDesc($eventStartColumn)
             ->get(['id', $eventTitleColumn])
-            ->map(fn (Event $e) => [
+            ->map(fn(Event $e) => [
                 'id' => $e->id,
                 'title' => $e->getAttribute($eventTitleColumn),
             ]);
@@ -48,12 +48,12 @@ class ReportsController extends Controller
                         ->orWhere('username', 'like', "%{$search}%");
                 });
             })
-            ->when($eventId && $eventId !== 'all', fn ($q) => $q->where('event_id', $eventId))
+            ->when($eventId && $eventId !== 'all', fn($q) => $q->where('event_id', $eventId))
             ->when($role && $role !== 'all', function ($q) use ($role) {
-                $q->whereHas('user.roles', fn ($rq) => $rq->where('name', $role));
+                $q->whereHas('user.roles', fn($rq) => $rq->where('name', $role));
             })
             ->when($courseId && $courseId !== 'all', function ($q) use ($courseId) {
-                $q->whereHas('user.student', fn ($sq) => $sq->where('course_id', $courseId));
+                $q->whereHas('user.student', fn($sq) => $sq->where('course_id', $courseId));
             })
             ->whereBetween('date_time', [$start, $end])
             ->orderByDesc('date_time')
@@ -107,13 +107,14 @@ class ReportsController extends Controller
         $events = Event::query()
             ->orderByDesc($eventStartColumn)
             ->get(['id', $eventTitleColumn])
-            ->map(fn (Event $e) => [
+            ->map(fn(Event $e) => [
                 'id' => $e->id,
                 'title' => $e->getAttribute($eventTitleColumn),
             ]);
 
         $courses = Course::orderBy('name')->get(['id', 'name', 'code']);
 
+        // Get all logs for calculations
         $allLogs = AttendanceLog::query()
             ->with(['user.roles', 'user.student', 'event'])
             ->when($search, function ($q, $search) {
@@ -123,17 +124,18 @@ class ReportsController extends Controller
                         ->orWhere('username', 'like', "%{$search}%");
                 });
             })
-            ->when($eventId && $eventId !== 'all', fn ($q) => $q->where('event_id', $eventId))
+            ->when($eventId && $eventId !== 'all', fn($q) => $q->where('event_id', $eventId))
             ->when($role && $role !== 'all', function ($q) use ($role) {
-                $q->whereHas('user.roles', fn ($rq) => $rq->where('name', $role));
+                $q->whereHas('user.roles', fn($rq) => $rq->where('name', $role));
             })
             ->when($courseId && $courseId !== 'all', function ($q) use ($courseId) {
-                $q->whereHas('user.student', fn ($sq) => $sq->where('course_id', $courseId));
+                $q->whereHas('user.student', fn($sq) => $sq->where('course_id', $courseId));
             })
             ->whereBetween('date_time', [$start, $end])
             ->orderBy('date_time')
             ->get();
 
+        // Group by user
         $grouped = $allLogs->groupBy('user_id')->map(function ($logs) use ($eventTitleColumn) {
             $user = $logs->first()->user;
             $presentDays = $logs->where('check_type', 1)->map(function (AttendanceLog $l) {
@@ -161,6 +163,45 @@ class ReportsController extends Controller
             ];
         })->values();
 
+        // Calculate summary statistics by role
+        $summaryByRole = [
+            'all' => [
+                'total_users' => $grouped->count(),
+                'total_in' => $grouped->sum('total_in'),
+                'total_out' => $grouped->sum('total_out'),
+                'total_days_present' => $grouped->sum('days_present'),
+            ],
+            'student' => [
+                'total_users' => 0,
+                'total_in' => 0,
+                'total_out' => 0,
+                'total_days_present' => 0,
+            ],
+            'faculty' => [
+                'total_users' => 0,
+                'total_in' => 0,
+                'total_out' => 0,
+                'total_days_present' => 0,
+            ],
+            'staff' => [
+                'total_users' => 0,
+                'total_in' => 0,
+                'total_out' => 0,
+                'total_days_present' => 0,
+            ],
+        ];
+
+        foreach ($grouped as $row) {
+            $userRole = $row['user']['role'];
+            if (in_array($userRole, ['student', 'faculty', 'staff'])) {
+                $summaryByRole[$userRole]['total_users']++;
+                $summaryByRole[$userRole]['total_in'] += $row['total_in'];
+                $summaryByRole[$userRole]['total_out'] += $row['total_out'];
+                $summaryByRole[$userRole]['total_days_present'] += $row['days_present'];
+            }
+        }
+
+        // Pagination
         $perPage = 10;
         $page = (int) $request->input('page', 1);
         $total = $grouped->count();
@@ -187,6 +228,7 @@ class ReportsController extends Controller
                 'start' => $start->toDateString(),
                 'end' => $end->toDateString(),
             ],
+            'summary' => $summaryByRole,
         ]);
     }
 }

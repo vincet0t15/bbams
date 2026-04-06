@@ -33,9 +33,24 @@ import type { NavGroup } from '@/types';
 
 export function AppSidebar() {
     const { props } = usePage();
-    const canManageRoles = Boolean(
-        (props as any)?.auth?.permissions?.includes?.('roles.manage'),
+
+    // Get user permissions
+    const userPermissions = (props as any)?.auth?.permissions || [];
+
+    // Permission checks
+    const canViewEvents = userPermissions.includes('events.view');
+    const canViewAttendanceLogs = userPermissions.includes(
+        'attendance-logs.view',
     );
+    const canViewDTR = userPermissions.includes('dtr.view');
+    const canViewReports = userPermissions.includes('attendance-logs.view'); // Reports use same permission
+    const canViewCourses = userPermissions.includes('courses.view');
+    const canViewYearLevels = userPermissions.includes('year-levels.view');
+    const canViewStudents = userPermissions.includes('students.view');
+    const canViewFaculty = userPermissions.includes('faculties.view');
+    const canViewStaff = userPermissions.includes('staff.view');
+    const canViewAccounts = userPermissions.includes('accounts.view');
+    const canManageRoles = userPermissions.includes('roles.manage');
 
     // Get the authenticated user's account type
     const accountType = (props as any)?.auth?.user?.account_type;
@@ -60,21 +75,33 @@ export function AppSidebar() {
         {
             title: 'Attendance',
             children: [
-                {
-                    title: 'Events',
-                    href: '/events',
-                    icon: CalendarDays,
-                },
-                {
-                    title: 'Attendance Logs',
-                    href: '/attendance-logs',
-                    icon: ClipboardList,
-                },
-                {
-                    title: 'DTR',
-                    href: '/dtr',
-                    icon: FileSpreadsheet,
-                },
+                ...(canViewEvents
+                    ? [
+                          {
+                              title: 'Events',
+                              href: '/events',
+                              icon: CalendarDays,
+                          },
+                      ]
+                    : []),
+                ...(canViewAttendanceLogs
+                    ? [
+                          {
+                              title: 'Attendance Logs',
+                              href: '/attendance-logs',
+                              icon: ClipboardList,
+                          },
+                      ]
+                    : []),
+                ...(canViewDTR
+                    ? [
+                          {
+                              title: 'DTR',
+                              href: '/dtr',
+                              icon: FileSpreadsheet,
+                          },
+                      ]
+                    : []),
             ],
         },
         {
@@ -85,29 +112,41 @@ export function AppSidebar() {
                 //     href: '/reports/attendance',
                 //     icon: FileText,
                 // },
-                {
-                    title: 'Attendance Count',
-                    href: '/reports/attendance-count',
-                    icon: ListOrdered,
-                },
+                ...(canViewReports
+                    ? [
+                          {
+                              title: 'Attendance Count',
+                              href: '/reports/attendance-count',
+                              icon: ListOrdered,
+                          },
+                      ]
+                    : []),
             ],
         },
-        // Only show Academic Setup for non-student/faculty/staff users
-        ...(!isRegularUser
+        // Only show Academic Setup for users with permission and non-student/faculty/staff users
+        ...(canViewCourses && !isRegularUser
             ? [
                   {
                       title: 'Academic Setup',
                       children: [
-                          {
-                              title: 'Courses',
-                              href: courses.index.url(),
-                              icon: BookOpen,
-                          },
-                          {
-                              title: 'Year Levels',
-                              href: yearLevels.index.url(),
-                              icon: BookOpen,
-                          },
+                          ...(canViewCourses
+                              ? [
+                                    {
+                                        title: 'Courses',
+                                        href: courses.index.url(),
+                                        icon: BookOpen,
+                                    },
+                                ]
+                              : []),
+                          ...(canViewYearLevels
+                              ? [
+                                    {
+                                        title: 'Year Levels',
+                                        href: yearLevels.index.url(),
+                                        icon: BookOpen,
+                                    },
+                                ]
+                              : []),
                       ],
                   },
               ]
@@ -115,8 +154,8 @@ export function AppSidebar() {
         {
             title: 'Directory',
             children: [
-                // Show Students only for non-student users
-                ...(!isStudent
+                // Show Students only for non-student users with permission
+                ...(!isStudent && canViewStudents
                     ? [
                           {
                               title: 'Students',
@@ -125,8 +164,8 @@ export function AppSidebar() {
                           },
                       ]
                     : []),
-                // Show Faculty only for non-faculty users
-                ...(!isFaculty
+                // Show Faculty only for non-faculty users with permission
+                ...(!isFaculty && canViewFaculty
                     ? [
                           {
                               title: 'Faculty',
@@ -135,8 +174,8 @@ export function AppSidebar() {
                           },
                       ]
                     : []),
-                // Show Staff only for non-staff users
-                ...(!isStaff
+                // Show Staff only for non-staff users with permission
+                ...(!isStaff && canViewStaff
                     ? [
                           {
                               title: 'Staff',
@@ -147,17 +186,21 @@ export function AppSidebar() {
                     : []),
             ],
         },
-        // Only show Administration for non-student/faculty/staff users
-        ...(!isRegularUser
+        // Only show Administration for users with permission and non-student/faculty/staff users
+        ...(canViewAccounts && !isRegularUser
             ? [
                   {
                       title: 'Administration',
                       children: [
-                          {
-                              title: 'Accounts',
-                              href: usersIndex.url(),
-                              icon: Users,
-                          },
+                          ...(canViewAccounts
+                              ? [
+                                    {
+                                        title: 'Accounts',
+                                        href: usersIndex.url(),
+                                        icon: Users,
+                                    },
+                                ]
+                              : []),
                           ...(canManageRoles
                               ? [
                                     {

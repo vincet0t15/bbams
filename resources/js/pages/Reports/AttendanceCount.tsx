@@ -2,7 +2,9 @@ import { Head, router, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import Pagination from '@/components/paginationData';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -51,6 +53,32 @@ type Props = {
         course_id?: string;
     };
     range: { start: string; end: string };
+    summary: {
+        all: {
+            total_users: number;
+            total_in: number;
+            total_out: number;
+            total_days_present: number;
+        };
+        student: {
+            total_users: number;
+            total_in: number;
+            total_out: number;
+            total_days_present: number;
+        };
+        faculty: {
+            total_users: number;
+            total_in: number;
+            total_out: number;
+            total_days_present: number;
+        };
+        staff: {
+            total_users: number;
+            total_in: number;
+            total_out: number;
+            total_days_present: number;
+        };
+    };
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -63,6 +91,7 @@ export default function AttendanceCountReport({
     events,
     courses,
     filters,
+    summary,
 }: Props) {
     const { data, setData } = useForm({
         search: filters.search || '',
@@ -147,6 +176,98 @@ export default function AttendanceCountReport({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Attendance Count Report" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+                {/* Summary Cards */}
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    <Card>
+                        <CardHeader className="pb-2">
+                            <CardTitle className="text-sm font-medium">
+                                All Users
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-1">
+                                <div className="text-2xl font-bold">
+                                    {summary?.all?.total_users ?? 0}
+                                </div>
+                                <div className="flex flex-wrap gap-1 text-xs text-muted-foreground">
+                                    <Badge variant="secondary">
+                                        IN: {summary?.all?.total_in ?? 0}
+                                    </Badge>
+                                    <Badge variant="secondary">
+                                        OUT: {summary?.all?.total_out ?? 0}
+                                    </Badge>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader className="pb-2">
+                            <CardTitle className="text-sm font-medium">
+                                Students
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-1">
+                                <div className="text-2xl font-bold">
+                                    {summary?.student?.total_users ?? 0}
+                                </div>
+                                <div className="flex flex-wrap gap-1 text-xs text-muted-foreground">
+                                    <Badge variant="secondary">
+                                        IN: {summary?.student?.total_in ?? 0}
+                                    </Badge>
+                                    <Badge variant="secondary">
+                                        OUT: {summary?.student?.total_out ?? 0}
+                                    </Badge>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader className="pb-2">
+                            <CardTitle className="text-sm font-medium">
+                                Faculty
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-1">
+                                <div className="text-2xl font-bold">
+                                    {summary?.faculty?.total_users ?? 0}
+                                </div>
+                                <div className="flex flex-wrap gap-1 text-xs text-muted-foreground">
+                                    <Badge variant="secondary">
+                                        IN: {summary?.faculty?.total_in ?? 0}
+                                    </Badge>
+                                    <Badge variant="secondary">
+                                        OUT: {summary?.faculty?.total_out ?? 0}
+                                    </Badge>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader className="pb-2">
+                            <CardTitle className="text-sm font-medium">
+                                Staff
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-1">
+                                <div className="text-2xl font-bold">
+                                    {summary?.staff?.total_users ?? 0}
+                                </div>
+                                <div className="flex flex-wrap gap-1 text-xs text-muted-foreground">
+                                    <Badge variant="secondary">
+                                        IN: {summary?.staff?.total_in ?? 0}
+                                    </Badge>
+                                    <Badge variant="secondary">
+                                        OUT: {summary?.staff?.total_out ?? 0}
+                                    </Badge>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+
                 <div className="flex items-center justify-between gap-3">
                     <ToggleGroup
                         type="single"

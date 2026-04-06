@@ -65,11 +65,22 @@ class RolesAndPermissionsSeeder extends Seeder
         }
 
         $superAdmin = Role::findOrCreate('super_admin');
+        $superAdmin->update(['description' => 'System Administrator - Full access to all features']);
+
         $admin = Role::findOrCreate('admin');
-        $staff = Role::findOrCreate('staff');
+        $admin->update(['description' => 'Administrator - Manage accounts, courses, events, and reports']);
+
         $faculty = Role::findOrCreate('faculty');
-        $student = Role::findOrCreate('student');
+        $faculty->update(['description' => 'Faculty Member - View and manage courses, attendance, and DTR']);
+
+        $staff = Role::findOrCreate('staff');
+        $staff->update(['description' => 'Staff Member - View accounts, manage courses, and track attendance']);
+
         $user = Role::findOrCreate('user');
+        $user->update(['description' => 'Regular User - View-only access to basic features']);
+
+        $student = Role::findOrCreate('student');
+        $student->update(['description' => 'Student - Access courses, attendance logs, and personal DTR']);
 
         // super_admin gets everything
         $superAdmin->syncPermissions(Permission::all());
