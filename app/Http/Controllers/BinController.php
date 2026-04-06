@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Event;
 use App\Models\Faculty;
 use App\Models\Staff;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Inertia\Inertia;
@@ -68,11 +69,26 @@ class BinController extends Controller
                 'deleted_by' => $staff->deletedBy?->name,
             ]);
 
+        $students = Student::onlyTrashed()
+            ->with('user', 'deletedBy')
+            ->latest('deleted_at')
+            ->get()
+            ->map(fn (Student $student) => [
+                'id' => $student->id,
+                'name' => $student->user?->name,
+                'student_no' => $student->student_no,
+                'deleted_at' => $student->deleted_at
+                    ? Carbon::parse($student->deleted_at)->toDateTimeString()
+                    : null,
+                'deleted_by' => $student->deletedBy?->name,
+            ]);
+
         return Inertia::render('bin/index', [
             'courses' => $courses,
             'events' => $events,
             'faculties' => $faculties,
             'staffs' => $staffs,
+            'students' => $students,
         ]);
     }
 
@@ -138,5 +154,21 @@ class BinController extends Controller
         $model->forceDelete();
 
         return back()->with('success', 'Staff permanently deleted.');
+    }
+
+    public function restoreStudent(int $student)
+    {
+        $model = Student::onlyTrashed()->findOrFail($student);
+        $model->restore();
+
+        return back()->with('success', 'Student restored successfully.');
+    }
+
+    public function forceDeleteStudent(int $student)
+    {
+        $model = Student::onlyTrashed()->findOrFail($student);
+        $model->forceDelete();
+
+        return back()->with('success', 'Student permanently deleted.');
     }
 }

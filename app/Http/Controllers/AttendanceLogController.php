@@ -253,18 +253,22 @@ class AttendanceLogController extends Controller
         $users = User::query()
             ->with('roles')
             ->whereDoesntHave('roles', fn ($q) => $q->where('name', 'super_admin'))
-            ->where(function ($q) {
-                $q->whereHas('student', fn ($sq) => $sq->whereNull('deleted_at'))
-                    ->orWhereHas('faculty', fn ($sq) => $sq->whereNull('deleted_at'))
-                    ->orWhereHas('staff', fn ($sq) => $sq->whereNull('deleted_at'));
-            })
+            ->when($role && $role === 'student', fn ($q) => $q
+                ->whereHas('student', fn ($sq) => $sq->whereNull('deleted_at')))
+            ->when($role && $role === 'faculty', fn ($q) => $q
+                ->whereHas('faculty', fn ($sq) => $sq->whereNull('deleted_at')))
+            ->when($role && $role === 'staff', fn ($q) => $q
+                ->whereHas('staff', fn ($sq) => $sq->whereNull('deleted_at')))
+            ->when($role && $role === 'all' || ! $role, fn ($q) => $q
+                ->where(function ($q) {
+                    $q->whereHas('student', fn ($sq) => $sq->whereNull('deleted_at'))
+                        ->orWhereHas('faculty', fn ($sq) => $sq->whereNull('deleted_at'))
+                        ->orWhereHas('staff', fn ($sq) => $sq->whereNull('deleted_at'));
+                }))
             ->when($search, function ($q, $search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhere('username', 'like', "%{$search}%");
-            })
-            ->when($role && $role !== 'all', function ($q) use ($role) {
-                $q->whereHas('roles', fn ($rq) => $rq->where('name', $role));
             })
             ->orderBy('name')
             ->paginate(10)

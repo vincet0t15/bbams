@@ -32,19 +32,12 @@ export default function Welcome({
                 <header className="sticky top-0 z-10 border-b bg-background/80 backdrop-blur">
                     <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
                         <div className="flex min-w-0 items-center gap-3">
-                            <div className="flex size-10 items-center justify-center rounded-md bg-primary/10">
-                                <img
-                                    src="/logos/PSU_logo.png"
-                                    alt="PSU Logo"
-                                    className="size-8 object-contain"
-                                />
-                            </div>
                             <div className="min-w-0">
                                 <div className="text-sm leading-tight font-semibold">
                                     Biometric-Based Attendance Monitoring System
                                 </div>
                                 <div className="text-xs text-muted-foreground">
-                                    Palawan State University San Vicente Campus
+                                    BBAMS
                                 </div>
                             </div>
                         </div>

@@ -21,21 +21,22 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
         Validator::make($input, [
-            ...$this->profileRules(),
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
+            'account_type' => ['required', 'in:admin,student,faculty,staff'],
+            'security_question' => ['required', 'string', 'max:255'],
+            'security_answer' => ['required', 'string', 'max:255'],
         ])->validate();
 
-        $fullName = $this->buildFullNameFromInput($input);
-
         $user = User::create([
-            'name' => $fullName !== '' ? $fullName : $input['name'],
-            'last_name' => $input['last_name'] ?? null,
-            'first_name' => $input['first_name'] ?? null,
-            'middle_name' => $input['middle_name'] ?? null,
-            'extension_name' => $input['extension_name'] ?? null,
+            'name' => $input['username'],
             'username' => $input['username'],
             'email' => $input['email'],
             'password' => $input['password'],
+            'account_type' => $input['account_type'],
+            'security_question' => $input['security_question'],
+            'security_answer' => $input['security_answer'],
         ]);
 
         if (Role::query()->where('name', 'user')->exists()) {

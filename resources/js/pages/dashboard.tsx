@@ -87,17 +87,12 @@ export default function Dashboard({ stats }: Props) {
                 <section className="relative overflow-hidden rounded-xl border bg-gradient-to-r from-muted to-background">
                     <div className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(50%_50%_at_50%_0%,black,transparent)]" />
                     <div className="relative flex flex-col items-center gap-4 px-6 py-10 text-center sm:flex-row sm:items-center sm:gap-6 sm:text-left">
-                        <img
-                            src="/logos/psu_logo.png"
-                            alt="PSU Logo"
-                            className="h-16 w-16 rounded-full border bg-white p-2 shadow-sm"
-                        />
                         <div className="space-y-1">
                             <h2 className="text-xl font-semibold tracking-tight">
-                                Palawan State University — San Vicente Campus
+                                Biometric-Based Attendance Monitoring System
                             </h2>
                             <p className="text-2xl leading-tight font-extrabold">
-                                Biometric-Based Attendance Monitoring System
+                                BBAMS
                             </p>
                             <p className="text-sm text-muted-foreground">
                                 {stats?.latest_event

@@ -16,6 +16,10 @@ class Student extends Model
         'course_id',
         'year_level_id',
         'section',
+        'last_name',
+        'first_name',
+        'middle_name',
+        'extension_name',
         'created_by',
         'deleted_by',
     ];

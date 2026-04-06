@@ -15,6 +15,10 @@ class Faculty extends Model
         'employee_no',
         'department',
         'position',
+        'last_name',
+        'first_name',
+        'middle_name',
+        'extension_name',
         'created_by',
         'deleted_by',
     ];

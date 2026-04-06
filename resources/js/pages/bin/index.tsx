@@ -10,6 +10,7 @@ type BinRow = {
     name?: string;
     title?: string;
     employee_no?: string;
+    student_no?: string;
     deleted_at: string | null;
     deleted_by: string | null;
 };
@@ -19,6 +20,7 @@ type Props = {
     events: BinRow[];
     faculties: BinRow[];
     staffs: BinRow[];
+    students: BinRow[];
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -33,10 +35,11 @@ export default function BinIndex({
     events,
     faculties,
     staffs,
+    students,
 }: Props) {
     const renderRows = (
         rows: BinRow[],
-        type: 'courses' | 'events' | 'faculties' | 'staffs',
+        type: 'courses' | 'events' | 'faculties' | 'staffs' | 'students',
     ) => {
         if (!rows.length) {
             return (
@@ -60,6 +63,10 @@ export default function BinIndex({
                                 return row.name
                                     ? `${row.name} (${row.employee_no})`
                                     : `#${row.id}`;
+                            case 'students':
+                                return row.name
+                                    ? `${row.name} (${row.student_no})`
+                                    : `#${row.id}`;
                             default:
                                 return `#${row.id}`;
                         }
@@ -75,6 +82,8 @@ export default function BinIndex({
                                 return `/bin/faculties/${row.id}/restore`;
                             case 'staffs':
                                 return `/bin/staffs/${row.id}/restore`;
+                            case 'students':
+                                return `/bin/students/${row.id}/restore`;
                             default:
                                 return '';
                         }
@@ -89,6 +98,8 @@ export default function BinIndex({
                                 return `/bin/faculties/${row.id}/force`;
                             case 'staffs':
                                 return `/bin/staffs/${row.id}/force`;
+                            case 'students':
+                                return `/bin/students/${row.id}/force`;
                             default:
                                 return '';
                         }
@@ -189,6 +200,15 @@ export default function BinIndex({
                         <CardTitle>Deleted staffs</CardTitle>
                     </CardHeader>
                     <CardContent>{renderRows(staffs, 'staffs')}</CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Deleted students</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {renderRows(students, 'students')}
+                    </CardContent>
                 </Card>
             </div>
         </AppLayout>
