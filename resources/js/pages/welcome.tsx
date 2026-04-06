@@ -74,7 +74,6 @@ export default function Welcome({
 
                 <main>
                     <section className="relative overflow-hidden">
-                        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-primary/10 via-background to-background" />
                         <div className="mx-auto grid max-w-6xl gap-8 px-4 py-14 lg:grid-cols-2 lg:py-20">
                             <div className="flex flex-col justify-center">
                                 <div className="inline-flex w-fit items-center gap-2 rounded-full border bg-background px-3 py-1 text-xs text-muted-foreground">
