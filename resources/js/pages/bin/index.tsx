@@ -9,6 +9,7 @@ type BinRow = {
     id: number;
     name?: string;
     title?: string;
+    employee_no?: string;
     deleted_at: string | null;
     deleted_by: string | null;
 };
@@ -16,6 +17,8 @@ type BinRow = {
 type Props = {
     courses: BinRow[];
     events: BinRow[];
+    faculties: BinRow[];
+    staffs: BinRow[];
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -25,8 +28,16 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function BinIndex({ courses, events }: Props) {
-    const renderRows = (rows: BinRow[], type: 'courses' | 'events') => {
+export default function BinIndex({
+    courses,
+    events,
+    faculties,
+    staffs,
+}: Props) {
+    const renderRows = (
+        rows: BinRow[],
+        type: 'courses' | 'events' | 'faculties' | 'staffs',
+    ) => {
         if (!rows.length) {
             return (
                 <div className="py-6 text-center text-sm text-muted-foreground">
@@ -38,18 +49,50 @@ export default function BinIndex({ courses, events }: Props) {
         return (
             <div className="space-y-2">
                 {rows.map((row) => {
-                    const label =
-                        type === 'courses'
-                            ? row.name || `#${row.id}`
-                            : row.title || `#${row.id}`;
-                    const restoreUrl =
-                        type === 'courses'
-                            ? `/bin/courses/${row.id}/restore`
-                            : `/bin/events/${row.id}/restore`;
-                    const forceUrl =
-                        type === 'courses'
-                            ? `/bin/courses/${row.id}/force`
-                            : `/bin/events/${row.id}/force`;
+                    const getLabel = () => {
+                        switch (type) {
+                            case 'courses':
+                                return row.name || `#${row.id}`;
+                            case 'events':
+                                return row.title || `#${row.id}`;
+                            case 'faculties':
+                            case 'staffs':
+                                return row.name
+                                    ? `${row.name} (${row.employee_no})`
+                                    : `#${row.id}`;
+                            default:
+                                return `#${row.id}`;
+                        }
+                    };
+                    const label = getLabel();
+                    const restoreUrl = (() => {
+                        switch (type) {
+                            case 'courses':
+                                return `/bin/courses/${row.id}/restore`;
+                            case 'events':
+                                return `/bin/events/${row.id}/restore`;
+                            case 'faculties':
+                                return `/bin/faculties/${row.id}/restore`;
+                            case 'staffs':
+                                return `/bin/staffs/${row.id}/restore`;
+                            default:
+                                return '';
+                        }
+                    })();
+                    const forceUrl = (() => {
+                        switch (type) {
+                            case 'courses':
+                                return `/bin/courses/${row.id}/force`;
+                            case 'events':
+                                return `/bin/events/${row.id}/force`;
+                            case 'faculties':
+                                return `/bin/faculties/${row.id}/force`;
+                            case 'staffs':
+                                return `/bin/staffs/${row.id}/force`;
+                            default:
+                                return '';
+                        }
+                    })();
 
                     return (
                         <div
@@ -130,6 +173,22 @@ export default function BinIndex({ courses, events }: Props) {
                         <CardTitle>Deleted events</CardTitle>
                     </CardHeader>
                     <CardContent>{renderRows(events, 'events')}</CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Deleted faculties</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {renderRows(faculties, 'faculties')}
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Deleted staffs</CardTitle>
+                    </CardHeader>
+                    <CardContent>{renderRows(staffs, 'staffs')}</CardContent>
                 </Card>
             </div>
         </AppLayout>

@@ -45,6 +45,10 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
         Route::delete('bin/courses/{course}/force', [BinController::class, 'forceDeleteCourse'])->name('bin.courses.force');
         Route::put('bin/events/{event}/restore', [BinController::class, 'restoreEvent'])->name('bin.events.restore');
         Route::delete('bin/events/{event}/force', [BinController::class, 'forceDeleteEvent'])->name('bin.events.force');
+        Route::put('bin/faculties/{faculty}/restore', [BinController::class, 'restoreFaculty'])->name('bin.faculties.restore');
+        Route::delete('bin/faculties/{faculty}/force', [BinController::class, 'forceDeleteFaculty'])->name('bin.faculties.force');
+        Route::put('bin/staffs/{staff}/restore', [BinController::class, 'restoreStaff'])->name('bin.staffs.restore');
+        Route::delete('bin/staffs/{staff}/force', [BinController::class, 'forceDeleteStaff'])->name('bin.staffs.force');
     });
 
     // Courses

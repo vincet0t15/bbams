@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Event;
+use App\Models\Faculty;
+use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Inertia\Inertia;
@@ -38,9 +40,39 @@ class BinController extends Controller
                 'deleted_by' => $event->deletedBy?->name,
             ]);
 
+        $faculties = Faculty::onlyTrashed()
+            ->with('user', 'deletedBy')
+            ->latest('deleted_at')
+            ->get()
+            ->map(fn (Faculty $faculty) => [
+                'id' => $faculty->id,
+                'name' => $faculty->user?->name,
+                'employee_no' => $faculty->employee_no,
+                'deleted_at' => $faculty->deleted_at
+                    ? Carbon::parse($faculty->deleted_at)->toDateTimeString()
+                    : null,
+                'deleted_by' => $faculty->deletedBy?->name,
+            ]);
+
+        $staffs = Staff::onlyTrashed()
+            ->with('user', 'deletedBy')
+            ->latest('deleted_at')
+            ->get()
+            ->map(fn (Staff $staff) => [
+                'id' => $staff->id,
+                'name' => $staff->user?->name,
+                'employee_no' => $staff->employee_no,
+                'deleted_at' => $staff->deleted_at
+                    ? Carbon::parse($staff->deleted_at)->toDateTimeString()
+                    : null,
+                'deleted_by' => $staff->deletedBy?->name,
+            ]);
+
         return Inertia::render('bin/index', [
             'courses' => $courses,
             'events' => $events,
+            'faculties' => $faculties,
+            'staffs' => $staffs,
         ]);
     }
 
@@ -74,5 +106,37 @@ class BinController extends Controller
         $model->forceDelete();
 
         return back()->with('success', 'Event permanently deleted.');
+    }
+
+    public function restoreFaculty(int $faculty)
+    {
+        $model = Faculty::onlyTrashed()->findOrFail($faculty);
+        $model->restore();
+
+        return back()->with('success', 'Faculty restored successfully.');
+    }
+
+    public function forceDeleteFaculty(int $faculty)
+    {
+        $model = Faculty::onlyTrashed()->findOrFail($faculty);
+        $model->forceDelete();
+
+        return back()->with('success', 'Faculty permanently deleted.');
+    }
+
+    public function restoreStaff(int $staff)
+    {
+        $model = Staff::onlyTrashed()->findOrFail($staff);
+        $model->restore();
+
+        return back()->with('success', 'Staff restored successfully.');
+    }
+
+    public function forceDeleteStaff(int $staff)
+    {
+        $model = Staff::onlyTrashed()->findOrFail($staff);
+        $model->forceDelete();
+
+        return back()->with('success', 'Staff permanently deleted.');
     }
 }

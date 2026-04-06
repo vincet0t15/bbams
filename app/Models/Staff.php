@@ -21,6 +21,17 @@ class Staff extends Model
         'deleted_by',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function (self $staff) {
+            if (! $staff->created_by) {
+                $staff->created_by = Auth::id();
+            }
+        });
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -34,16 +45,5 @@ class Staff extends Model
     public function deletedBy()
     {
         return $this->belongsTo(User::class, 'deleted_by');
-    }
-
-    public static function boot()
-    {
-        parent::boot();
-
-        static::creating(function (self $staff) {
-            if (! $staff->created_by) {
-                $staff->created_by = Auth::id();
-            }
-        });
     }
 }

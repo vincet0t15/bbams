@@ -59,7 +59,7 @@ class User extends Authenticatable
 
     public function student()
     {
-        return $this->hasOne(Student::class)->whereNull('deleted_at');
+        return $this->hasOne(Student::class);
     }
 
     public function faculty()

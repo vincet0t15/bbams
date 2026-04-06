@@ -252,6 +252,12 @@ class AttendanceLogController extends Controller
 
         $users = User::query()
             ->with('roles')
+            ->whereDoesntHave('roles', fn ($q) => $q->where('name', 'super_admin'))
+            ->where(function ($q) {
+                $q->whereHas('student', fn ($sq) => $sq->whereNull('deleted_at'))
+                    ->orWhereHas('faculty', fn ($sq) => $sq->whereNull('deleted_at'))
+                    ->orWhereHas('staff', fn ($sq) => $sq->whereNull('deleted_at'));
+            })
             ->when($search, function ($q, $search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
