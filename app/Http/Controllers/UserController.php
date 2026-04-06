@@ -31,7 +31,7 @@ class UserController extends Controller
             ->withQueryString();
 
         return Inertia::render('accounts/index', [
-            'userList' => $accounts->through(fn (User $user) => [
+            'userList' => $accounts->through(fn(User $user) => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'username' => $user->username,
@@ -42,5 +42,16 @@ class UserController extends Controller
             'roles' => Role::query()->orderBy('name')->pluck('name')->values(),
             'filters' => $request->only(['search', 'role']),
         ]);
+    }
+
+    public function toggleStatus(User $user)
+    {
+        $user->update([
+            'is_active' => !$user->is_active,
+        ]);
+
+        $status = $user->is_active ? 'activated' : 'deactivated';
+
+        return back()->with('success', "Account {$status} successfully.");
     }
 }

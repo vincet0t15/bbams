@@ -35,6 +35,9 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
     Route::get('users', [UserController::class, 'index'])
         ->middleware('permission:accounts.view')
         ->name('users.index');
+    Route::put('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])
+        ->middleware('permission:accounts.update')
+        ->name('users.toggle-status');
 
     Route::middleware(['permission:roles.manage'])->group(function () {
         Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
@@ -162,4 +165,4 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
         ->name('staff.destroy');
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';

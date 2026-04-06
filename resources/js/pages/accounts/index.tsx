@@ -61,6 +61,9 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
     const canManageRoles = Boolean(
         (props as any)?.auth?.permissions?.includes?.('roles.manage'),
     );
+    const canUpdateAccounts = Boolean(
+        (props as any)?.auth?.permissions?.includes?.('accounts.update'),
+    );
 
     const [openAssign, setOpenAssign] = useState(false);
     const [selectedUser, setSelectedUser] = useState<AccountRow | null>(null);
@@ -211,6 +214,9 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
                                     Email
                                 </TableHead>
                                 <TableHead className="font-bold text-primary">
+                                    Status
+                                </TableHead>
+                                <TableHead className="font-bold text-primary">
                                     Roles
                                 </TableHead>
                                 <TableHead className="font-bold text-primary">
@@ -225,6 +231,19 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
                                         <TableCell>{user.name}</TableCell>
                                         <TableCell>{user.username}</TableCell>
                                         <TableCell>{user.email}</TableCell>
+                                        <TableCell>
+                                            <Badge
+                                                variant={
+                                                    user.is_active
+                                                        ? 'default'
+                                                        : 'secondary'
+                                                }
+                                            >
+                                                {user.is_active
+                                                    ? 'Active'
+                                                    : 'Inactive'}
+                                            </Badge>
+                                        </TableCell>
                                         <TableCell>
                                             <div className="flex flex-wrap gap-2">
                                                 {user.roles?.length ? (
@@ -244,28 +263,60 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            {canManageRoles ? (
-                                                <Button
-                                                    size="sm"
-                                                    variant="outline"
-                                                    onClick={() =>
-                                                        openAssignDialog(user)
-                                                    }
-                                                >
-                                                    Assign roles
-                                                </Button>
-                                            ) : (
-                                                <span className="text-muted-foreground">
-                                                    -
-                                                </span>
-                                            )}
+                                            <div className="flex items-center gap-2">
+                                                {canUpdateAccounts && (
+                                                    <Button
+                                                        size="sm"
+                                                        variant={
+                                                            user.is_active
+                                                                ? 'outline'
+                                                                : 'default'
+                                                        }
+                                                        onClick={() =>
+                                                            router.put(
+                                                                users.toggleStatus.url(
+                                                                    user.id,
+                                                                ),
+                                                                {},
+                                                                {
+                                                                    preserveScroll: true,
+                                                                    preserveState: true,
+                                                                },
+                                                            )
+                                                        }
+                                                    >
+                                                        {user.is_active
+                                                            ? 'Deactivate'
+                                                            : 'Activate'}
+                                                    </Button>
+                                                )}
+                                                {canManageRoles && (
+                                                    <Button
+                                                        size="sm"
+                                                        variant="outline"
+                                                        onClick={() =>
+                                                            openAssignDialog(
+                                                                user,
+                                                            )
+                                                        }
+                                                    >
+                                                        Assign roles
+                                                    </Button>
+                                                )}
+                                                {!canUpdateAccounts &&
+                                                    !canManageRoles && (
+                                                        <span className="text-muted-foreground">
+                                                            -
+                                                        </span>
+                                                    )}
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ))
                             ) : (
                                 <TableRow>
                                     <TableCell
-                                        colSpan={5}
+                                        colSpan={6}
                                         className="py-3 text-center text-gray-500"
                                     >
                                         No accounts found.

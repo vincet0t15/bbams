@@ -37,6 +37,15 @@ export function AppSidebar() {
         (props as any)?.auth?.permissions?.includes?.('roles.manage'),
     );
 
+    // Get the authenticated user's account type
+    const accountType = (props as any)?.auth?.user?.account_type;
+
+    // Determine if user is student, faculty, or staff
+    const isStudent = accountType === 'student';
+    const isFaculty = accountType === 'faculty';
+    const isStaff = accountType === 'staff';
+    const isRegularUser = isStudent || isFaculty || isStaff;
+
     const mainNavItems: NavGroup[] = [
         {
             title: 'Overview',
@@ -83,65 +92,90 @@ export function AppSidebar() {
                 },
             ],
         },
-        {
-            title: 'Academic Setup',
-            children: [
-                {
-                    title: 'Courses',
-                    href: courses.index.url(),
-                    icon: BookOpen,
-                },
-                {
-                    title: 'Year Levels',
-                    href: yearLevels.index.url(),
-                    icon: BookOpen,
-                },
-            ],
-        },
+        // Only show Academic Setup for non-student/faculty/staff users
+        ...(!isRegularUser
+            ? [
+                  {
+                      title: 'Academic Setup',
+                      children: [
+                          {
+                              title: 'Courses',
+                              href: courses.index.url(),
+                              icon: BookOpen,
+                          },
+                          {
+                              title: 'Year Levels',
+                              href: yearLevels.index.url(),
+                              icon: BookOpen,
+                          },
+                      ],
+                  },
+              ]
+            : []),
         {
             title: 'Directory',
             children: [
-                {
-                    title: 'Students',
-                    href: '/students',
-                    icon: Users,
-                },
-                {
-                    title: 'Faculty',
-                    href: '/faculties',
-                    icon: Users,
-                },
-                {
-                    title: 'Staff',
-                    href: '/staff',
-                    icon: Users,
-                },
-            ],
-        },
-        {
-            title: 'Administration',
-            children: [
-                {
-                    title: 'Accounts',
-                    href: usersIndex.url(),
-                    icon: Users,
-                },
-                ...(canManageRoles
+                // Show Students only for non-student users
+                ...(!isStudent
                     ? [
                           {
-                              title: 'Permissions & Roles',
-                              href: '/roles',
-                              icon: Shield,
+                              title: 'Students',
+                              href: '/students',
+                              icon: Users,
                           },
+                      ]
+                    : []),
+                // Show Faculty only for non-faculty users
+                ...(!isFaculty
+                    ? [
                           {
-                              title: 'Bin',
-                              href: '/bin',
-                              icon: Trash2,
+                              title: 'Faculty',
+                              href: '/faculties',
+                              icon: Users,
+                          },
+                      ]
+                    : []),
+                // Show Staff only for non-staff users
+                ...(!isStaff
+                    ? [
+                          {
+                              title: 'Staff',
+                              href: '/staff',
+                              icon: Users,
                           },
                       ]
                     : []),
             ],
         },
+        // Only show Administration for non-student/faculty/staff users
+        ...(!isRegularUser
+            ? [
+                  {
+                      title: 'Administration',
+                      children: [
+                          {
+                              title: 'Accounts',
+                              href: usersIndex.url(),
+                              icon: Users,
+                          },
+                          ...(canManageRoles
+                              ? [
+                                    {
+                                        title: 'Permissions & Roles',
+                                        href: '/roles',
+                                        icon: Shield,
+                                    },
+                                    {
+                                        title: 'Bin',
+                                        href: '/bin',
+                                        icon: Trash2,
+                                    },
+                                ]
+                              : []),
+                      ],
+                  },
+              ]
+            : []),
         {
             title: 'Settings',
             children: [
