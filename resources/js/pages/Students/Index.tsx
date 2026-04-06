@@ -244,9 +244,6 @@ export default function StudentsIndex({
                                     Name
                                 </TableHead>
                                 <TableHead className="font-bold text-primary">
-                                    Username
-                                </TableHead>
-                                <TableHead className="font-bold text-primary">
                                     Email
                                 </TableHead>
                                 <TableHead className="font-bold text-primary">
@@ -272,9 +269,6 @@ export default function StudentsIndex({
                                     <TableRow key={s.id} className="text-sm">
                                         <TableCell className="text-sm">
                                             {s.user?.name}
-                                        </TableCell>
-                                        <TableCell className="text-sm">
-                                            {s.user?.username}
                                         </TableCell>
                                         <TableCell className="text-sm">
                                             {s.user?.email}

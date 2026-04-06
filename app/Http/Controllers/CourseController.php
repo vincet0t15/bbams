@@ -17,6 +17,7 @@ class CourseController extends Controller
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('code', 'like', "%{$search}%");
             })
+            ->orderBy('name')
             ->paginate(10)
             ->withQueryString();
 

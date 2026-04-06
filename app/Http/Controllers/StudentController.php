@@ -37,7 +37,7 @@ class StudentController extends Controller
             })
             ->when($courseId, fn ($q) => $q->where('course_id', $courseId))
             ->when($yearLevelId, fn ($q) => $q->where('year_level_id', $yearLevelId))
-            ->latest('id')
+            ->orderBy('student_no', 'asc')
             ->paginate(10)
             ->withQueryString();
 

@@ -26,6 +26,7 @@ class UserController extends Controller
                     $roleQuery->where('name', $role);
                 });
             })
+            ->orderBy('name')
             ->paginate(25)
             ->withQueryString();
 

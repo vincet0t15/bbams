@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,13 @@ class Student extends Model
         'created_by',
         'deleted_by',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope('notDeleted', function (Builder $builder) {
+            $builder->whereNull('deleted_at');
+        });
+    }
 
     public function user()
     {
