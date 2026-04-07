@@ -189,35 +189,53 @@ export default function Dashboard({ stats }: Props) {
                         <CardHeader>
                             <CardTitle>Developers</CardTitle>
                         </CardHeader>
-                        <CardContent className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <CardContent className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                             {[
                                 {
                                     name: 'Louise Catherine T. Galia',
                                     initials: 'LG',
+                                    image: '/developerImages/5cbf812a-ee1f-4e55-a93b-e1055e0506c9.jpg',
                                 },
-                                { name: 'Riggien G. Diolata', initials: 'RD' },
+                                {
+                                    name: 'Riggien G. Diolata',
+                                    initials: 'RD',
+                                    image: '/developerImages/8ca8a418-799a-429c-b005-d2b046340e24.jpg',
+                                },
                                 {
                                     name: 'Liezel Shein Agravante',
                                     initials: 'LA',
+                                    image: '/developerImages/ab5d7a19-7dbf-479c-935b-25583b8a5472.jpg',
                                 },
-                                { name: 'Jea Bati-on', initials: 'JB' },
-                                { name: 'Elyn Joy O. Sieco', initials: 'ES' },
+                                {
+                                    name: 'Jea Bati-on',
+                                    initials: 'JB',
+                                    image: '/developerImages/ac7005be-4b54-43fa-b8ac-3c8c591feec5.jpg',
+                                },
+                                {
+                                    name: 'Elyn Joy O. Sieco',
+                                    initials: 'ES',
+                                    image: '/developerImages/c60971e2-6128-49d3-b14f-5355cff77cee.jpg',
+                                },
                             ].map((dev) => (
                                 <div
                                     key={dev.name}
-                                    className="flex items-center gap-3 rounded-lg border p-3"
+                                    className="flex flex-col items-center gap-4 rounded-lg border p-6 text-center transition-shadow hover:shadow-md"
                                 >
-                                    <Avatar className="size-9">
-                                        <AvatarImage alt={dev.name} />
-                                        <AvatarFallback>
+                                    <Avatar className="size-40 border-2 border-primary/20">
+                                        <AvatarImage
+                                            src={dev.image}
+                                            alt={dev.name}
+                                            className="object-cover"
+                                        />
+                                        <AvatarFallback className="text-2xl">
                                             {dev.initials}
                                         </AvatarFallback>
                                     </Avatar>
-                                    <div className="text-sm">
-                                        <div className="font-medium">
+                                    <div className="space-y-1">
+                                        <div className="leading-tight font-semibold">
                                             {dev.name}
                                         </div>
-                                        <div className="text-muted-foreground">
+                                        <div className="text-sm text-muted-foreground">
                                             Developer
                                         </div>
                                     </div>
