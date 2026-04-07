@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useState } from 'react';
 import { Calendar, Clock, Printer } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -18,10 +19,24 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 
 dayjs.extend(customParseFormat);
+
+type LogEntry = {
+    datetime: string;
+    type: 'in' | 'out';
+};
 
 type DTRLog = {
     date?: string;
@@ -30,6 +45,8 @@ type DTRLog = {
     pm_in?: string;
     pm_out?: string;
     late_minutes?: number;
+    logs?: LogEntry[];
+    hasUnmatched?: boolean;
 };
 
 type DTRData = {
@@ -39,6 +56,10 @@ type DTRData = {
     forTheMonthOf: string;
     totalOut: number;
     totalIn: number;
+    previousLogs?: LogEntry[];
+    PrevForTheMonth?: string;
+    PrevTotalIn?: number;
+    PreveTotalOut?: number;
 };
 
 type Event = {
@@ -59,6 +80,17 @@ type Props = {
         account_type: string;
     };
 };
+
+function formatLate(totalLateMinutes: number) {
+    const total = Math.abs(totalLateMinutes || 0);
+    const h = Math.floor(total / 60);
+    const m = total % 60;
+    return { h, m };
+}
+
+function flattenLogs(records: DTRLog[]): LogEntry[] {
+    return records.flatMap((r) => r.logs || []);
+}
 
 export default function MyDTR({ dtr, events, filters, user }: Props) {
     const [selectedEvent, setSelectedEvent] = useState(
@@ -92,38 +124,36 @@ export default function MyDTR({ dtr, events, filters, user }: Props) {
         (sum, r) => sum + (r.late_minutes || 0),
         0,
     );
-    const totalLateHours = Math.floor(Math.abs(totalLate) / 60);
-    const totalLateMins = Math.abs(totalLate) % 60;
+    const late = formatLate(totalLate);
+    const allLogs = flattenLogs(dtr.records);
+    const hasUnmatched = dtr.records.some((r) => Boolean(r.hasUnmatched));
+    const showPrevious = (dtr.previousLogs?.length ?? 0) > 0;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="My DTR" />
             <div className="min-h-screen bg-background p-4 text-foreground print:bg-white print:p-0">
-                {/* Header - Hide on print */}
+                {/* Header */}
                 <div className="mb-4 flex items-start justify-between gap-3 print:hidden">
                     <div>
                         <div className="text-2xl font-semibold">
-                            My Daily Time Record
+                            Daily Time Record
                         </div>
                         <div className="text-sm text-muted-foreground">
-                            {user.name} - {dtr.forTheMonthOf}
+                            Preview and print CS Form No. 48
                         </div>
                     </div>
-                    <div className="flex gap-2">
-                        <Button asChild variant="outline">
-                            <a href="/attendance-logs">
-                                <Clock className="mr-2 h-4 w-4" />
-                                View Logs
-                            </a>
-                        </Button>
-                        <Button onClick={handlePrint}>
-                            <Printer className="mr-2 h-4 w-4" />
-                            Print
-                        </Button>
-                    </div>
+                    <Button
+                        variant="outline"
+                        onClick={handlePrint}
+                        className="shrink-0"
+                    >
+                        <Printer className="mr-2 h-4 w-4" />
+                        Print
+                    </Button>
                 </div>
 
-                {/* Filters - Hide on print */}
+                {/* Filters */}
                 <Card className="mb-4 print:hidden">
                     <CardHeader>
                         <CardTitle>Filters</CardTitle>
@@ -182,8 +212,251 @@ export default function MyDTR({ dtr, events, filters, user }: Props) {
                     </CardContent>
                 </Card>
 
+                {/* DTR Screen View */}
+                <Card className="print:hidden">
+                    <CardHeader className="border-b">
+                        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                            <div className="min-w-0">
+                                <CardTitle className="truncate">
+                                    {dtr.student_name}
+                                </CardTitle>
+                                <CardDescription>
+                                    For the month of: {dtr.forTheMonthOf}
+                                </CardDescription>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-2">
+                                <Badge variant="secondary">
+                                    Total IN: {dtr.totalIn}
+                                </Badge>
+                                <Badge variant="secondary">
+                                    Total OUT: {dtr.totalOut}
+                                </Badge>
+                                <Badge
+                                    variant={
+                                        totalLate > 0
+                                            ? 'destructive'
+                                            : 'outline'
+                                    }
+                                >
+                                    Late: {late.h}h {late.m}m
+                                </Badge>
+                                {hasUnmatched ? (
+                                    <Badge variant="destructive">
+                                        Unmatched logs
+                                    </Badge>
+                                ) : (
+                                    <Badge variant="outline">Matched</Badge>
+                                )}
+                            </div>
+                        </div>
+                    </CardHeader>
+
+                    <CardContent>
+                        <Tabs defaultValue="form">
+                            <TabsList>
+                                <TabsTrigger value="form">DTR Form</TabsTrigger>
+                                <TabsTrigger value="logs">Raw Logs</TabsTrigger>
+                                {showPrevious && (
+                                    <TabsTrigger value="previous">
+                                        Previous Logs
+                                    </TabsTrigger>
+                                )}
+                            </TabsList>
+
+                            <TabsContent value="form" className="mt-2">
+                                <div className="overflow-x-auto rounded-md border">
+                                    <table className="w-full min-w-[720px] border-collapse text-center text-sm">
+                                        <thead className="bg-muted/50">
+                                            <tr className="border-b">
+                                                <th className="border-r px-2 py-2">
+                                                    Day
+                                                </th>
+                                                <th className="border-r px-2 py-2">
+                                                    AM In
+                                                </th>
+                                                <th className="border-r px-2 py-2">
+                                                    AM Out
+                                                </th>
+                                                <th className="border-r px-2 py-2">
+                                                    PM In
+                                                </th>
+                                                <th className="border-r px-2 py-2">
+                                                    PM Out
+                                                </th>
+                                                <th className="border-r px-2 py-2">
+                                                    Late (H)
+                                                </th>
+                                                <th className="px-2 py-2">
+                                                    Late (M)
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {dtr.records.map(
+                                                (record, index) => {
+                                                    const lateMinutes =
+                                                        record.late_minutes ||
+                                                        0;
+                                                    const lateParts =
+                                                        formatLate(lateMinutes);
+                                                    return (
+                                                        <tr
+                                                            key={index}
+                                                            className="border-b"
+                                                        >
+                                                            <td className="border-r px-2 py-2">
+                                                                {record.date
+                                                                    ? dayjs(
+                                                                          record.date,
+                                                                      ).format(
+                                                                          'YYYY-MM-DD',
+                                                                      )
+                                                                    : '-'}
+                                                            </td>
+                                                            <td className="border-r px-2 py-2">
+                                                                {record.am_in ||
+                                                                    ''}
+                                                            </td>
+                                                            <td className="border-r px-2 py-2">
+                                                                {record.am_out ||
+                                                                    ''}
+                                                            </td>
+                                                            <td className="border-r px-2 py-2">
+                                                                {record.pm_in ||
+                                                                    ''}
+                                                            </td>
+                                                            <td className="border-r px-2 py-2">
+                                                                {record.pm_out ||
+                                                                    ''}
+                                                            </td>
+                                                            <td className="border-r px-2 py-2">
+                                                                {lateMinutes
+                                                                    ? lateParts.h
+                                                                    : ''}
+                                                            </td>
+                                                            <td className="px-2 py-2">
+                                                                {lateMinutes
+                                                                    ? lateParts.m
+                                                                    : ''}
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                },
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </TabsContent>
+
+                            <TabsContent value="logs" className="mt-2">
+                                <div className="overflow-x-auto rounded-md border">
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead className="w-[140px]">
+                                                    Date
+                                                </TableHead>
+                                                <TableHead className="w-[90px]">
+                                                    Time
+                                                </TableHead>
+                                                <TableHead>Type</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {allLogs.length ? (
+                                                allLogs.map((entry, i) => (
+                                                    <TableRow key={i}>
+                                                        <TableCell>
+                                                            {dayjs(
+                                                                entry.datetime,
+                                                            ).format(
+                                                                'YYYY-MM-DD',
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {dayjs(
+                                                                entry.datetime,
+                                                            ).format('HH:mm')}
+                                                        </TableCell>
+                                                        <TableCell className="uppercase">
+                                                            {entry.type}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))
+                                            ) : (
+                                                <TableRow>
+                                                    <TableCell
+                                                        colSpan={3}
+                                                        className="py-6 text-center text-muted-foreground"
+                                                    >
+                                                        No logs.
+                                                    </TableCell>
+                                                </TableRow>
+                                            )}
+                                        </TableBody>
+                                    </Table>
+                                </div>
+                            </TabsContent>
+
+                            {showPrevious && (
+                                <TabsContent value="previous" className="mt-2">
+                                    <div className="mb-3 flex flex-wrap items-center gap-2">
+                                        <Badge variant="secondary">
+                                            Month:{' '}
+                                            {dtr.PrevForTheMonth ?? 'Previous'}
+                                        </Badge>
+                                        <Badge variant="secondary">
+                                            Total IN: {dtr.PrevTotalIn ?? 0}
+                                        </Badge>
+                                    </div>
+                                    <div className="overflow-x-auto rounded-md border">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow>
+                                                    <TableHead className="w-[140px]">
+                                                        Date
+                                                    </TableHead>
+                                                    <TableHead className="w-[90px]">
+                                                        Time
+                                                    </TableHead>
+                                                    <TableHead>Type</TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {(dtr.previousLogs || []).map(
+                                                    (entry, i) => (
+                                                        <TableRow key={i}>
+                                                            <TableCell>
+                                                                {dayjs(
+                                                                    entry.datetime,
+                                                                ).format(
+                                                                    'YYYY-MM-DD',
+                                                                )}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {dayjs(
+                                                                    entry.datetime,
+                                                                ).format(
+                                                                    'HH:mm',
+                                                                )}
+                                                            </TableCell>
+                                                            <TableCell className="uppercase">
+                                                                {entry.type}
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ),
+                                                )}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                </TabsContent>
+                            )}
+                        </Tabs>
+                    </CardContent>
+                </Card>
+
                 {/* Print Layout - CS Form No. 48 */}
-                <div className="print-container border border-b-2 border-black p-2 print:border-none print:p-0">
+                <div className="print-container hidden border border-b-2 border-black p-2 print:block print:border-none print:p-0">
                     <div className="grid grid-cols-3 gap-6 pb-6">
                         <div className="w-[430px] font-sans text-sm text-gray-900">
                             <div>
@@ -345,10 +618,10 @@ export default function MyDTR({ dtr, events, filters, user }: Props) {
                                         _
                                     </span>
                                     <span className="ml-[100px]">
-                                        {totalLateHours}
+                                        {Math.floor(Math.abs(totalLate) / 60)}
                                     </span>
                                     <span className="ml-[50px]">
-                                        {totalLateMins}
+                                        {Math.abs(totalLate) % 60}
                                     </span>
                                 </div>
 
