@@ -69,7 +69,7 @@ export function AppSidebar() {
                           },
                       ]
                     : []),
-                ...(!isRegularUser || isAdmin
+                ...(isAdmin
                     ? [
                           {
                               title: 'Attendance Logs',
@@ -77,8 +77,14 @@ export function AppSidebar() {
                               icon: ClipboardList,
                           },
                       ]
-                    : []),
-                ...(!isRegularUser || isAdmin
+                    : [
+                          {
+                              title: 'My Attendance Logs',
+                              href: '/attendance-logs',
+                              icon: ClipboardList,
+                          },
+                      ]),
+                ...(isAdmin
                     ? [
                           {
                               title: 'DTR',
@@ -86,7 +92,13 @@ export function AppSidebar() {
                               icon: FileSpreadsheet,
                           },
                       ]
-                    : []),
+                    : [
+                          {
+                              title: 'My DTR',
+                              href: '/my-dtr',
+                              icon: FileSpreadsheet,
+                          },
+                      ]),
             ],
         },
         {

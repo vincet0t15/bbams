@@ -94,6 +94,7 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
     // Attendance Logs and DTR - Available to ALL authenticated users (admin, student, faculty, staff)
     Route::get('attendance-logs', [AttendanceLogController::class, 'index'])->name('attendance-logs.index');
     Route::post('attendance-logs', [AttendanceLogController::class, 'store'])->name('attendance-logs.store');
+    Route::get('my-dtr', [AttendanceLogController::class, 'myDtr'])->name('my-dtr');
     Route::get('dtr', [AttendanceLogController::class, 'dtr'])->name('dtr.select');
     Route::get('attendance-logs/print-dtr', [AttendanceLogController::class, 'printDtr'])->name('attendance-logs.print-dtr');
     Route::get('attendance-logs/print-dtr-batch', [AttendanceLogController::class, 'printDtrBatch'])->name('attendance-logs.print-dtr-batch');

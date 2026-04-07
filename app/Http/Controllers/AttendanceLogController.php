@@ -18,12 +18,12 @@ class AttendanceLogController extends Controller
     {
         $logs = AttendanceLog::query()
             ->where('user_id', $user->id)
-            ->when($eventId, fn ($q) => $q->where('event_id', $eventId))
+            ->when($eventId, fn($q) => $q->where('event_id', $eventId))
             ->whereBetween('date_time', [$start, $end])
             ->orderBy('date_time')
             ->get();
 
-        $grouped = $logs->groupBy(fn (AttendanceLog $l) => Carbon::parse($l->date_time)->toDateString());
+        $grouped = $logs->groupBy(fn(AttendanceLog $l) => Carbon::parse($l->date_time)->toDateString());
 
         $records = [];
         $totalIn = 0;
@@ -81,7 +81,7 @@ class AttendanceLogController extends Controller
         $prevEnd = $prevStart->copy()->endOfMonth();
         $prevLogs = AttendanceLog::query()
             ->where('user_id', $user->id)
-            ->when($eventId, fn ($q) => $q->where('event_id', $eventId))
+            ->when($eventId, fn($q) => $q->where('event_id', $eventId))
             ->whereBetween('date_time', [$prevStart, $prevEnd])
             ->orderBy('date_time')
             ->get()
@@ -108,6 +108,12 @@ class AttendanceLogController extends Controller
 
     public function index(Request $request)
     {
+        // If user is not admin, show only their own logs
+        $user = auth()->user();
+        if ($user && $user->account_type !== 'admin') {
+            return $this->myLogs($request);
+        }
+
         $search = $request->input('search');
         $eventId = $request->input('event_id');
         $date = $request->input('date');
@@ -124,14 +130,14 @@ class AttendanceLogController extends Controller
                 });
             })
             ->when($role && $role !== 'all', function ($query) use ($role) {
-                $query->whereHas('user.roles', fn ($q) => $q->where('name', $role));
+                $query->whereHas('user.roles', fn($q) => $q->where('name', $role));
             })
             ->when(
                 $role === 'student' && $courseId && $courseId !== 'all',
-                fn ($query) => $query->whereHas('user.student', fn ($q) => $q->where('course_id', $courseId)),
+                fn($query) => $query->whereHas('user.student', fn($q) => $q->where('course_id', $courseId)),
             )
-            ->when($eventId, fn ($q) => $q->where('event_id', $eventId))
-            ->when($date, fn ($q) => $q->whereDate('date_time', $date))
+            ->when($eventId, fn($q) => $q->where('event_id', $eventId))
+            ->when($date, fn($q) => $q->whereDate('date_time', $date))
             ->orderByDesc('date_time')
             ->paginate(10)
             ->withQueryString();
@@ -142,7 +148,7 @@ class AttendanceLogController extends Controller
         $events = Event::query()
             ->orderByDesc($eventStartColumn)
             ->get(['id', $eventTitleColumn])
-            ->map(fn (Event $event) => [
+            ->map(fn(Event $event) => [
                 'id' => $event->id,
                 'title' => $event->getAttribute($eventTitleColumn),
             ]);
@@ -150,7 +156,7 @@ class AttendanceLogController extends Controller
         $courses = Course::query()
             ->orderBy('name')
             ->get(['id', 'name', 'code'])
-            ->map(fn (Course $course) => [
+            ->map(fn(Course $course) => [
                 'id' => $course->id,
                 'name' => $course->name,
                 'code' => $course->code,
@@ -187,6 +193,94 @@ class AttendanceLogController extends Controller
             'events' => $events,
             'courses' => $courses,
             'filters' => $request->only(['search', 'event_id', 'date', 'role', 'course_id']),
+        ]);
+    }
+
+    public function myLogs(Request $request)
+    {
+        $user = auth()->user();
+
+        $logs = AttendanceLog::query()
+            ->with(['event'])
+            ->where('user_id', $user->id)
+            ->when($request->input('event_id'), fn($q) => $q->where('event_id', $request->input('event_id')))
+            ->when($request->input('date'), fn($q) => $q->whereDate('date_time', $request->input('date')))
+            ->orderByDesc('date_time')
+            ->paginate(15)
+            ->withQueryString();
+
+        $eventTitleColumn = Schema::hasColumn('events', 'title') ? 'title' : 'name';
+        $eventStartColumn = Schema::hasColumn('events', 'start_at') ? 'start_at' : 'date_from';
+
+        $events = Event::query()
+            ->orderByDesc($eventStartColumn)
+            ->get(['id', $eventTitleColumn])
+            ->map(fn(Event $event) => [
+                'id' => $event->id,
+                'title' => $event->getAttribute($eventTitleColumn),
+            ]);
+
+        return Inertia::render('AttendanceLogs/MyLogs', [
+            'logList' => $logs->through(function (AttendanceLog $log) use ($eventTitleColumn) {
+                return [
+                    'id' => $log->id,
+                    'date_time' => $log->date_time
+                        ? Carbon::parse($log->date_time)->format('Y-m-d H:i:s')
+                        : null,
+                    'check_type' => $log->check_type,
+                    'check_type_label' => match ((int) $log->check_type) {
+                        1 => 'Time In',
+                        2 => 'Time Out',
+                        default => '-',
+                    },
+                    'event' => [
+                        'id' => $log->event?->id,
+                        'title' => $log->event?->getAttribute($eventTitleColumn),
+                    ],
+                ];
+            }),
+            'events' => $events,
+            'filters' => $request->only(['event_id', 'date']),
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'account_type' => $user->account_type,
+            ],
+        ]);
+    }
+
+    public function myDtr(Request $request)
+    {
+        $user = auth()->user();
+        $eventId = $request->input('event_id');
+
+        $start = $request->input('month')
+            ? Carbon::createFromFormat('Y-m', $request->input('month'))->startOfMonth()
+            : now()->startOfMonth();
+        $end = $start->copy()->endOfMonth();
+
+        $dtrPayload = $this->buildDtrPayload($user, $eventId, $start, $end);
+
+        $eventTitleColumn = Schema::hasColumn('events', 'title') ? 'title' : 'name';
+        $eventStartColumn = Schema::hasColumn('events', 'start_at') ? 'start_at' : 'date_from';
+
+        $events = Event::query()
+            ->orderByDesc($eventStartColumn)
+            ->get(['id', $eventTitleColumn])
+            ->map(fn(Event $event) => [
+                'id' => $event->id,
+                'title' => $event->getAttribute($eventTitleColumn),
+            ]);
+
+        return Inertia::render('DTR/MyDTR', [
+            'dtr' => $dtrPayload,
+            'events' => $events,
+            'filters' => $request->only(['event_id', 'month']),
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'account_type' => $user->account_type,
+            ],
         ]);
     }
 
@@ -252,18 +346,18 @@ class AttendanceLogController extends Controller
 
         $users = User::query()
             ->with('roles')
-            ->whereDoesntHave('roles', fn ($q) => $q->where('name', 'super_admin'))
-            ->when($role && $role === 'student', fn ($q) => $q
-                ->whereHas('student', fn ($sq) => $sq->whereNull('deleted_at')))
-            ->when($role && $role === 'faculty', fn ($q) => $q
-                ->whereHas('faculty', fn ($sq) => $sq->whereNull('deleted_at')))
-            ->when($role && $role === 'staff', fn ($q) => $q
-                ->whereHas('staff', fn ($sq) => $sq->whereNull('deleted_at')))
-            ->when($role && $role === 'all' || ! $role, fn ($q) => $q
+            ->whereDoesntHave('roles', fn($q) => $q->where('name', 'super_admin'))
+            ->when($role && $role === 'student', fn($q) => $q
+                ->whereHas('student', fn($sq) => $sq->whereNull('deleted_at')))
+            ->when($role && $role === 'faculty', fn($q) => $q
+                ->whereHas('faculty', fn($sq) => $sq->whereNull('deleted_at')))
+            ->when($role && $role === 'staff', fn($q) => $q
+                ->whereHas('staff', fn($sq) => $sq->whereNull('deleted_at')))
+            ->when($role && $role === 'all' || ! $role, fn($q) => $q
                 ->where(function ($q) {
-                    $q->whereHas('student', fn ($sq) => $sq->whereNull('deleted_at'))
-                        ->orWhereHas('faculty', fn ($sq) => $sq->whereNull('deleted_at'))
-                        ->orWhereHas('staff', fn ($sq) => $sq->whereNull('deleted_at'));
+                    $q->whereHas('student', fn($sq) => $sq->whereNull('deleted_at'))
+                        ->orWhereHas('faculty', fn($sq) => $sq->whereNull('deleted_at'))
+                        ->orWhereHas('staff', fn($sq) => $sq->whereNull('deleted_at'));
                 }))
             ->when($search, function ($q, $search) {
                 $q->where('name', 'like', "%{$search}%")
@@ -279,7 +373,7 @@ class AttendanceLogController extends Controller
         $events = Event::query()
             ->orderByDesc($eventStartColumn)
             ->get(['id', $eventTitleColumn])
-            ->map(fn (Event $event) => [
+            ->map(fn(Event $event) => [
                 'id' => $event->id,
                 'title' => $event->getAttribute($eventTitleColumn),
             ]);
