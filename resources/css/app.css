@@ -166,11 +166,11 @@
 @media print {
     header,
     .header,
-    .print-header {
-        background: none !important;
-        color: black !important;
-        box-shadow: none !important;
-        border: none !important;
+    .print-header,
+    .sidebar,
+    [data-sidebar="sidebar"],
+    aside {
+        display: none !important;
     }
 
     .bg-gray-700,
@@ -191,6 +191,8 @@
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
         overflow: visible !important;
+        height: auto !important;
+        width: 100% !important;
     }
 
     body {
@@ -200,6 +202,9 @@
         height: 13in !important;
         min-height: 13in !important;
         background-color: white !important;
+        overflow: visible !important;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
     }
 
     .page-break {
@@ -222,6 +227,7 @@
         flex-direction: column;
         justify-content: flex-start;
         background-color: white !important;
+        overflow: hidden !important;
     }
 
     .print-scale-dtr {

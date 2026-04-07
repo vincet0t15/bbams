@@ -387,19 +387,6 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
                         <Button
                             type="button"
                             disabled={!selectedUser || assignForm.processing}
-                            onClick={() => {
-                                if (!selectedUser) {
-                                    return;
-                                }
-
-                                assignForm.put(
-                                    users.roles.update.url(selectedUser.id),
-                                    {
-                                        preserveScroll: true,
-                                        onSuccess: () => setOpenAssign(false),
-                                    },
-                                );
-                            }}
                         >
                             Save
                         </Button>

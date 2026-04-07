@@ -9,6 +9,7 @@ use App\Models\User;
 use Carbon\CarbonInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 
@@ -109,7 +110,7 @@ class AttendanceLogController extends Controller
     public function index(Request $request)
     {
         // If user is not admin, show only their own logs
-        $user = auth()->user();
+        $user = Auth::user()();
         if ($user && $user->account_type !== 'admin') {
             return $this->myLogs($request);
         }
@@ -198,7 +199,7 @@ class AttendanceLogController extends Controller
 
     public function myLogs(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         $logs = AttendanceLog::query()
             ->with(['event'])
@@ -251,7 +252,7 @@ class AttendanceLogController extends Controller
 
     public function myDtr(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $eventId = $request->input('event_id');
 
         $start = $request->input('month')
