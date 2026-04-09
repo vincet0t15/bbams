@@ -193,28 +193,29 @@ export default function Dashboard({ stats }: Props) {
                             {[
                                 {
                                     name: 'Louise Catherine T. Galia',
-                                    initials: 'LG',
-                                    image: '/developerImages/5cbf812a-ee1f-4e55-a93b-e1055e0506c9.jpg',
+                                    initials: 'LG111',
+                                    image: '/developerImages/c60971e2-6128-49d3-b14f-5355cff77cee.jpg',
                                 },
                                 {
                                     name: 'Riggien G. Diolata',
                                     initials: 'RD',
-                                    image: '/developerImages/8ca8a418-799a-429c-b005-d2b046340e24.jpg',
+                                    image: '/developerImages/ab5d7a19-7dbf-479c-935b-25583b8a5472.jpg',
                                 },
                                 {
                                     name: 'Liezel Shein Agravante',
                                     initials: 'LA',
-                                    image: '/developerImages/ab5d7a19-7dbf-479c-935b-25583b8a5472.jpg',
+
+                                    image: '/developerImages/5cbf812a-ee1f-4e55-a93b-e1055e0506c9.jpg',
                                 },
                                 {
                                     name: 'Jea Bati-on',
                                     initials: 'JB',
-                                    image: '/developerImages/ac7005be-4b54-43fa-b8ac-3c8c591feec5.jpg',
+                                    image: '/developerImages/8ca8a418-799a-429c-b005-d2b046340e24.jpg',
                                 },
                                 {
                                     name: 'Elyn Joy O. Sieco',
                                     initials: 'ES',
-                                    image: '/developerImages/c60971e2-6128-49d3-b14f-5355cff77cee.jpg',
+                                    image: '/developerImages/ac7005be-4b54-43fa-b8ac-3c8c591feec5.jpg',
                                 },
                             ].map((dev) => (
                                 <div
