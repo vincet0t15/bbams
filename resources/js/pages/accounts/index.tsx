@@ -1,25 +1,8 @@
-import { Head, router, useForm, usePage } from '@inertiajs/react';
-import { useMemo, useState } from 'react';
+import { Head, router, useForm } from '@inertiajs/react';
 import Pagination from '@/components/paginationData';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import {
     Table,
     TableBody,
@@ -40,12 +23,11 @@ type AccountRow = {
     username: string;
     email: string;
     is_active: boolean;
-    roles: string[];
+    account_type: string;
 };
 
 type Props = {
     userList: PaginatedDataResponse<AccountRow>;
-    roles: string[];
     filters: FilterProps;
 };
 
@@ -56,66 +38,19 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function AccountsIndex({ userList, roles, filters }: Props) {
-    const { props } = usePage();
-    const isAdmin = (props as any)?.auth?.user?.account_type === 'admin';
-
-    const [openAssign, setOpenAssign] = useState(false);
-    const [selectedUser, setSelectedUser] = useState<AccountRow | null>(null);
-
-    const assignForm = useForm<{ roles: string[] }>({
-        roles: [],
-    });
-
+export default function AccountsIndex({ userList, filters }: Props) {
     const { data, setData } = useForm({
         search: filters.search || '',
-        role: filters.role || 'all',
     });
 
-    const availableRoles = useMemo(() => roles, [roles]);
-
-    const buildQuery = (values: { search: string; role: string }) => {
+    const buildQuery = (values: { search: string }) => {
         const query: Record<string, string> = {};
 
         if (values.search) {
             query.search = values.search;
         }
 
-        if (values.role && values.role !== 'all') {
-            query.role = values.role;
-        }
-
         return Object.keys(query).length ? query : undefined;
-    };
-
-    const openAssignDialog = (user: AccountRow) => {
-        setSelectedUser(user);
-        assignForm.setData('roles', user.roles ?? []);
-        setOpenAssign(true);
-    };
-
-    const toggleRole = (role: string) => {
-        const current = assignForm.data.roles;
-
-        const classRoles = ['student', 'faculty', 'staff'];
-
-        if (current.includes(role)) {
-            assignForm.setData(
-                'roles',
-                current.filter((r) => r !== role),
-            );
-
-            return;
-        }
-
-        if (classRoles.includes(role)) {
-            const filtered = current.filter((r) => !classRoles.includes(r));
-            assignForm.setData('roles', [...filtered, role]);
-
-            return;
-        }
-
-        assignForm.setData('roles', [...current, role]);
     };
 
     return (
@@ -129,35 +64,6 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
                     </div>
 
                     <div className="flex items-center gap-2">
-                        <Select
-                            value={data.role}
-                            onValueChange={(value) => {
-                                setData('role', value);
-                                router.get(
-                                    users.index.url(),
-                                    buildQuery({
-                                        search: data.search,
-                                        role: value,
-                                    }),
-                                    {
-                                        preserveScroll: true,
-                                        preserveState: true,
-                                    },
-                                );
-                            }}
-                        >
-                            <SelectTrigger className="w-44">
-                                <SelectValue placeholder="Role" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">All roles</SelectItem>
-                                {availableRoles.map((role) => (
-                                    <SelectItem key={role} value={role}>
-                                        {role}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
                         <Input
                             placeholder="Search..."
                             value={data.search}
@@ -212,7 +118,7 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
                                     Status
                                 </TableHead>
                                 <TableHead className="font-bold text-primary">
-                                    Roles
+                                    Account Type
                                 </TableHead>
                                 <TableHead className="font-bold text-primary">
                                     Action
@@ -240,69 +146,36 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
                                             </Badge>
                                         </TableCell>
                                         <TableCell>
-                                            <div className="flex flex-wrap gap-2">
-                                                {user.roles?.length ? (
-                                                    user.roles.map((r) => (
-                                                        <Badge
-                                                            key={`${user.id}-${r}`}
-                                                            variant="secondary"
-                                                        >
-                                                            {r}
-                                                        </Badge>
-                                                    ))
-                                                ) : (
-                                                    <span className="text-muted-foreground">
-                                                        No roles
-                                                    </span>
-                                                )}
-                                            </div>
+                                            <Badge variant="secondary">
+                                                {user.account_type}
+                                            </Badge>
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex items-center gap-2">
-                                                {isAdmin && (
-                                                    <Button
-                                                        size="sm"
-                                                        variant={
-                                                            user.is_active
-                                                                ? 'outline'
-                                                                : 'default'
-                                                        }
-                                                        onClick={() =>
-                                                            router.put(
-                                                                users.toggleStatus.url(
-                                                                    user.id,
-                                                                ),
-                                                                {},
-                                                                {
-                                                                    preserveScroll: true,
-                                                                    preserveState: true,
-                                                                },
-                                                            )
-                                                        }
-                                                    >
-                                                        {user.is_active
-                                                            ? 'Deactivate'
-                                                            : 'Activate'}
-                                                    </Button>
-                                                )}
-                                                {isAdmin && (
-                                                    <Button
-                                                        size="sm"
-                                                        variant="outline"
-                                                        onClick={() =>
-                                                            openAssignDialog(
-                                                                user,
-                                                            )
-                                                        }
-                                                    >
-                                                        Assign roles
-                                                    </Button>
-                                                )}
-                                                {!isAdmin && (
-                                                    <span className="text-muted-foreground">
-                                                        -
-                                                    </span>
-                                                )}
+                                                <Button
+                                                    size="sm"
+                                                    variant={
+                                                        user.is_active
+                                                            ? 'outline'
+                                                            : 'default'
+                                                    }
+                                                    onClick={() =>
+                                                        router.put(
+                                                            users.toggleStatus.url(
+                                                                user.id,
+                                                            ),
+                                                            {},
+                                                            {
+                                                                preserveScroll: true,
+                                                                preserveState: true,
+                                                            },
+                                                        )
+                                                    }
+                                                >
+                                                    {user.is_active
+                                                        ? 'Deactivate'
+                                                        : 'Activate'}
+                                                </Button>
                                             </div>
                                         </TableCell>
                                     </TableRow>
@@ -310,7 +183,7 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
                             ) : (
                                 <TableRow>
                                     <TableCell
-                                        colSpan={6}
+                                        colSpan={5}
                                         className="py-3 text-center text-gray-500"
                                     >
                                         No accounts found.
@@ -325,74 +198,6 @@ export default function AccountsIndex({ userList, roles, filters }: Props) {
                     <Pagination data={userList} />
                 </div>
             </div>
-
-            <Dialog
-                open={openAssign}
-                onOpenChange={(open) => {
-                    if (!open) {
-                        setSelectedUser(null);
-                        assignForm.reset();
-                    }
-
-                    setOpenAssign(open);
-                }}
-            >
-                <DialogContent className="sm:max-w-lg">
-                    <DialogHeader>
-                        <DialogTitle>Assign Roles</DialogTitle>
-                        <DialogDescription>
-                            {selectedUser
-                                ? `Update roles for ${selectedUser.name}`
-                                : 'Update roles'}
-                        </DialogDescription>
-                    </DialogHeader>
-
-                    {selectedUser ? (
-                        <div className="space-y-3">
-                            <div className="space-y-2">
-                                <div className="text-sm font-medium">Roles</div>
-                                <div className="grid gap-2 sm:grid-cols-2">
-                                    {availableRoles.map((role) => (
-                                        <label
-                                            key={role}
-                                            className="flex cursor-pointer items-center gap-2 text-sm"
-                                        >
-                                            <Checkbox
-                                                checked={assignForm.data.roles.includes(
-                                                    role,
-                                                )}
-                                                onCheckedChange={() =>
-                                                    toggleRole(role)
-                                                }
-                                            />
-                                            <span>{role}</span>
-                                        </label>
-                                    ))}
-                                </div>
-                                <div className="text-sm text-destructive">
-                                    {assignForm.errors.roles}
-                                </div>
-                            </div>
-                        </div>
-                    ) : null}
-
-                    <DialogFooter>
-                        <Button
-                            variant="outline"
-                            type="button"
-                            onClick={() => setOpenAssign(false)}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            type="button"
-                            disabled={!selectedUser || assignForm.processing}
-                        >
-                            Save
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
         </AppLayout>
     );
 }

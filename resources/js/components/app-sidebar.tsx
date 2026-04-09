@@ -187,11 +187,6 @@ export function AppSidebar() {
                               icon: Users,
                           },
                           {
-                              title: 'Permissions & Roles',
-                              href: '/roles',
-                              icon: Shield,
-                          },
-                          {
                               title: 'Bin',
                               href: '/bin',
                               icon: Trash2,

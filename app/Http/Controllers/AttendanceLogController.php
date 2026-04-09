@@ -110,7 +110,7 @@ class AttendanceLogController extends Controller
     public function index(Request $request)
     {
         // If user is not admin, show only their own logs
-        $user = Auth::user()();
+        $user = Auth::user();
         if ($user && $user->account_type !== 'admin') {
             return $this->myLogs($request);
         }
