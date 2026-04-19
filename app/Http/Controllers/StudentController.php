@@ -35,8 +35,8 @@ class StudentController extends Controller
                             ->orWhere('username', 'like', "%{$search}%");
                     });
             })
-            ->when($courseId, fn ($q) => $q->where('course_id', $courseId))
-            ->when($yearLevelId, fn ($q) => $q->where('year_level_id', $yearLevelId))
+            ->when($courseId, fn($q) => $q->where('course_id', $courseId))
+            ->when($yearLevelId, fn($q) => $q->where('year_level_id', $yearLevelId))
             ->orderBy('student_no', 'asc')
             ->paginate(10)
             ->withQueryString();
@@ -87,7 +87,7 @@ class StudentController extends Controller
         ]);
 
         DB::transaction(function () use ($validated) {
-            $fullName = trim(($validated['first_name'] ?? '').' '.($validated['middle_name'] ?? '').' '.($validated['last_name'] ?? ''));
+            $fullName = trim(($validated['first_name'] ?? '') . ' ' . ($validated['middle_name'] ?? '') . ' ' . ($validated['last_name'] ?? ''));
             $user = User::create([
                 'name' => $fullName ?: $validated['username'],
                 'username' => $validated['username'],
@@ -127,7 +127,7 @@ class StudentController extends Controller
         $validated = $request->validate([
             ...$this->profileRules($student->user_id),
             'password' => ['nullable', 'string', Password::default(), 'confirmed'],
-            'student_no' => ['nullable', 'string', 'max:50', 'unique:students,student_no,'.$student->id],
+            'student_no' => ['nullable', 'string', 'max:50', 'unique:students,student_no,' . $student->id],
             'course_id' => ['nullable', 'exists:courses,id'],
             'year_level_id' => ['nullable', 'exists:year_levels,id'],
             'section' => ['nullable', 'string', 'max:50'],

@@ -71,7 +71,7 @@ class FacultyController extends Controller
         ]);
 
         DB::transaction(function () use ($validated) {
-            $fullName = trim(($validated['first_name'] ?? '').' '.($validated['middle_name'] ?? '').' '.($validated['last_name'] ?? ''));
+            $fullName = trim(($validated['first_name'] ?? '') . ' ' . ($validated['middle_name'] ?? '') . ' ' . ($validated['last_name'] ?? ''));
             $user = User::create([
                 'name' => $fullName ?: $validated['username'],
                 'username' => $validated['username'],
@@ -110,7 +110,7 @@ class FacultyController extends Controller
         $validated = $request->validate([
             ...$this->profileRules($faculty->user_id),
             'password' => ['nullable', 'string', Password::default(), 'confirmed'],
-            'employee_no' => ['nullable', 'string', 'max:50', 'unique:faculties,employee_no,'.$faculty->id],
+            'employee_no' => ['nullable', 'string', 'max:50', 'unique:faculties,employee_no,' . $faculty->id],
             'department' => ['nullable', 'string', 'max:100'],
             'position' => ['nullable', 'string', 'max:100'],
         ]);
