@@ -102,8 +102,8 @@ export default function MyLogs({ logList, events, filters, user }: Props) {
         );
     };
 
-    const totalIn = logList.data.filter((log) => log.check_type === 1).length;
-    const totalOut = logList.data.filter((log) => log.check_type === 2).length;
+    const totalIn = logList.data.filter((log) => log.check_type === 0).length;
+    const totalOut = logList.data.filter((log) => log.check_type === 1).length;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -292,12 +292,12 @@ export default function MyLogs({ logList, events, filters, user }: Props) {
                                             <TableCell>
                                                 <Badge
                                                     variant={
-                                                        log.check_type === 1
+                                                        log.check_type === 0
                                                             ? 'default'
                                                             : 'secondary'
                                                     }
                                                     className={
-                                                        log.check_type === 1
+                                                        log.check_type === 0
                                                             ? 'bg-green-600 hover:bg-green-700'
                                                             : 'bg-red-600 hover:bg-red-700'
                                                     }

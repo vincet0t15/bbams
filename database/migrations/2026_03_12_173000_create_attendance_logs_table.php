@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId('event_id')->constrained('events')->cascadeOnDelete();
             $table->dateTime('date_time');
             $table->unsignedTinyInteger('check_type')->nullable();
-            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
 
             $table->index(['event_id', 'date_time']);

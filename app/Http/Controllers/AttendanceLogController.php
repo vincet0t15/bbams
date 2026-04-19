@@ -40,7 +40,7 @@ class AttendanceLogController extends Controller
 
             foreach ($dayLogs as $l) {
                 $dt = Carbon::parse($l->date_time);
-                $type = (int) $l->check_type === 1 ? 'in' : 'out';
+                $type = (int) $l->check_type === 0 ? 'in' : 'out';
                 $entries[] = [
                     'datetime' => $dt->toDateTimeString(),
                     'type' => $type,
@@ -89,7 +89,7 @@ class AttendanceLogController extends Controller
             ->map(function (AttendanceLog $l) {
                 return [
                     'datetime' => Carbon::parse($l->date_time)->toDateTimeString(),
-                    'type' => (int) $l->check_type === 1 ? 'in' : 'out',
+                    'type' => (int) $l->check_type === 0 ? 'in' : 'out',
                 ];
             });
 
@@ -172,8 +172,8 @@ class AttendanceLogController extends Controller
                         : null,
                     'check_type' => $log->check_type,
                     'check_type_label' => match ((int) $log->check_type) {
-                        1 => 'Time In',
-                        2 => 'Time Out',
+                        0 => 'Time In',
+                        1 => 'Time Out',
                         default => '-',
                     },
                     'user' => [
@@ -230,8 +230,8 @@ class AttendanceLogController extends Controller
                         : null,
                     'check_type' => $log->check_type,
                     'check_type_label' => match ((int) $log->check_type) {
-                        1 => 'Time In',
-                        2 => 'Time Out',
+                        0 => 'Time In',
+                        1 => 'Time Out',
                         default => '-',
                     },
                     'event' => [
@@ -401,7 +401,7 @@ class AttendanceLogController extends Controller
             'user_id' => ['required', 'exists:users,id'],
             'event_id' => ['required', 'exists:events,id'],
             'date_time' => ['nullable', 'date'],
-            'check_type' => ['required', 'integer', 'in:1,2'],
+            'check_type' => ['required', 'integer', 'in:0,1'],
         ]);
 
         $dateTime = Carbon::parse($validated['date_time'] ?? now());

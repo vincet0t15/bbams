@@ -22,8 +22,8 @@ class DashboardController extends Controller
         $todayStart = Carbon::today()->startOfDay();
         $todayEnd = Carbon::today()->endOfDay();
         $todayLogs = AttendanceLog::whereBetween('date_time', [$todayStart, $todayEnd])->get();
-        $todayIn = $todayLogs->where('check_type', 1)->count();
-        $todayOut = $todayLogs->where('check_type', 2)->count();
+        $todayIn = $todayLogs->where('check_type', 0)->count();
+        $todayOut = $todayLogs->where('check_type', 1)->count();
 
         $latestEvent = Event::orderByDesc('id')->first();
 
@@ -37,7 +37,7 @@ class DashboardController extends Controller
                 'today_out' => $todayOut,
                 'latest_event' => $latestEvent ? [
                     'id' => $latestEvent->id,
-                    'title' => $latestEvent->title ?? $latestEvent->name ?? ('Event #'.$latestEvent->id),
+                    'title' => $latestEvent->title ?? $latestEvent->name ?? ('Event #' . $latestEvent->id),
                 ] : null,
             ],
         ]);

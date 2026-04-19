@@ -119,8 +119,8 @@ class AttendanceLogsSampleSeeder extends Seeder
         $timeIn = $day->copy()->setTime(8, 0, 0);
         $timeOut = $day->copy()->setTime(17, 0, 0);
 
-        $this->ensureLog($userId, $eventId, $timeIn, 1);
-        $this->ensureLog($userId, $eventId, $timeOut, 2);
+        $this->ensureLog($userId, $eventId, $timeIn, 0);
+        $this->ensureLog($userId, $eventId, $timeOut, 1);
     }
 
     private function ensureLog(int $userId, int $eventId, Carbon $dateTime, int $checkType): void

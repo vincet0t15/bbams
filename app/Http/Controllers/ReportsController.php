@@ -65,7 +65,7 @@ class ReportsController extends Controller
                 return [
                     'id' => $log->id,
                     'date_time' => $log->date_time ? Carbon::parse($log->date_time)->toDateTimeString() : null,
-                    'check_type_label' => (int) $log->check_type === 1 ? 'IN' : 'OUT',
+                    'check_type_label' => (int) $log->check_type === 0 ? 'IN' : 'OUT',
                     'user' => [
                         'id' => $log->user?->id,
                         'name' => $log->user?->name,
@@ -138,12 +138,12 @@ class ReportsController extends Controller
         // Group by user
         $grouped = $allLogs->groupBy('user_id')->map(function ($logs) use ($eventTitleColumn) {
             $user = $logs->first()->user;
-            $presentDays = $logs->where('check_type', 1)->map(function (AttendanceLog $l) {
+            $presentDays = $logs->where('check_type', 0)->map(function (AttendanceLog $l) {
                 return Carbon::parse($l->date_time)->toDateString();
             })->unique()->values();
 
-            $totalIn = $logs->where('check_type', 1)->count();
-            $totalOut = $logs->where('check_type', 2)->count();
+            $totalIn = $logs->where('check_type', 0)->count();
+            $totalOut = $logs->where('check_type', 1)->count();
 
             $events = $logs->map(function (AttendanceLog $l) use ($eventTitleColumn) {
                 return $l->event?->getAttribute($eventTitleColumn);
