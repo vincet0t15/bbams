@@ -78,9 +78,8 @@ class FacultyController extends Controller
                 'email' => $validated['email'],
                 'password' => $validated['password'],
                 'account_type' => 'faculty',
+                'is_active' => false,
             ]);
-
-            $user->forceFill(['is_active' => true])->save();
 
             if (Role::query()->where('name', 'user')->exists()) {
                 $user->assignRole('user');
