@@ -127,9 +127,6 @@ export default function Welcome({
                             </div>
 
                             <div className="relative">
-                                <div className="absolute -top-24 -left-24 size-72 rounded-full bg-primary/20 blur-3xl" />
-                                <div className="absolute -right-24 -bottom-24 size-72 rounded-full bg-primary/15 blur-3xl" />
-
                                 <div className="rounded-2xl border bg-card p-6 shadow-sm">
                                     <div className="flex items-center justify-between">
                                         <div className="text-sm font-semibold">
