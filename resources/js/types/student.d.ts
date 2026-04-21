@@ -15,6 +15,8 @@ export interface StudentCreateRequest {
     email: string;
     password: string;
     password_confirmation: string;
+    security_question?: string;
+    security_answer?: string;
     student_no?: string;
     course_id?: number | null;
     year_level_id?: number | null;
