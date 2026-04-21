@@ -99,36 +99,30 @@ export default function StaffIndex({ staffList, filters }: Props) {
                             <CardTitle>Departments</CardTitle>
                         </CardHeader>
                         <CardContent className="text-3xl font-bold">
-                            {/* placeholder */}0
+                            0
                         </CardContent>
                     </Card>
 
-                                staffList.data.map((st) => (
+                    <Card className="bg-gradient-to-r from-orange-400 to-rose-500 text-white">
                         <CardHeader>
-                                        <TableCell className="flex gap-2 text-sm">
-                                            <Button
-                                                variant="ghost"
-                                                size="sm"
-                                                className="text-green-500 hover:text-green-700"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleEditClick(st);
-                                                }}
-                                            >
-                                                Edit
-                                            </Button>
-                                            <Button
-                                                variant="ghost"
-                                                size="sm"
-                                                className="text-red-500 hover:text-orange-700"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleDeleteClick(st);
-                                                }}
-                                            >
-                                                Delete
-                                            </Button>
-                                        </TableCell>
+                            <CardTitle>Active</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-3xl font-bold">
+                            {staffList.total ?? 0}
+                        </CardContent>
+                    </Card>
+
+                    <Card className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white">
+                        <CardHeader>
+                            <CardTitle>Placeholder</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-3xl font-bold">
+                            —
+                        </CardContent>
+                    </Card>
+                </div>
+
+                <Card className="mt-2 border-green-100 bg-green-50">
                     <CardContent>
                         <div className="flex items-center gap-4">
                             <div className="text-sm font-medium">Quick Tip</div>
@@ -146,15 +140,6 @@ export default function StaffIndex({ staffList, filters }: Props) {
                         size="sm"
                         className="cursor-pointer bg-emerald-600 text-white hover:bg-emerald-700"
                         onClick={() => setOpenCreate(true)}
-                                                    <div className="mt-4">
-                                                        <Button
-                                                            variant="default"
-                                                            className="bg-emerald-600 hover:bg-emerald-700 text-white"
-                                                            onClick={() => setOpenCreate(true)}
-                                                        >
-                                                            Add Staff
-                                                        </Button>
-                                                    </div>
                     >
                         <PlusIcon />
                         <span className="rounded-sm lg:inline">Staff</span>
@@ -237,7 +222,12 @@ export default function StaffIndex({ staffList, filters }: Props) {
                         <TableBody>
                             {staffList.data.length > 0 ? (
                                 staffList.data.map((s) => (
-                                    <TableRow key={s.id} className="text-sm">
+                                    <TableRow
+                                        key={s.id}
+                                        className="cursor-pointer text-sm hover:bg-muted/10"
+                                        role="button"
+                                        onClick={() => handleEditClick(s)}
+                                    >
                                         <TableCell className="text-sm">
                                             {s.user?.name}
                                         </TableCell>
@@ -257,22 +247,28 @@ export default function StaffIndex({ staffList, filters }: Props) {
                                             {s.position || '-'}
                                         </TableCell>
                                         <TableCell className="flex gap-2 text-sm">
-                                            <span
-                                                onClick={() =>
-                                                    handleEditClick(s)
-                                                }
-                                                className="cursor-pointer text-green-500 hover:text-green-700 hover:underline"
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="text-green-500 hover:text-green-700"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleEditClick(s);
+                                                }}
                                             >
                                                 Edit
-                                            </span>
-                                            <span
-                                                onClick={() =>
-                                                    handleDeleteClick(s)
-                                                }
-                                                className="cursor-pointer text-red-500 hover:text-orange-700 hover:underline"
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="text-red-500 hover:text-orange-700"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleDeleteClick(s);
+                                                }}
                                             >
                                                 Delete
-                                            </span>
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))
@@ -291,6 +287,17 @@ export default function StaffIndex({ staffList, filters }: Props) {
                                                     Add your first staff to get
                                                     started
                                                 </div>
+                                                <div className="mt-4">
+                                                    <Button
+                                                        variant="default"
+                                                        className="bg-emerald-600 text-white hover:bg-emerald-700"
+                                                        onClick={() =>
+                                                            setOpenCreate(true)
+                                                        }
+                                                    >
+                                                        Add Staff
+                                                    </Button>
+                                                </div>
                                             </div>
                                         </div>
                                     </TableCell>
@@ -303,6 +310,7 @@ export default function StaffIndex({ staffList, filters }: Props) {
                     <Pagination data={staffList} />
                 </div>
             </div>
+
             {openCreate && (
                 <StaffCreateDialog open={openCreate} setOpen={setOpenCreate} />
             )}
