@@ -61,6 +61,8 @@ class FacultyController extends Controller
             'username' => ['required', 'string', 'max:255', 'unique:users,username'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => $this->passwordRules(),
+            'security_question' => ['nullable', 'string', 'max:255'],
+            'security_answer' => ['nullable', 'string', 'max:255'],
             'employee_no' => ['nullable', 'string', 'max:50', 'unique:faculties,employee_no'],
             'department' => ['nullable', 'string', 'max:100'],
             'position' => ['nullable', 'string', 'max:100'],
@@ -79,6 +81,8 @@ class FacultyController extends Controller
                 'password' => $validated['password'],
                 'account_type' => 'faculty',
                 'is_active' => false,
+                'security_question' => $validated['security_question'] ?? null,
+                'security_answer' => $validated['security_answer'] ?? null,
             ]);
 
             if (Role::query()->where('name', 'user')->exists()) {

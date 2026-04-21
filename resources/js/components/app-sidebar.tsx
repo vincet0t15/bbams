@@ -53,11 +53,6 @@ export function AppSidebar() {
                     href: dashboard(),
                     icon: LayoutGrid,
                 },
-                {
-                    title: 'Profile Settings',
-                    href: '/settings/profile',
-                    icon: Shield,
-                },
             ],
         },
         {

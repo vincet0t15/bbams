@@ -75,7 +75,15 @@ export default function StudentCreateDialog({
                 <DialogHeader>
                     <DialogTitle>Create student</DialogTitle>
                     <DialogDescription>
-                        Enter student details. <a href="/register" target="_blank" rel="noreferrer" className="text-sm text-primary hover:underline">Open full register page</a>
+                        Enter student details.{' '}
+                        <a
+                            href="/register"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-sm text-primary hover:underline"
+                        >
+                            Open full register page
+                        </a>
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={submit}>
@@ -215,17 +223,23 @@ export default function StudentCreateDialog({
 
                         <div className="flex items-center justify-between space-x-4">
                             <div className="w-1/2 space-y-2">
-                                <Label htmlFor="security_question">Security Question</Label>
+                                <Label htmlFor="security_question">
+                                    Security Question
+                                </Label>
                                 <Input
                                     id="security_question"
                                     placeholder="e.g., What is your pet's name?"
                                     value={data.security_question ?? ''}
                                     onChange={handleTextChange}
                                 />
-                                <InputError message={errors.security_question as any} />
+                                <InputError
+                                    message={errors.security_question as any}
+                                />
                             </div>
                             <div className="w-1/2 space-y-2">
-                                <Label htmlFor="security_answer">Security Answer</Label>
+                                <Label htmlFor="security_answer">
+                                    Security Answer
+                                </Label>
                                 <Input
                                     id="security_answer"
                                     type="text"
@@ -233,7 +247,9 @@ export default function StudentCreateDialog({
                                     value={data.security_answer ?? ''}
                                     onChange={handleTextChange}
                                 />
-                                <InputError message={errors.security_answer as any} />
+                                <InputError
+                                    message={errors.security_answer as any}
+                                />
                             </div>
                         </div>
                         <div className="flex items-center justify-between space-x-4">

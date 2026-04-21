@@ -14,6 +14,8 @@ export interface StaffCreateRequest {
     email: string;
     password: string;
     password_confirmation: string;
+    security_question?: string;
+    security_answer?: string;
     employee_no?: string;
     department?: string;
     position?: string;

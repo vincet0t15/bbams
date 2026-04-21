@@ -29,6 +29,8 @@ export default function FacultyCreateDialog({ open, setOpen }: Props) {
             email: '',
             password: '',
             password_confirmation: '',
+            security_question: '',
+            security_answer: '',
             employee_no: '',
             department: '',
             position: '',
@@ -183,6 +185,38 @@ export default function FacultyCreateDialog({ open, setOpen }: Props) {
                                 onChange={handleTextChange}
                             />
                             <InputError message={errors.position as any} />
+                        </div>
+
+                        <div className="flex items-center justify-between space-x-4">
+                            <div className="w-1/2 space-y-2">
+                                <Label htmlFor="security_question">
+                                    Security Question
+                                </Label>
+                                <Input
+                                    id="security_question"
+                                    placeholder="e.g., What is your pet's name?"
+                                    value={data.security_question ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError
+                                    message={errors.security_question as any}
+                                />
+                            </div>
+                            <div className="w-1/2 space-y-2">
+                                <Label htmlFor="security_answer">
+                                    Security Answer
+                                </Label>
+                                <Input
+                                    id="security_answer"
+                                    type="text"
+                                    placeholder="Answer"
+                                    value={data.security_answer ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError
+                                    message={errors.security_answer as any}
+                                />
+                            </div>
                         </div>
                         <Button
                             className="w-full"
