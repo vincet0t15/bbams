@@ -23,6 +23,7 @@ Route::prefix('api')->group(function () {
     Route::get('/users/search', [ForgotPasswordController::class, 'search']);
     Route::post('/forgot-password/verify', [ForgotPasswordController::class, 'verify']);
     Route::post('/forgot-password/reset', [ForgotPasswordController::class, 'reset']);
+    Route::post('/forgot-password/email', [ForgotPasswordController::class, 'sendResetLink']);
 });
 
 Route::middleware(['auth', 'active', 'verified'])->group(function () {
