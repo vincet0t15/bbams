@@ -226,12 +226,40 @@ export default function StudentCreateDialog({
                                 <Label htmlFor="security_question">
                                     Security Question
                                 </Label>
-                                <Input
-                                    id="security_question"
-                                    placeholder="e.g., What is your pet's name?"
-                                    value={data.security_question ?? ''}
-                                    onChange={handleTextChange}
-                                />
+                                <Select
+                                    value={data.security_question ?? 'none'}
+                                    onValueChange={(val) =>
+                                        setData(
+                                            'security_question',
+                                            val === 'none' ? '' : val,
+                                        )
+                                    }
+                                >
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Select a security question" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">
+                                            Select a question
+                                        </SelectItem>
+                                        <SelectItem value="What was your first pet's name?">
+                                            What was your first pet's name?
+                                        </SelectItem>
+                                        <SelectItem value="What is your mother's maiden name?">
+                                            What is your mother's maiden name?
+                                        </SelectItem>
+                                        <SelectItem value="What was the name of your first school?">
+                                            What was the name of your first
+                                            school?
+                                        </SelectItem>
+                                        <SelectItem value="What is your favorite color?">
+                                            What is your favorite color?
+                                        </SelectItem>
+                                        <SelectItem value="In what city were you born?">
+                                            In what city were you born?
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
                                 <InputError
                                     message={errors.security_question as any}
                                 />

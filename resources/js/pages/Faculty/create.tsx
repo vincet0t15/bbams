@@ -12,6 +12,13 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import type { FacultyCreateRequest } from '@/types/faculty';
 
@@ -42,6 +49,14 @@ export default function FacultyCreateDialog({ open, setOpen }: Props) {
             [e.target.id]: e.target.value,
         });
     };
+
+    const securityQuestions = [
+        "What was your first pet's name?",
+        "What is your mother's maiden name?",
+        'What was the name of your first school?',
+        'What is your favorite color?',
+        'In what city were you born?',
+    ];
 
     const submit: SubmitEventHandler = (e) => {
         e.preventDefault();
@@ -192,12 +207,29 @@ export default function FacultyCreateDialog({ open, setOpen }: Props) {
                                 <Label htmlFor="security_question">
                                     Security Question
                                 </Label>
-                                <Input
-                                    id="security_question"
-                                    placeholder="e.g., What is your pet's name?"
-                                    value={data.security_question ?? ''}
-                                    onChange={handleTextChange}
-                                />
+                                <Select
+                                    value={data.security_question ?? 'none'}
+                                    onValueChange={(val) =>
+                                        setData(
+                                            'security_question',
+                                            val === 'none' ? '' : val,
+                                        )
+                                    }
+                                >
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Select a security question" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">
+                                            Select a question
+                                        </SelectItem>
+                                        {securityQuestions.map((q) => (
+                                            <SelectItem key={q} value={q}>
+                                                {q}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                                 <InputError
                                     message={errors.security_question as any}
                                 />
