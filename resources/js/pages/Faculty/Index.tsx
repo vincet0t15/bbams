@@ -3,6 +3,7 @@ import { PlusIcon } from 'lucide-react';
 import { useState } from 'react';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import Pagination from '@/components/paginationData';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -82,12 +83,62 @@ export default function FacultyIndex({ facultyList, filters }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Faculty" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto p-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+                    <Card className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white">
+                        <CardHeader>
+                            <CardTitle>Total Faculty</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-3xl font-bold">
+                            {facultyList.total ?? 0}
+                        </CardContent>
+                    </Card>
+
+                    <Card className="bg-gradient-to-r from-sky-500 to-cyan-500 text-white">
+                        <CardHeader>
+                            <CardTitle>Departments</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-3xl font-bold">
+                            {/* placeholder */}0
+                        </CardContent>
+                    </Card>
+
+                    <Card className="bg-gradient-to-r from-orange-400 to-rose-500 text-white">
+                        <CardHeader>
+                            <CardTitle>Positions</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-3xl font-bold">
+                            {/* placeholder */}0
+                        </CardContent>
+                    </Card>
+
+                    <Card className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white">
+                        <CardHeader>
+                            <CardTitle>Active</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-3xl font-bold">
+                            {facultyList.total ?? 0}
+                        </CardContent>
+                    </Card>
+                </div>
+
+                <Card className="mt-2 border-green-100 bg-green-50">
+                    <CardContent>
+                        <div className="flex items-center gap-4">
+                            <div className="text-sm font-medium">Quick Tip</div>
+                            <div className="text-sm text-muted-foreground">
+                                Click a faculty row to open their profile, edit
+                                details, or manage records.
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
                 <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <Button
-                        variant="outline"
+                        variant="default"
                         size="sm"
-                        className="cursor-pointer"
+                        className="cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white"
                         onClick={() => setOpenCreate(true)}
                     >
                         <PlusIcon />
@@ -101,8 +152,10 @@ export default function FacultyIndex({ facultyList, filters }: Props) {
                             placeholder="Search by name, email, or employee no..."
                             value={data.search}
                         />
+                        <div className="hidden items-center gap-2 sm:flex" />
                         <Button
-                            variant="outline"
+                            variant="default"
+                            className="bg-sky-500 hover:bg-sky-600 text-white"
                             onClick={() => {
                                 const query: Record<string, string> = {};
 
@@ -112,9 +165,7 @@ export default function FacultyIndex({ facultyList, filters }: Props) {
 
                                 router.get(
                                     '/faculties',
-                                    Object.keys(query).length
-                                        ? query
-                                        : undefined,
+                                    Object.keys(query).length ? query : undefined,
                                     {
                                         preserveScroll: true,
                                         preserveState: true,
@@ -124,12 +175,25 @@ export default function FacultyIndex({ facultyList, filters }: Props) {
                         >
                             Search
                         </Button>
+                        <Button
+                            variant="outline"
+                            className="border-gray-200 text-muted-foreground"
+                            onClick={() => {
+                                setData({ search: '' } as any);
+                                router.get('/faculties', undefined, {
+                                    preserveScroll: true,
+                                    preserveState: true,
+                                });
+                            }}
+                        >
+                            Reset
+                        </Button>
                     </div>
                 </div>
 
-                <div className="w-full overflow-hidden rounded-sm border shadow-sm">
+                <div className="w-full overflow-hidden rounded-xl border bg-card shadow-sm">
                     <Table>
-                        <TableHeader className="bg-muted/50">
+                        <TableHeader className="rounded-tl-xl rounded-tr-xl bg-muted/50">
                             <TableRow>
                                 <TableHead className="font-bold text-primary">
                                     Name
@@ -198,11 +262,21 @@ export default function FacultyIndex({ facultyList, filters }: Props) {
                                 ))
                             ) : (
                                 <TableRow>
-                                    <TableCell
-                                        colSpan={7}
-                                        className="py-3 text-center text-gray-500"
-                                    >
-                                        No data available.
+                                    <TableCell colSpan={7} className="p-8">
+                                        <div className="flex h-48 w-full items-center justify-center">
+                                            <div className="text-center">
+                                                <div className="mb-4 text-4xl text-muted-foreground">
+                                                    👩‍🏫
+                                                </div>
+                                                <div className="text-lg font-semibold">
+                                                    No faculty found
+                                                </div>
+                                                <div className="text-sm text-muted-foreground">
+                                                    Add your first faculty to
+                                                    get started
+                                                </div>
+                                            </div>
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             )}

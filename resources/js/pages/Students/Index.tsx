@@ -3,6 +3,13 @@ import { PlusIcon } from 'lucide-react';
 import { useState } from 'react';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import Pagination from '@/components/paginationData';
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+    CardDescription,
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -109,12 +116,62 @@ export default function StudentsIndex({
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Students" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto p-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+                    <Card className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white">
+                        <CardHeader>
+                            <CardTitle>Total Students</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-3xl font-bold">
+                            {studentList.total ?? 0}
+                        </CardContent>
+                    </Card>
+
+                    <Card className="bg-gradient-to-r from-sky-500 to-cyan-500 text-white">
+                        <CardHeader>
+                            <CardTitle>Programs</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-3xl font-bold">
+                            {courses.length}
+                        </CardContent>
+                    </Card>
+
+                    <Card className="bg-gradient-to-r from-orange-400 to-rose-500 text-white">
+                        <CardHeader>
+                            <CardTitle>Year Levels</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-3xl font-bold">
+                            {yearLevels.length}
+                        </CardContent>
+                    </Card>
+
+                    <Card className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white">
+                        <CardHeader>
+                            <CardTitle>Active</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-3xl font-bold">
+                            {studentList.total ?? 0}
+                        </CardContent>
+                    </Card>
+                </div>
+
+                <Card className="mt-2 border-green-100 bg-green-50">
+                    <CardContent>
+                        <div className="flex items-center gap-4">
+                            <div className="text-sm font-medium">Quick Tip</div>
+                            <div className="text-sm text-muted-foreground">
+                                Click a student row to open their profile, edit
+                                details, or manage records.
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
                 <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <Button
-                        variant="outline"
+                        variant="default"
                         size="sm"
-                        className="cursor-pointer"
+                        className="cursor-pointer bg-emerald-600 text-white hover:bg-emerald-700"
                         onClick={() => setOpenCreate(true)}
                     >
                         <PlusIcon />
@@ -181,7 +238,8 @@ export default function StudentsIndex({
                             </div>
                         </div>
                         <Button
-                            variant="outline"
+                            variant="default"
+                            className="bg-sky-500 text-white hover:bg-sky-600"
                             onClick={() => {
                                 const query: Record<string, string> = {};
 
@@ -218,7 +276,8 @@ export default function StudentsIndex({
                             Search
                         </Button>
                         <Button
-                            variant="ghost"
+                            variant="outline"
+                            className="border-gray-200 text-muted-foreground"
                             onClick={() => {
                                 setData({
                                     search: '',
@@ -236,9 +295,9 @@ export default function StudentsIndex({
                     </div>
                 </div>
 
-                <div className="w-full overflow-hidden rounded-sm border shadow-sm">
+                <div className="w-full overflow-hidden rounded-xl border bg-card shadow-sm">
                     <Table>
-                        <TableHeader className="bg-muted/50">
+                        <TableHeader className="rounded-tl-xl rounded-tr-xl bg-muted/50">
                             <TableRow>
                                 <TableHead className="font-bold text-primary">
                                     Name
@@ -309,11 +368,21 @@ export default function StudentsIndex({
                                 ))
                             ) : (
                                 <TableRow>
-                                    <TableCell
-                                        colSpan={8}
-                                        className="py-3 text-center text-gray-500"
-                                    >
-                                        No data available.
+                                    <TableCell colSpan={8} className="p-8">
+                                        <div className="flex h-48 w-full items-center justify-center">
+                                            <div className="text-center">
+                                                <div className="mb-4 text-4xl text-muted-foreground">
+                                                    👥
+                                                </div>
+                                                <div className="text-lg font-semibold">
+                                                    No students found
+                                                </div>
+                                                <div className="text-sm text-muted-foreground">
+                                                    Add your first student to
+                                                    get started
+                                                </div>
+                                            </div>
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             )}
