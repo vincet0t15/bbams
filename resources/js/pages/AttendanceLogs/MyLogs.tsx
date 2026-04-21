@@ -299,7 +299,7 @@ export default function MyLogs({ logList, events, filters, user }: Props) {
                                                     className={
                                                         log.check_type === 0
                                                             ? 'bg-green-600 hover:bg-green-700'
-                                                            : 'bg-red-600 hover:bg-red-700'
+                                                            : 'bg-orange-600 text-white hover:bg-orange-700'
                                                     }
                                                 >
                                                     {log.check_type_label}
