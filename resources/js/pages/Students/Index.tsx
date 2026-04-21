@@ -325,7 +325,12 @@ export default function StudentsIndex({
                         <TableBody>
                             {studentList.data.length > 0 ? (
                                 studentList.data.map((s) => (
-                                    <TableRow key={s.id} className="text-sm">
+                                    <TableRow
+                                        key={s.id}
+                                        className="cursor-pointer text-sm hover:bg-muted/10"
+                                        role="button"
+                                        onClick={() => handleEditClick(s)}
+                                    >
                                         <TableCell className="text-sm">
                                             {s.user?.name}
                                         </TableCell>
@@ -347,22 +352,28 @@ export default function StudentsIndex({
                                             {s.section || '-'}
                                         </TableCell>
                                         <TableCell className="flex gap-2 text-sm">
-                                            <span
-                                                onClick={() =>
-                                                    handleEditClick(s)
-                                                }
-                                                className="cursor-pointer text-green-500 hover:text-green-700 hover:underline"
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="text-green-500 hover:text-green-700"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleEditClick(s);
+                                                }}
                                             >
                                                 Edit
-                                            </span>
-                                            <span
-                                                onClick={() =>
-                                                    handleDeleteClick(s)
-                                                }
-                                                className="cursor-pointer text-red-500 hover:text-orange-700 hover:underline"
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="text-red-500 hover:text-orange-700"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleDeleteClick(s);
+                                                }}
                                             >
                                                 Delete
-                                            </span>
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))
@@ -380,6 +391,17 @@ export default function StudentsIndex({
                                                 <div className="text-sm text-muted-foreground">
                                                     Add your first student to
                                                     get started
+                                                </div>
+                                                <div className="mt-4">
+                                                    <Button
+                                                        variant="default"
+                                                        className="bg-emerald-600 text-white hover:bg-emerald-700"
+                                                        onClick={() =>
+                                                            setOpenCreate(true)
+                                                        }
+                                                    >
+                                                        Add Student
+                                                    </Button>
                                                 </div>
                                             </div>
                                         </div>

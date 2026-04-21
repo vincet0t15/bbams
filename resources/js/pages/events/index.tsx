@@ -76,12 +76,55 @@ export default function EventsIndex({ eventList, filters }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Events" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto p-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+                    <div className="col-span-1">
+                        <div className="rounded-md bg-gradient-to-r from-emerald-500 to-teal-500 p-4 text-white">
+                            <div className="text-sm font-medium">
+                                Total Events
+                            </div>
+                            <div className="text-3xl font-bold">
+                                {eventList.total ?? 0}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-span-1">
+                        <div className="rounded-md bg-gradient-to-r from-sky-500 to-cyan-500 p-4 text-white">
+                            <div className="text-sm font-medium">Upcoming</div>
+                            <div className="text-3xl font-bold">0</div>
+                        </div>
+                    </div>
+                    <div className="col-span-1">
+                        <div className="rounded-md bg-gradient-to-r from-orange-400 to-rose-500 p-4 text-white">
+                            <div className="text-sm font-medium">Ongoing</div>
+                            <div className="text-3xl font-bold">0</div>
+                        </div>
+                    </div>
+                    <div className="col-span-1">
+                        <div className="rounded-md bg-gradient-to-r from-violet-500 to-fuchsia-500 p-4 text-white">
+                            <div className="text-sm font-medium">Past</div>
+                            <div className="text-3xl font-bold">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <Card className="mt-2 border-green-100 bg-green-50">
+                    <CardContent>
+                        <div className="flex items-center gap-4">
+                            <div className="text-sm font-medium">Quick Tip</div>
+                            <div className="text-sm text-muted-foreground">
+                                Click an event row to open edit, or use the
+                                action buttons.
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
                 <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <Button
-                        variant="outline"
+                        variant="default"
                         size="sm"
-                        className="cursor-pointer"
+                        className="cursor-pointer bg-emerald-600 text-white hover:bg-emerald-700"
                         onClick={() => setOpenCreate(true)}
                     >
                         <PlusIcon />
@@ -92,15 +135,30 @@ export default function EventsIndex({ eventList, filters }: Props) {
                         <Input
                             onKeyDown={handleKeyDown}
                             onChange={handleSearchChange}
-                            placeholder="Search..."
+                            placeholder="Search by title or location..."
                             value={data.search}
                         />
+                        <Button
+                            variant="default"
+                            className="bg-sky-500 text-white hover:bg-sky-600"
+                            onClick={() => {
+                                const queryString = data.search
+                                    ? { search: data.search }
+                                    : undefined;
+                                router.get('/events', queryString, {
+                                    preserveState: true,
+                                    preserveScroll: true,
+                                });
+                            }}
+                        >
+                            Search
+                        </Button>
                     </div>
                 </div>
 
-                <div className="w-full overflow-hidden rounded-sm border shadow-sm">
+                <div className="w-full overflow-hidden rounded-xl border bg-card shadow-sm">
                     <Table>
-                        <TableHeader className="bg-muted/50">
+                        <TableHeader className="rounded-tl-xl rounded-tr-xl bg-muted/50">
                             <TableRow>
                                 <TableHead className="font-bold text-primary">
                                     Title
@@ -124,7 +182,9 @@ export default function EventsIndex({ eventList, filters }: Props) {
                                 eventList.data.map((event) => (
                                     <TableRow
                                         key={event.id}
-                                        className="text-sm"
+                                        className="cursor-pointer text-sm hover:bg-muted/10"
+                                        role="button"
+                                        onClick={() => handleEditClick(event)}
                                     >
                                         <TableCell className="text-sm uppercase">
                                             {event.title}
@@ -139,32 +199,59 @@ export default function EventsIndex({ eventList, filters }: Props) {
                                             {event.end_at || '-'}
                                         </TableCell>
                                         <TableCell className="flex gap-2 text-sm">
-                                            <span
-                                                onClick={() =>
-                                                    handleEditClick(event)
-                                                }
-                                                className="cursor-pointer text-green-500 hover:text-green-700 hover:underline"
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="text-green-500 hover:text-green-700"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleEditClick(event);
+                                                }}
                                             >
                                                 Edit
-                                            </span>
-                                            <span
-                                                onClick={() =>
-                                                    handleDeleteClick(event)
-                                                }
-                                                className="cursor-pointer text-red-500 hover:text-orange-700 hover:underline"
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="text-red-500 hover:text-orange-700"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleDeleteClick(event);
+                                                }}
                                             >
                                                 Delete
-                                            </span>
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))
                             ) : (
                                 <TableRow>
-                                    <TableCell
-                                        colSpan={7}
-                                        className="py-3 text-center text-gray-500"
-                                    >
-                                        No data available.
+                                    <TableCell colSpan={5} className="p-8">
+                                        <div className="flex h-48 w-full items-center justify-center">
+                                            <div className="text-center">
+                                                <div className="mb-4 text-4xl text-muted-foreground">
+                                                    📅
+                                                </div>
+                                                <div className="text-lg font-semibold">
+                                                    No events found
+                                                </div>
+                                                <div className="text-sm text-muted-foreground">
+                                                    Create your first event to
+                                                    get started
+                                                </div>
+                                                <div className="mt-4">
+                                                    <Button
+                                                        variant="default"
+                                                        className="bg-emerald-600 text-white hover:bg-emerald-700"
+                                                        onClick={() =>
+                                                            setOpenCreate(true)
+                                                        }
+                                                    >
+                                                        Add Event
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             )}

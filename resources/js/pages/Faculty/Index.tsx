@@ -138,7 +138,7 @@ export default function FacultyIndex({ facultyList, filters }: Props) {
                     <Button
                         variant="default"
                         size="sm"
-                        className="cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white"
+                        className="cursor-pointer bg-emerald-600 text-white hover:bg-emerald-700"
                         onClick={() => setOpenCreate(true)}
                     >
                         <PlusIcon />
@@ -155,7 +155,7 @@ export default function FacultyIndex({ facultyList, filters }: Props) {
                         <div className="hidden items-center gap-2 sm:flex" />
                         <Button
                             variant="default"
-                            className="bg-sky-500 hover:bg-sky-600 text-white"
+                            className="bg-sky-500 text-white hover:bg-sky-600"
                             onClick={() => {
                                 const query: Record<string, string> = {};
 
@@ -165,7 +165,9 @@ export default function FacultyIndex({ facultyList, filters }: Props) {
 
                                 router.get(
                                     '/faculties',
-                                    Object.keys(query).length ? query : undefined,
+                                    Object.keys(query).length
+                                        ? query
+                                        : undefined,
                                     {
                                         preserveScroll: true,
                                         preserveState: true,
@@ -221,7 +223,12 @@ export default function FacultyIndex({ facultyList, filters }: Props) {
                         <TableBody>
                             {facultyList.data.length > 0 ? (
                                 facultyList.data.map((f) => (
-                                    <TableRow key={f.id} className="text-sm">
+                                    <TableRow
+                                        key={f.id}
+                                        className="cursor-pointer text-sm hover:bg-muted/10"
+                                        role="button"
+                                        onClick={() => handleEditClick(f)}
+                                    >
                                         <TableCell className="text-sm">
                                             {f.user?.name}
                                         </TableCell>
@@ -241,22 +248,28 @@ export default function FacultyIndex({ facultyList, filters }: Props) {
                                             {f.position || '-'}
                                         </TableCell>
                                         <TableCell className="flex gap-2 text-sm">
-                                            <span
-                                                onClick={() =>
-                                                    handleEditClick(f)
-                                                }
-                                                className="cursor-pointer text-green-500 hover:text-green-700 hover:underline"
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="text-green-500 hover:text-green-700"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleEditClick(f);
+                                                }}
                                             >
                                                 Edit
-                                            </span>
-                                            <span
-                                                onClick={() =>
-                                                    handleDeleteClick(f)
-                                                }
-                                                className="cursor-pointer text-red-500 hover:text-orange-700 hover:underline"
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="text-red-500 hover:text-orange-700"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleDeleteClick(f);
+                                                }}
                                             >
                                                 Delete
-                                            </span>
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))
@@ -274,6 +287,17 @@ export default function FacultyIndex({ facultyList, filters }: Props) {
                                                 <div className="text-sm text-muted-foreground">
                                                     Add your first faculty to
                                                     get started
+                                                </div>
+                                                <div className="mt-4">
+                                                    <Button
+                                                        variant="default"
+                                                        className="bg-emerald-600 text-white hover:bg-emerald-700"
+                                                        onClick={() =>
+                                                            setOpenCreate(true)
+                                                        }
+                                                    >
+                                                        Add Faculty
+                                                    </Button>
                                                 </div>
                                             </div>
                                         </div>
