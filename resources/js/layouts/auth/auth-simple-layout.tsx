@@ -8,55 +8,10 @@ export default function AuthSimpleLayout({
     title,
     description,
 }: AuthLayoutProps) {
-    const [bg, setBg] = useState('/images/SAN_VICENTE_CAMPUS.jpg');
-
-    useEffect(() => {
-        const base = '/images/SAN_VICENTE_CAMPUS';
-        const candidates = [
-            `${base}.jpg`,
-            `${base}.jpeg`,
-            `${base}.png`,
-            `${base}.webp`,
-            base,
-        ];
-        let cancelled = false;
-        (async () => {
-            for (const src of candidates) {
-                try {
-                    await new Promise<void>((resolve, reject) => {
-                        const img = new Image();
-                        img.onload = () => resolve();
-                        img.onerror = () => reject(new Error('img error'));
-                        img.src = src;
-                    });
-
-                    if (!cancelled) {
-                        setBg(src);
-                    }
-
-                    break;
-                } catch {
-                    continue;
-                }
-            }
-        })();
-
-        return () => {
-            cancelled = true;
-        };
-    }, []);
+    // plain layout: no background image
 
     return (
-        <div className="relative flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-            <div
-                className="pointer-events-none absolute inset-0 -z-10 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url(${bg})` }}
-                aria-hidden
-            />
-            <div
-                className="pointer-events-none absolute inset-0 -z-10 bg-black/40"
-                aria-hidden
-            />
+        <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
             <div className="w-full max-w-md">
                 <div className="flex flex-col gap-6 p-0">
                     <div className="flex flex-col items-center gap-2">
