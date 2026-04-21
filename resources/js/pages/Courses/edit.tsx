@@ -42,7 +42,7 @@ export default function CourseEditDialog({ open, setOpen, course }: Props) {
         e.preventDefault();
         put(courses.update(course.id).url, {
             onSuccess: () => {
-                toast.success('Course updated successfully');
+                toast.success('Program updated successfully');
                 reset();
                 setOpen(false);
             },
@@ -53,15 +53,15 @@ export default function CourseEditDialog({ open, setOpen, course }: Props) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Edit course</DialogTitle>
+                    <DialogTitle>Edit program</DialogTitle>
                     <DialogDescription>
-                        Edit the details of the course below.
+                        Edit the details of the program below.
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={submit}>
                     <div className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="name">Course Name</Label>
+                            <Label htmlFor="name">Program Name</Label>
                             <Input
                                 id="name"
                                 placeholder="Bachelor of Science in Computer Science"
@@ -71,7 +71,7 @@ export default function CourseEditDialog({ open, setOpen, course }: Props) {
                             <InputError message={errors.name} />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="code">Course Code</Label>
+                            <Label htmlFor="code">Program Code</Label>
                             <Input
                                 id="code"
                                 placeholder="BSCS"
@@ -101,7 +101,7 @@ export default function CourseEditDialog({ open, setOpen, course }: Props) {
                                     Updating...
                                 </span>
                             ) : (
-                                'Update Course'
+                                'Update Program'
                             )}
                         </Button>
                     </div>

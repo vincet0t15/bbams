@@ -137,11 +137,11 @@ export default function StudentsIndex({
                                     }
                                 >
                                     <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="All courses" />
+                                        <SelectValue placeholder="All programs" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">
-                                            All courses
+                                            All programs
                                         </SelectItem>
                                         {courses.map((c) => (
                                             <SelectItem
@@ -250,7 +250,7 @@ export default function StudentsIndex({
                                     Student No
                                 </TableHead>
                                 <TableHead className="font-bold text-primary">
-                                    Course
+                                    Program
                                 </TableHead>
                                 <TableHead className="font-bold text-primary">
                                     Year Level

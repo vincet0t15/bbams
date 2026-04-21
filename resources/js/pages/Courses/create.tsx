@@ -41,7 +41,7 @@ export default function CourseCreateDialog({ open, setOpen }: Props) {
         e.preventDefault();
         post(courses.store.url(), {
             onSuccess: () => {
-                toast.success('Course created successfully');
+                toast.success('Program created successfully');
                 reset();
                 setOpen(false);
             },
@@ -52,15 +52,15 @@ export default function CourseCreateDialog({ open, setOpen }: Props) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Create course</DialogTitle>
+                    <DialogTitle>Create program</DialogTitle>
                     <DialogDescription>
-                        Enter your details below to create your account.
+                        Enter your details below to create your program.
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={submit}>
                     <div className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="name">Course Name</Label>
+                            <Label htmlFor="name">Program Name</Label>
                             <Input
                                 id="name"
                                 placeholder="Bachelor of Science in Computer Science"
@@ -70,7 +70,7 @@ export default function CourseCreateDialog({ open, setOpen }: Props) {
                             <InputError message={errors.name} />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="code">Course Code</Label>
+                            <Label htmlFor="code">Program Code</Label>
                             <Input
                                 id="code"
                                 placeholder="BSCS"
@@ -100,7 +100,7 @@ export default function CourseCreateDialog({ open, setOpen }: Props) {
                                     Creating...
                                 </span>
                             ) : (
-                                'Create Course'
+                                'Create Program'
                             )}
                         </Button>
                     </div>

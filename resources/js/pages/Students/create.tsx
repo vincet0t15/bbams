@@ -186,7 +186,7 @@ export default function StudentCreateDialog({
                                 />
                             </div>
                             <div className="w-1/2 space-y-2">
-                                <Label>Course</Label>
+                                <Label>Program</Label>
                                 <Select
                                     value={
                                         data.course_id
@@ -201,7 +201,7 @@ export default function StudentCreateDialog({
                                     }
                                 >
                                     <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Select course" />
+                                        <SelectValue placeholder="Select program" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="none">

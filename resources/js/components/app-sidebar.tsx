@@ -125,7 +125,7 @@ export function AppSidebar() {
                       title: 'Academic Setup',
                       children: [
                           {
-                              title: 'Courses',
+                              title: 'Programs',
                               href: courses.index.url(),
                               icon: BookOpen,
                           },

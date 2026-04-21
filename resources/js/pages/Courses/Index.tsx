@@ -29,7 +29,7 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/dashboard',
     },
     {
-        title: 'Courses',
+        title: 'Programs',
         href: courses.index.url(),
     },
 ];
@@ -74,7 +74,7 @@ export default function CoursesIndex({ courseList, filters }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Courses" />
+            <Head title="Programs" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <Button
@@ -84,7 +84,7 @@ export default function CoursesIndex({ courseList, filters }: Props) {
                         onClick={() => setOpenCreate(true)}
                     >
                         <PlusIcon />
-                        <span className="rounded-sm lg:inline">Course</span>
+                        <span className="rounded-sm lg:inline">Program</span>
                     </Button>
 
                     <div className="flex items-center gap-2">
@@ -102,10 +102,10 @@ export default function CoursesIndex({ courseList, filters }: Props) {
                         <TableHeader className="bg-muted/50">
                             <TableRow>
                                 <TableHead className="font-bold text-primary">
-                                    Course Name
+                                    Program Name
                                 </TableHead>
                                 <TableHead className="font-bold text-primary">
-                                    Course Code
+                                    Program Code
                                 </TableHead>
                                 <TableHead className="font-bold text-primary">
                                     Action

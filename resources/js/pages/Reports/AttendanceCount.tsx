@@ -310,7 +310,7 @@ export default function AttendanceCountReport({
                     <div className="grid w-full gap-3 sm:grid-cols-2 lg:grid-cols-5">
                         {data.role === 'student' ? (
                             <div className="space-y-2">
-                                <Label>Course</Label>
+                                <Label>Program</Label>
                                 <Select
                                     value={data.course_id}
                                     onValueChange={(v) =>
@@ -318,11 +318,11 @@ export default function AttendanceCountReport({
                                     }
                                 >
                                     <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="All courses" />
+                                        <SelectValue placeholder="All programs" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="all">
-                                            All courses
+                                            All programs
                                         </SelectItem>
                                         {courses.map((c) => (
                                             <SelectItem

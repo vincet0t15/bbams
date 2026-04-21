@@ -331,7 +331,7 @@ export default function Register() {
                         <>
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="course_id">Course</Label>
+                                    <Label htmlFor="course_id">Program</Label>
                                     <Select
                                         value={formData.course_id}
                                         onValueChange={(value) =>
@@ -339,7 +339,7 @@ export default function Register() {
                                         }
                                     >
                                         <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Select course" />
+                                            <SelectValue placeholder="Select program" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {courses.map((course) => (

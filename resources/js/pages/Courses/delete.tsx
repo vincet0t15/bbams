@@ -26,7 +26,7 @@ const CourseDeleteDialog = ({ open, setOpen, course }: Props) => {
         router.delete(courses.destroy.url(course.id), {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success('Course deleted successfully');
+                toast.success('Program deleted successfully');
                 setOpen(false);
             },
         });
@@ -36,10 +36,10 @@ const CourseDeleteDialog = ({ open, setOpen, course }: Props) => {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Delete Course</DialogTitle>
+                    <DialogTitle>Delete Program</DialogTitle>
                     <DialogDescription>
                         This action cannot be undone. This will permanently
-                        delete your course and remove your data from our
+                        delete your program and remove your data from our
                         servers.
                     </DialogDescription>
                 </DialogHeader>
@@ -74,7 +74,7 @@ const CourseDeleteDialog = ({ open, setOpen, course }: Props) => {
                             deleteCourse();
                         }}
                     >
-                        Delete Course
+                        Delete Program
                     </Button>
                 </DialogFooter>
             </DialogContent>
