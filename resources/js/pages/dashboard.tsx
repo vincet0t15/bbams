@@ -1,7 +1,17 @@
 import { Head } from '@inertiajs/react';
-import { Flag, Target, ShieldCheck, Users2 } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+    Flag,
+    Target,
+    ShieldCheck,
+    Users2,
+    Calendar,
+    DollarSign,
+    CreditCard,
+    Briefcase,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import type { BreadcrumbItem } from '@/types';
@@ -31,76 +41,180 @@ export default function Dashboard({ stats }: Props) {
             <Head title="Dashboard" />
 
             <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl p-4">
-                {/* Stats */}
-                <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    <Card className="bg-gradient-to-r from-orange-500 to-rose-500 text-white">
-                        <CardHeader>
-                            <CardTitle>Students</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-3xl font-bold">
-                            {stats?.students ?? 0}
+                {/* Hero / Welcome */}
+                <section className="rounded-xl border bg-gradient-to-r from-blue-50 to-white p-6">
+                    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                        <div>
+                            <h1 className="text-3xl font-extrabold">
+                                Welcome Back,
+                            </h1>
+                            <div className="text-2xl font-semibold">
+                                Administrator
+                            </div>
+                            <div className="mt-2 text-sm text-muted-foreground">
+                                Welcome back! Here’s your latest payroll and
+                                compensation snapshot for{' '}
+                                <span className="font-medium">April 2026</span>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2 rounded-lg border bg-white p-2">
+                                <Calendar className="h-5 w-5 text-muted-foreground" />
+                                <div className="text-sm">April</div>
+                            </div>
+                            <div className="flex items-center gap-2 rounded-lg border bg-white p-2">
+                                <div className="text-sm">2026</div>
+                            </div>
+                            <Button className="ml-2 bg-indigo-600 text-white hover:bg-indigo-700">
+                                View Payroll
+                            </Button>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Summary cards */}
+                <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    <Card className="relative overflow-hidden">
+                        <CardContent>
+                            <div className="flex justify-between">
+                                <div>
+                                    <div className="text-sm">
+                                        Total Employees
+                                    </div>
+                                    <div className="text-3xl font-bold">
+                                        {stats?.students ?? 0}
+                                    </div>
+                                    <div className="text-sm text-muted-foreground">
+                                        Active workforce
+                                    </div>
+                                </div>
+                                <div className="rounded-full bg-blue-50 p-3">
+                                    <Users2 className="h-6 w-6 text-blue-600" />
+                                </div>
+                            </div>
                         </CardContent>
                     </Card>
-                    <Card className="bg-gradient-to-r from-orange-500 to-rose-500 text-white">
-                        <CardHeader>
-                            <CardTitle>Faculty</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-3xl font-bold">
-                            {stats?.faculties ?? 0}
+
+                    <Card>
+                        <CardContent>
+                            <div className="flex justify-between">
+                                <div>
+                                    <div className="text-sm">Total Offices</div>
+                                    <div className="text-3xl font-bold">18</div>
+                                    <div className="text-sm text-muted-foreground">
+                                        Departments
+                                    </div>
+                                </div>
+                                <div className="rounded-full bg-emerald-50 p-3">
+                                    <Briefcase className="h-6 w-6 text-emerald-600" />
+                                </div>
+                            </div>
                         </CardContent>
                     </Card>
-                    <Card className="bg-gradient-to-r from-orange-500 to-rose-500 text-white">
-                        <CardHeader>
-                            <CardTitle>Staff</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-3xl font-bold">
-                            {stats?.staff ?? 0}
+
+                    <Card>
+                        <CardContent>
+                            <div className="flex justify-between">
+                                <div>
+                                    <div className="text-sm">
+                                        April Deductions
+                                    </div>
+                                    <div className="text-3xl font-bold">₱0</div>
+                                    <div className="text-sm text-muted-foreground">
+                                        0 entries • 0 employees
+                                    </div>
+                                </div>
+                                <div className="rounded-full bg-orange-50 p-3">
+                                    <DollarSign className="h-6 w-6 text-orange-500" />
+                                </div>
+                            </div>
                         </CardContent>
                     </Card>
-                    <Card className="bg-gradient-to-r from-orange-500 to-rose-500 text-white">
-                        <CardHeader>
-                            <CardTitle>Events</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-3xl font-bold">
-                            {stats?.events ?? 0}
-                        </CardContent>
-                    </Card>
-                    <Card className="bg-gradient-to-r from-orange-500 to-rose-500 text-white">
-                        <CardHeader>
-                            <CardTitle>Today IN</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-3xl font-bold">
-                            {stats?.today_in ?? 0}
-                        </CardContent>
-                    </Card>
-                    <Card className="bg-gradient-to-r from-orange-500 to-rose-500 text-white">
-                        <CardHeader>
-                            <CardTitle>Today OUT</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-3xl font-bold">
-                            {stats?.today_out ?? 0}
+
+                    <Card>
+                        <CardContent>
+                            <div className="flex justify-between">
+                                <div>
+                                    <div className="text-sm">Total Claims</div>
+                                    <div className="text-3xl font-bold">₱0</div>
+                                    <div className="text-sm text-muted-foreground">
+                                        0 total claims
+                                    </div>
+                                </div>
+                                <div className="rounded-full bg-violet-50 p-3">
+                                    <CreditCard className="h-6 w-6 text-violet-600" />
+                                </div>
+                            </div>
                         </CardContent>
                     </Card>
                 </section>
 
-                {/* Hero */}
-                <section className="relative overflow-hidden rounded-xl border bg-gradient-to-r from-muted to-background">
-                    <div className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(50%_50%_at_50%_0%,black,transparent)]" />
-                    <div className="relative flex flex-col items-center gap-4 px-6 py-10 text-center sm:flex-row sm:items-center sm:gap-6 sm:text-left">
-                        <div className="space-y-1">
-                            <h2 className="text-xl font-semibold tracking-tight">
-                                Biometric-Based Attendance Monitoring System
-                            </h2>
-                            <p className="text-2xl leading-tight font-extrabold">
-                                BBAMS
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                                {stats?.latest_event
-                                    ? `Latest event: ${stats.latest_event.title}`
-                                    : 'Campus overview and mission-driven information.'}
-                            </p>
-                        </div>
-                    </div>
+                {/* Compensation Overview */}
+                <section>
+                    <Card>
+                        <CardHeader>
+                            <div className="flex items-center gap-3">
+                                <div className="rounded-lg bg-blue-100 p-2">
+                                    <DollarSign className="h-5 w-5 text-blue-600" />
+                                </div>
+                                <CardTitle>Compensation Overview</CardTitle>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="text-sm text-muted-foreground">
+                                Total compensation breakdown across all
+                                employees
+                            </div>
+                            <div className="grid gap-4 md:grid-cols-3">
+                                <div className="rounded-lg border bg-white p-4">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <div className="text-sm">
+                                                Total Salaries
+                                            </div>
+                                            <div className="text-2xl font-bold">
+                                                0
+                                            </div>
+                                        </div>
+                                        <div className="rounded-full bg-blue-50 p-3">
+                                            <DollarSign className="h-6 w-6 text-blue-600" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="rounded-lg border bg-white p-4">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <div className="text-sm">
+                                                PERA Allowances
+                                            </div>
+                                            <div className="text-2xl font-bold">
+                                                0
+                                            </div>
+                                        </div>
+                                        <div className="rounded-full bg-emerald-50 p-3">
+                                            <Briefcase className="h-6 w-6 text-emerald-600" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="rounded-lg border bg-white p-4">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <div className="text-sm">
+                                                RATA Benefits
+                                            </div>
+                                            <div className="text-2xl font-bold">
+                                                0
+                                            </div>
+                                        </div>
+                                        <div className="rounded-full bg-orange-50 p-3">
+                                            <CreditCard className="h-6 w-6 text-orange-500" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </section>
 
                 {/* Vision & Mission */}
