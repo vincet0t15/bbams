@@ -70,7 +70,7 @@ class ReportsController extends Controller
                         'id' => $log->user?->id,
                         'name' => $log->user?->name,
                         'username' => $log->user?->username,
-                        'role' => $log->user?->getRoleNames()->first(),
+                        'role' => $log->user?->getRoleNames()->first() ?? $log->user?->account_type ?? null,
                     ],
                     'event' => [
                         'id' => $log->event?->id,
@@ -135,26 +135,65 @@ class ReportsController extends Controller
             ->orderBy('date_time')
             ->get();
 
+        // Determine check_type mapping to support older/legacy values
+        $distinctTypes = $allLogs->pluck('check_type')->unique()->values()->filter(fn($t) => $t !== null)->all();
+        $inValues = [];
+        $outValues = [];
+
+        if (in_array(0, $distinctTypes, true) || in_array('0', $distinctTypes, true)) {
+            // current mapping: 0 => IN, 1 => OUT
+            $inValues = [0, '0'];
+            $outValues = [1, '1'];
+        } elseif (in_array(1, $distinctTypes, true) && in_array(2, $distinctTypes, true)) {
+            // legacy mapping: 1 => IN, 2 => OUT
+            $inValues = [1, '1'];
+            $outValues = [2, '2'];
+        } elseif (in_array('in', $distinctTypes, true) || in_array('IN', $distinctTypes, true)) {
+            // string mapping
+            $inValues = ['in', 'IN'];
+            $outValues = ['out', 'OUT'];
+        } else {
+            // fallback to treat 0/1 as default
+            $inValues = [0, '0', 1, '1'];
+            $outValues = [1, '1', 2, '2'];
+        }
+
         // Group by user
-        $grouped = $allLogs->groupBy('user_id')->map(function ($logs) use ($eventTitleColumn) {
+        $grouped = $allLogs->groupBy('user_id')->map(function ($logs) use ($eventTitleColumn, $inValues, $outValues) {
             $user = $logs->first()->user;
-            $presentDays = $logs->where('check_type', 0)->map(function (AttendanceLog $l) {
+            $presentDays = $logs->whereIn('check_type', $inValues)->map(function (AttendanceLog $l) {
                 return Carbon::parse($l->date_time)->toDateString();
             })->unique()->values();
 
-            $totalIn = $logs->where('check_type', 0)->count();
-            $totalOut = $logs->where('check_type', 1)->count();
+            $totalIn = $logs->whereIn('check_type', $inValues)->count();
+            $totalOut = $logs->whereIn('check_type', $outValues)->count();
 
             $events = $logs->map(function (AttendanceLog $l) use ($eventTitleColumn) {
                 return $l->event?->getAttribute($eventTitleColumn);
             })->filter()->unique()->values();
+
+            $roleName = $user?->getRoleNames()->first() ?? $user?->account_type ?? null;
+
+            // Normalize role using related models (student/faculty/staff) when available
+            $normalized = null;
+            if ($user?->student) {
+                $normalized = 'student';
+            } elseif ($user?->faculty) {
+                $normalized = 'faculty';
+            } elseif ($user?->staff) {
+                $normalized = 'staff';
+            } elseif ($roleName && in_array(strtolower((string) $roleName), ['student', 'faculty', 'staff'])) {
+                $normalized = strtolower((string) $roleName);
+            }
+
+            $displayRole = $normalized ?? $roleName ?? null;
 
             return [
                 'user' => [
                     'id' => $user?->id,
                     'name' => $user?->name,
                     'username' => $user?->username,
-                    'role' => $user?->getRoleNames()->first(),
+                    'role' => $displayRole,
                 ],
                 'total_in' => $totalIn,
                 'total_out' => $totalOut,
@@ -192,7 +231,7 @@ class ReportsController extends Controller
         ];
 
         foreach ($grouped as $row) {
-            $userRole = $row['user']['role'];
+            $userRole = strtolower((string) ($row['user']['role'] ?? ''));
             if (in_array($userRole, ['student', 'faculty', 'staff'])) {
                 $summaryByRole[$userRole]['total_users']++;
                 $summaryByRole[$userRole]['total_in'] += $row['total_in'];
