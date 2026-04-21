@@ -26,7 +26,11 @@ export function NavMain({ items = [] }: { items: NavGroup[] }) {
                                     tooltip={{ children: item.title }}
                                 >
                                     <Link href={item.href} prefetch>
-                                        {item.icon && <item.icon />}
+                                        {item.icon && (
+                                            <item.icon
+                                                className={`mr-2 h-4 w-4 ${item.color ?? 'text-muted-foreground'}`}
+                                            />
+                                        )}
                                         <span>{item.title}</span>
                                     </Link>
                                 </SidebarMenuButton>

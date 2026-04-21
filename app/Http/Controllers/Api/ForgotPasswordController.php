@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rules\Password as ValidationPassword;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class ForgotPasswordController extends Controller
 {
@@ -32,7 +34,7 @@ class ForgotPasswordController extends Controller
         if (empty($user->security_question) || empty($user->security_answer)) {
             return response()->json([
                 'valid' => false,
-                'message' => 'Account has no security question set. Please contact admin.',
+                'message' => 'Account has no security question set.',
             ], 422);
         }
 
@@ -45,14 +47,22 @@ class ForgotPasswordController extends Controller
             ], 422);
         }
 
-        return response()->json(['valid' => true]);
+        // Generate a temporary password, set it for the user, and return it
+        $tempPassword = Str::random(10);
+        $user->password = Hash::make($tempPassword);
+        $user->save();
+
+        return response()->json([
+            'valid' => true,
+            'temp_password' => $tempPassword,
+        ]);
     }
 
     public function reset(Request $request)
     {
         $request->validate([
             'user_id' => ['required', 'exists:users,id'],
-            'password' => ['required', 'confirmed', Password::defaults()],
+            'password' => ['required', 'confirmed', ValidationPassword::defaults()],
         ]);
 
         $user = User::findOrFail($request->user_id);
@@ -75,41 +85,5 @@ class ForgotPasswordController extends Controller
         }
 
         return response()->json(['email' => 'Unable to send reset link.'], 422);
-    }
-}
-
-    public function verify(Request $request)
-    {
-        $request->validate([
-            'user_id' => ['required', 'exists:users,id'],
-            'security_answer' => ['required', 'string'],
-        ]);
-
-        $user = User::findOrFail($request->user_id);
-
-        $answerMatches = strtolower(trim($user->security_answer)) === strtolower(trim($request->security_answer));
-
-        if (! $answerMatches) {
-            return response()->json([
-                'valid' => false,
-                'message' => 'Incorrect answer.',
-            ], 422);
-        }
-
-        return response()->json(['valid' => true]);
-    }
-
-    public function reset(Request $request)
-    {
-        $request->validate([
-            'user_id' => ['required', 'exists:users,id'],
-            'password' => ['required', 'confirmed', Password::defaults()],
-        ]);
-
-        $user = User::findOrFail($request->user_id);
-        $user->password = $request->password;
-        $user->save();
-
-        return response()->json(['message' => 'Password reset successfully.']);
     }
 }

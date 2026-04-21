@@ -26,8 +26,11 @@ type User = {
 };
 
 export default function ForgotPassword() {
-    const [step, setStep] = useState<'email' | 'question' | 'reset'>('email');
+    const [step, setStep] = useState<'email' | 'question' | 'reset' | 'done'>(
+        'email',
+    );
     const [email, setEmail] = useState('');
+    const [tempPassword, setTempPassword] = useState<string | null>(null);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [users, setUsers] = useState<User[]>([]);
     const [formData, setFormData] = useState({
@@ -69,6 +72,24 @@ export default function ForgotPassword() {
         }
     };
 
+    const handleSendResetLink = async (e?: React.FormEvent) => {
+        e?.preventDefault();
+        setProcessing(true);
+        setErrors({});
+
+        try {
+            await axios.post('/api/forgot-password/email', { email });
+            toast.success('If that email exists, a reset link was sent.');
+        } catch (error: any) {
+            setErrors({
+                email:
+                    error.response?.data?.email || 'Unable to send reset link.',
+            });
+        } finally {
+            setProcessing(false);
+        }
+    };
+
     const handleSelectUser = (user: User) => {
         setSelectedUser(user);
         setStep('question');
@@ -78,14 +99,16 @@ export default function ForgotPassword() {
         e.preventDefault();
         setProcessing(true);
         setErrors({});
-
         try {
             const response = await axios.post('/api/forgot-password/verify', {
                 user_id: selectedUser?.id,
                 security_answer: formData.security_answer,
             });
 
-            if (response.data.valid) {
+            if (response.data.temp_password) {
+                setTempPassword(response.data.temp_password);
+                setStep('done');
+            } else if (response.data.valid) {
                 setStep('reset');
             } else {
                 setErrors({
@@ -179,11 +202,24 @@ export default function ForgotPassword() {
                         </Button>
                     )}
 
-                    {users.length > 1 && (
-                        <Button type="submit" className="w-full">
-                            Continue
+                    <div className="flex gap-2">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            className="flex-1"
+                            onClick={handleSendResetLink}
+                            disabled={processing}
+                        >
+                            {processing
+                                ? 'Sending…'
+                                : 'Send reset link by email'}
                         </Button>
-                    )}
+                        {users.length > 1 && (
+                            <Button type="submit" className="w-40">
+                                Continue
+                            </Button>
+                        )}
+                    </div>
 
                     <div className="text-center text-sm text-muted-foreground">
                         Remember your password?{' '}
@@ -302,6 +338,41 @@ export default function ForgotPassword() {
                         Reset Password
                     </Button>
                 </form>
+            )}
+            {step === 'done' && tempPassword && (
+                <div className="flex flex-col gap-6">
+                    <div className="grid gap-2">
+                        <Label>Temporary Password</Label>
+                        <div className="rounded-md bg-muted p-3 text-sm break-all">
+                            {tempPassword}
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                            A temporary password was created for your account.
+                            Use it to log in, then change your password from
+                            your profile.
+                        </p>
+                    </div>
+
+                    <div className="flex gap-2">
+                        <Button
+                            type="button"
+                            className="flex-1"
+                            onClick={() => {
+                                navigator.clipboard?.writeText(tempPassword);
+                                toast.success('Copied to clipboard');
+                            }}
+                        >
+                            Copy Password
+                        </Button>
+                        <Button
+                            type="button"
+                            className="w-40"
+                            onClick={() => (window.location.href = login())}
+                        >
+                            Go to Login
+                        </Button>
+                    </div>
+                </div>
             )}
         </AuthLayout>
     );

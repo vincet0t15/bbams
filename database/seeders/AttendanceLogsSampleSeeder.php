@@ -26,7 +26,6 @@ class AttendanceLogsSampleSeeder extends Seeder
             'name' => 'BSIT',
             'description' => 'Bachelor of Science in Information Technology',
             'code' => 'BSIT',
-            'created_by' => 1,
         ]);
 
         $yearLevel = YearLevel::query()->first() ?? YearLevel::query()->create([
@@ -51,7 +50,6 @@ class AttendanceLogsSampleSeeder extends Seeder
                 'course_id' => $course->id,
                 'year_level_id' => $yearLevel->id,
                 'section' => 'A',
-                'created_by' => $admin?->id,
             ],
         );
 
@@ -67,7 +65,6 @@ class AttendanceLogsSampleSeeder extends Seeder
                 'employee_no' => 'FAC-0001',
                 'department' => 'IT',
                 'position' => 'Instructor',
-                'created_by' => $admin?->id,
             ],
         );
 
@@ -83,7 +80,6 @@ class AttendanceLogsSampleSeeder extends Seeder
                 'employee_no' => 'STF-0001',
                 'department' => 'Admin',
                 'position' => 'Clerk',
-                'created_by' => $admin?->id,
             ],
         );
 

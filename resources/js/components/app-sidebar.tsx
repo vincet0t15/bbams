@@ -52,6 +52,7 @@ export function AppSidebar() {
                     title: 'Dashboard',
                     href: dashboard(),
                     icon: LayoutGrid,
+                    color: 'text-sky-500',
                 },
             ],
         },
@@ -64,6 +65,7 @@ export function AppSidebar() {
                               title: 'Events',
                               href: '/events',
                               icon: CalendarDays,
+                              color: 'text-amber-500',
                           },
                       ]
                     : []),
@@ -73,6 +75,7 @@ export function AppSidebar() {
                               title: 'Attendance Logs',
                               href: '/attendance-logs',
                               icon: ClipboardList,
+                              color: 'text-emerald-500',
                           },
                       ]
                     : [
@@ -80,6 +83,7 @@ export function AppSidebar() {
                               title: 'My Attendance Logs',
                               href: '/attendance-logs',
                               icon: ClipboardList,
+                              color: 'text-emerald-500',
                           },
                       ]),
                 ...(isAdmin
@@ -88,6 +92,7 @@ export function AppSidebar() {
                               title: 'DTR',
                               href: '/dtr',
                               icon: FileSpreadsheet,
+                              color: 'text-cyan-500',
                           },
                       ]
                     : [
@@ -95,6 +100,7 @@ export function AppSidebar() {
                               title: 'My DTR',
                               href: '/my-dtr',
                               icon: FileSpreadsheet,
+                              color: 'text-cyan-500',
                           },
                       ]),
             ],
@@ -113,6 +119,7 @@ export function AppSidebar() {
                               title: 'Attendance Count',
                               href: '/reports/attendance-count',
                               icon: ListOrdered,
+                              color: 'text-indigo-500',
                           },
                       ]
                     : []),
@@ -128,11 +135,13 @@ export function AppSidebar() {
                               title: 'Programs',
                               href: courses.index.url(),
                               icon: BookOpen,
+                              color: 'text-amber-500',
                           },
                           {
                               title: 'Year Levels',
                               href: yearLevels.index.url(),
                               icon: BookOpen,
+                              color: 'text-amber-500',
                           },
                       ],
                   },
@@ -148,6 +157,7 @@ export function AppSidebar() {
                               title: 'Students',
                               href: '/students',
                               icon: Users,
+                              color: 'text-emerald-500',
                           },
                       ]
                     : []),
@@ -158,6 +168,7 @@ export function AppSidebar() {
                               title: 'Faculty',
                               href: '/faculties',
                               icon: Users,
+                              color: 'text-amber-500',
                           },
                       ]
                     : []),
@@ -168,6 +179,7 @@ export function AppSidebar() {
                               title: 'Staff',
                               href: '/staff',
                               icon: Users,
+                              color: 'text-cyan-500',
                           },
                       ]
                     : []),
@@ -183,11 +195,13 @@ export function AppSidebar() {
                               title: 'Accounts',
                               href: usersIndex.url(),
                               icon: Users,
+                              color: 'text-violet-500',
                           },
                           {
                               title: 'Bin',
                               href: '/bin',
                               icon: Trash2,
+                              color: 'text-rose-500',
                           },
                       ],
                   },

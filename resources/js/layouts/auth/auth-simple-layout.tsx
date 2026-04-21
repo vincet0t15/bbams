@@ -58,19 +58,19 @@ export default function AuthSimpleLayout({
                 aria-hidden
             />
             <div className="w-full max-w-md">
-                <div className="flex flex-col gap-8 rounded-xl border border-white/20 bg-white/10 p-6 shadow-lg backdrop-blur-md dark:border-white/25 dark:bg-white/10">
-                    <div className="flex flex-col items-center gap-4">
+                <div className="flex flex-col gap-6 p-0">
+                    <div className="flex flex-col items-center gap-2">
                         <Link
                             href={home()}
-                            className="flex flex-col items-center gap-2 font-medium"
+                            className="flex flex-col items-center gap-1 font-medium"
                         >
                             <span className="sr-only">{title}</span>
                         </Link>
-                        <div className="space-y-2 text-center">
-                            <h2 className="text-base font-semibold tracking-tight">
+                        <div className="space-y-1 text-center">
+                            <h2 className="text-sm font-semibold tracking-tight">
                                 Biometric-Based Attendance Monitoring System
                             </h2>
-                            <h1 className="text-2xl leading-tight font-extrabold">
+                            <h1 className="text-xl leading-tight font-extrabold">
                                 BBAMS
                             </h1>
                             <p className="text-center text-xs text-muted-foreground">
@@ -78,7 +78,7 @@ export default function AuthSimpleLayout({
                             </p>
                         </div>
                     </div>
-                    {children}
+                    <div className="mt-2">{children}</div>
                 </div>
             </div>
         </div>
