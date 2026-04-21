@@ -21,6 +21,7 @@ import type { PaginatedDataResponse } from '@/types/pagination';
 import EventCreateDialog from './create';
 import EventDeleteDialog from './delete';
 import EventEditDialog from './edit';
+import { Card, CardContent } from '@/components/ui/card';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

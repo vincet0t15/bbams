@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\AttendanceLog;
+use App\Models\Course;
 use App\Models\Event;
 use App\Models\Faculty;
 use App\Models\Staff;
 use App\Models\Student;
+use App\Models\YearLevel;
 use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 
@@ -27,6 +29,11 @@ class DashboardController extends Controller
 
         $latestEvent = Event::orderByDesc('id')->first();
 
+        $courses = Course::count();
+        $yearLevels = YearLevel::count();
+        $attendanceLogsTotal = AttendanceLog::count();
+        $peopleTotal = $students + $faculties + $staff;
+
         return Inertia::render('dashboard', [
             'stats' => [
                 'students' => $students,
@@ -39,6 +46,10 @@ class DashboardController extends Controller
                     'id' => $latestEvent->id,
                     'title' => $latestEvent->title ?? $latestEvent->name ?? ('Event #' . $latestEvent->id),
                 ] : null,
+                'courses' => $courses,
+                'year_levels' => $yearLevels,
+                'attendance_logs' => $attendanceLogsTotal,
+                'people' => $peopleTotal,
             ],
         ]);
     }
