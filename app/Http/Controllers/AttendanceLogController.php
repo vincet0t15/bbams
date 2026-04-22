@@ -410,7 +410,7 @@ class AttendanceLogController extends Controller
                 ];
             }),
             'events' => $events,
-            'filters' => $request->only(['search', 'role']),
+            'filters' => $request->only(['search', 'role', 'event_id', 'month']),
             'defaultMonth' => $defaultMonth,
         ]);
     }

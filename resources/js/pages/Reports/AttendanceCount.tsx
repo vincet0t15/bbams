@@ -111,7 +111,7 @@ export default function AttendanceCountReport({
             role: filters.role || 'all',
             course_id: filters.course_id || 'all',
         } as any);
-    }, [filters]);
+    }, [filters, setData]);
 
     const [isFiltering, setIsFiltering] = useState(false);
 

@@ -298,15 +298,6 @@ export default function AttendanceReport({
                         <TableHeader className="bg-muted/50">
                             <TableRow>
                                 <TableHead className="font-bold text-primary">
-                                    Date/Time
-                                </TableHead>
-                                <TableHead className="font-bold text-primary">
-                                    Type
-                                </TableHead>
-                                <TableHead className="font-bold text-primary">
-                                    Event
-                                </TableHead>
-                                <TableHead className="font-bold text-primary">
                                     Name
                                 </TableHead>
                                 <TableHead className="font-bold text-primary">
@@ -315,21 +306,21 @@ export default function AttendanceReport({
                                 <TableHead className="font-bold text-primary">
                                     Role
                                 </TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Date/Time
+                                </TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Type
+                                </TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Event
+                                </TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {report.data.length > 0 ? (
                                 report.data.map((row) => (
                                     <TableRow key={row.id} className="text-sm">
-                                        <TableCell className="text-sm">
-                                            {row.date_time ?? '-'}
-                                        </TableCell>
-                                        <TableCell className="text-sm">
-                                            {row.check_type_label}
-                                        </TableCell>
-                                        <TableCell className="text-sm">
-                                            {row.event?.title ?? '-'}
-                                        </TableCell>
                                         <TableCell className="text-sm">
                                             {row.user?.name ?? '-'}
                                         </TableCell>
@@ -338,6 +329,15 @@ export default function AttendanceReport({
                                         </TableCell>
                                         <TableCell className="text-sm">
                                             {row.user?.role ?? '-'}
+                                        </TableCell>
+                                        <TableCell className="text-sm">
+                                            {row.date_time ?? '-'}
+                                        </TableCell>
+                                        <TableCell className="text-sm">
+                                            {row.check_type_label}
+                                        </TableCell>
+                                        <TableCell className="text-sm">
+                                            {row.event?.title ?? '-'}
                                         </TableCell>
                                     </TableRow>
                                 ))

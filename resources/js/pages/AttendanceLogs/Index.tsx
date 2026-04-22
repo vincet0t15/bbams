@@ -277,15 +277,6 @@ export default function AttendanceLogsIndex({
                         <TableHeader className="bg-muted/50">
                             <TableRow>
                                 <TableHead className="font-bold text-primary">
-                                    Date/Time
-                                </TableHead>
-                                <TableHead className="font-bold text-primary">
-                                    Type
-                                </TableHead>
-                                <TableHead className="font-bold text-primary">
-                                    Event
-                                </TableHead>
-                                <TableHead className="font-bold text-primary">
                                     Name
                                 </TableHead>
                                 <TableHead className="font-bold text-primary">
@@ -294,21 +285,21 @@ export default function AttendanceLogsIndex({
                                 <TableHead className="font-bold text-primary">
                                     Role
                                 </TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Date/Time
+                                </TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Type
+                                </TableHead>
+                                <TableHead className="font-bold text-primary">
+                                    Event
+                                </TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {logList.data.length > 0 ? (
                                 logList.data.map((log) => (
                                     <TableRow key={log.id} className="text-sm">
-                                        <TableCell className="text-sm">
-                                            {log.date_time ?? '-'}
-                                        </TableCell>
-                                        <TableCell className="text-sm">
-                                            {log.check_type_label}
-                                        </TableCell>
-                                        <TableCell className="text-sm">
-                                            {log.event?.title ?? '-'}
-                                        </TableCell>
                                         <TableCell className="text-sm">
                                             {log.user?.name ?? '-'}
                                         </TableCell>
@@ -317,6 +308,15 @@ export default function AttendanceLogsIndex({
                                         </TableCell>
                                         <TableCell className="text-sm">
                                             {log.user?.role ?? '-'}
+                                        </TableCell>
+                                        <TableCell className="text-sm">
+                                            {log.date_time ?? '-'}
+                                        </TableCell>
+                                        <TableCell className="text-sm">
+                                            {log.check_type_label}
+                                        </TableCell>
+                                        <TableCell className="text-sm">
+                                            {log.event?.title ?? '-'}
                                         </TableCell>
                                     </TableRow>
                                 ))
