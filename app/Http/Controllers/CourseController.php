@@ -18,7 +18,7 @@ class CourseController extends Controller
                     ->orWhere('code', 'like', "%{$search}%");
             })
             ->orderBy('name')
-            ->paginate(10)
+            ->paginate(50)
             ->withQueryString();
 
         return Inertia::render('Courses/Index', [

@@ -57,7 +57,7 @@ class ReportsController extends Controller
             })
             ->whereBetween('date_time', [$start, $end])
             ->orderByDesc('date_time')
-            ->paginate(10)
+            ->paginate(50)
             ->withQueryString();
 
         return Inertia::render('Reports/Attendance', [

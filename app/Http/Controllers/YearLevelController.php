@@ -18,7 +18,7 @@ class YearLevelController extends Controller
                 $query->where('name', 'like', "%{$search}%");
             })
             ->latest('id')
-            ->paginate(10)
+            ->paginate(50)
             ->withQueryString();
 
         return Inertia::render('YearLevels/Index', [

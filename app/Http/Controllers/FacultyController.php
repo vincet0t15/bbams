@@ -33,7 +33,7 @@ class FacultyController extends Controller
                     });
             })
             ->latest('id')
-            ->paginate(10)
+            ->paginate(50)
             ->withQueryString();
 
         return Inertia::render('Faculty/Index', [

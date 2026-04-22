@@ -27,7 +27,7 @@ class UserController extends Controller
                 });
             })
             ->orderBy('name')
-            ->paginate(25)
+            ->paginate(50)
             ->withQueryString();
 
         return Inertia::render('accounts/index', [

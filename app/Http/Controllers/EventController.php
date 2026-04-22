@@ -20,11 +20,11 @@ class EventController extends Controller
                     ->orWhere('location', 'like', "%{$search}%");
             })
             ->orderByDesc('start_at')
-            ->paginate(10)
+            ->paginate(50)
             ->withQueryString();
 
         return Inertia::render('events/index', [
-            'eventList' => $events->through(fn (Event $event) => [
+            'eventList' => $events->through(fn(Event $event) => [
                 'id' => $event->id,
                 'title' => $event->title,
                 'location' => $event->location,

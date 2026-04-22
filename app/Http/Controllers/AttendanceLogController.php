@@ -131,7 +131,11 @@ class AttendanceLogController extends Controller
                 });
             })
             ->when($role && $role !== 'all', function ($query) use ($role) {
-                $query->whereHas('user.roles', fn($q) => $q->where('name', $role));
+                // Allow filtering by account_type (primary) or role name (fallback)
+                $query->whereHas('user', function ($q) use ($role) {
+                    $q->where('account_type', $role)
+                        ->orWhereHas('roles', fn($rq) => $rq->where('name', $role));
+                });
             })
             ->when(
                 $role === 'student' && $courseId && $courseId !== 'all',
@@ -140,7 +144,7 @@ class AttendanceLogController extends Controller
             ->when($eventId, fn($q) => $q->where('event_id', $eventId))
             ->when($date, fn($q) => $q->whereDate('date_time', $date))
             ->orderByDesc('date_time')
-            ->paginate(10)
+            ->paginate(50)
             ->withQueryString();
 
         $eventTitleColumn = Schema::hasColumn('events', 'title') ? 'title' : 'name';
@@ -207,7 +211,7 @@ class AttendanceLogController extends Controller
             ->when($request->input('event_id'), fn($q) => $q->where('event_id', $request->input('event_id')))
             ->when($request->input('date'), fn($q) => $q->whereDate('date_time', $request->input('date')))
             ->orderByDesc('date_time')
-            ->paginate(15)
+            ->paginate(50)
             ->withQueryString();
 
         $eventTitleColumn = Schema::hasColumn('events', 'title') ? 'title' : 'name';
@@ -366,7 +370,7 @@ class AttendanceLogController extends Controller
                     ->orWhere('username', 'like', "%{$search}%");
             })
             ->orderBy('name')
-            ->paginate(10)
+            ->paginate(50)
             ->withQueryString();
 
         $eventTitleColumn = Schema::hasColumn('events', 'title') ? 'title' : 'name';
