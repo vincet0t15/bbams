@@ -40,6 +40,12 @@ export default function StudentEditDialog({
     const { data, setData, put, reset, processing, errors } =
         useForm<StudentUpdateRequest>({
             name: student.user.name,
+            last_name: student.user.last_name ?? '',
+            first_name: student.user.first_name ?? '',
+            middle_name: student.user.middle_name ?? '',
+            extension_name: student.user.extension_name ?? '',
+            security_question: student.user.security_question ?? '',
+            security_answer: student.user.security_answer ?? '',
             username: student.user.username,
             email: student.user.email,
             password: '',
@@ -79,15 +85,41 @@ export default function StudentEditDialog({
                 </DialogHeader>
                 <form onSubmit={submit}>
                     <div className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="name">Name</Label>
-                            <Input
-                                id="name"
-                                placeholder="Full name"
-                                value={data.name}
-                                onChange={handleTextChange}
-                            />
-                            <InputError message={errors.name as any} />
+                        <div className="flex items-center justify-between space-x-4">
+                            <div className="w-1/3 space-y-2">
+                                <Label htmlFor="last_name">Last name</Label>
+                                <Input
+                                    id="last_name"
+                                    placeholder="Last name"
+                                    value={data.last_name ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError message={errors.last_name as any} />
+                            </div>
+                            <div className="w-1/3 space-y-2">
+                                <Label htmlFor="first_name">First name</Label>
+                                <Input
+                                    id="first_name"
+                                    placeholder="First name"
+                                    value={data.first_name ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError
+                                    message={errors.first_name as any}
+                                />
+                            </div>
+                            <div className="w-1/3 space-y-2">
+                                <Label htmlFor="middle_name">Middle name</Label>
+                                <Input
+                                    id="middle_name"
+                                    placeholder="Middle name"
+                                    value={data.middle_name ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError
+                                    message={errors.middle_name as any}
+                                />
+                            </div>
                         </div>
                         <div className="flex items-center justify-between space-x-4">
                             <div className="w-1/2 space-y-2">
@@ -134,6 +166,84 @@ export default function StudentEditDialog({
                                     placeholder="Confirm password"
                                     value={data.password_confirmation ?? ''}
                                     onChange={handleTextChange}
+                                />
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-between space-x-4">
+                            <div className="w-1/2 space-y-2">
+                                <Label htmlFor="security_question">
+                                    Security Question
+                                </Label>
+                                <Select
+                                    value={data.security_question ?? 'none'}
+                                    onValueChange={(val) =>
+                                        setData(
+                                            'security_question',
+                                            val === 'none' ? '' : val,
+                                        )
+                                    }
+                                >
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Select a security question" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">
+                                            Select a question
+                                        </SelectItem>
+                                        <SelectItem
+                                            value={
+                                                "What was your first pet's name?"
+                                            }
+                                        >
+                                            What was your first pet's name?
+                                        </SelectItem>
+                                        <SelectItem
+                                            value={
+                                                "What is your mother's maiden name?"
+                                            }
+                                        >
+                                            What is your mother's maiden name?
+                                        </SelectItem>
+                                        <SelectItem
+                                            value={
+                                                'What was the name of your first school?'
+                                            }
+                                        >
+                                            What was the name of your first
+                                            school?
+                                        </SelectItem>
+                                        <SelectItem
+                                            value={
+                                                'What is your favorite color?'
+                                            }
+                                        >
+                                            What is your favorite color?
+                                        </SelectItem>
+                                        <SelectItem
+                                            value={
+                                                'In what city were you born?'
+                                            }
+                                        >
+                                            In what city were you born?
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <InputError
+                                    message={errors.security_question as any}
+                                />
+                            </div>
+                            <div className="w-1/2 space-y-2">
+                                <Label htmlFor="security_answer">
+                                    Security Answer
+                                </Label>
+                                <Input
+                                    id="security_answer"
+                                    placeholder="Security answer"
+                                    value={data.security_answer ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError
+                                    message={errors.security_answer as any}
                                 />
                             </div>
                         </div>

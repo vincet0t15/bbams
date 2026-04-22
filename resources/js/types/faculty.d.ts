@@ -3,7 +3,18 @@ export interface Faculty {
     employee_no?: string;
     department?: string;
     position?: string;
-    user: { id: number; name: string; email: string; username: string };
+    user: {
+        id: number;
+        name: string;
+        email: string;
+        username: string;
+        last_name?: string | null;
+        first_name?: string | null;
+        middle_name?: string | null;
+        extension_name?: string | null;
+        security_question?: string | null;
+        security_answer?: string | null;
+    };
 }
 
 export interface FacultyCreateRequest {
@@ -23,6 +34,12 @@ export interface FacultyCreateRequest {
 
 export interface FacultyUpdateRequest {
     name: string;
+    last_name?: string;
+    first_name?: string;
+    middle_name?: string;
+    extension_name?: string;
+    security_question?: string;
+    security_answer?: string;
     username: string;
     email: string;
     password?: string;

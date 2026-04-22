@@ -52,6 +52,13 @@ class StudentController extends Controller
                         'name' => $s->user?->name,
                         'email' => $s->user?->email,
                         'username' => $s->user?->username,
+                        'last_name' => $s->user?->last_name ?? null,
+                        'first_name' => $s->user?->first_name ?? null,
+                        'middle_name' => $s->user?->middle_name ?? null,
+                        'extension_name' => $s->user?->extension_name ?? null,
+                        'security_question' => $s->user?->security_question ?? null,
+                        // Do not include security_answer unless necessary — include it to allow editing
+                        'security_answer' => $s->user?->security_answer ?? null,
                     ],
                     'course' => $s->course ? [
                         'id' => $s->course->id,
@@ -76,15 +83,15 @@ class StudentController extends Controller
             'username' => ['required', 'string', 'max:255', 'unique:users,username'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => $this->passwordRules(),
-            'security_question' => ['nullable', 'string', 'max:255'],
-            'security_answer' => ['nullable', 'string', 'max:255'],
-            'student_no' => ['nullable', 'string', 'max:50', 'unique:students,student_no'],
-            'course_id' => ['nullable', 'exists:courses,id'],
-            'year_level_id' => ['nullable', 'exists:year_levels,id'],
+            'security_question' => ['required', 'string', 'max:255'],
+            'security_answer' => ['required', 'string', 'max:255'],
+            'student_no' => ['required', 'string', 'max:50', 'unique:students,student_no'],
+            'course_id' => ['required', 'exists:courses,id'],
+            'year_level_id' => ['required', 'exists:year_levels,id'],
             'section' => ['nullable', 'string', 'max:50'],
-            'last_name' => ['nullable', 'string', 'max:255'],
-            'first_name' => ['nullable', 'string', 'max:255'],
-            'middle_name' => ['nullable', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'middle_name' => ['required', 'string', 'max:255'],
             'extension_name' => ['nullable', 'string', 'max:255'],
         ]);
 
@@ -129,11 +136,19 @@ class StudentController extends Controller
         ]);
 
         $validated = $request->validate([
-            ...$this->profileRules($student->user_id),
+            // require name parts on update as well (except `section`)
+            'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'middle_name' => ['nullable', 'string', 'max:255'],
+            'extension_name' => ['nullable', 'string', 'max:50'],
+            'username' => $this->usernameRules($student->user_id),
+            'email' => $this->emailRules($student->user_id),
             'password' => ['nullable', 'string', Password::default(), 'confirmed'],
-            'student_no' => ['nullable', 'string', 'max:50', 'unique:students,student_no,' . $student->id],
-            'course_id' => ['nullable', 'exists:courses,id'],
-            'year_level_id' => ['nullable', 'exists:year_levels,id'],
+            'security_question' => ['required', 'string', 'max:255'],
+            'security_answer' => ['required', 'string', 'max:255'],
+            'student_no' => ['required', 'string', 'max:50', 'unique:students,student_no,' . $student->id],
+            'course_id' => ['required', 'exists:courses,id'],
+            'year_level_id' => ['required', 'exists:year_levels,id'],
             'section' => ['nullable', 'string', 'max:50'],
         ]);
 
@@ -153,11 +168,23 @@ class StudentController extends Controller
                 $student->user->update(['password' => $validated['password']]);
             }
 
+            // Update security question/answer if provided
+            if (array_key_exists('security_question', $validated) || array_key_exists('security_answer', $validated)) {
+                $student->user->update([
+                    'security_question' => $validated['security_question'] ?? $student->user->security_question,
+                    'security_answer' => $validated['security_answer'] ?? $student->user->security_answer,
+                ]);
+            }
+
             $student->update([
                 'student_no' => $validated['student_no'] ?? null,
                 'course_id' => $validated['course_id'] ?? null,
                 'year_level_id' => $validated['year_level_id'] ?? null,
                 'section' => $validated['section'] ?? null,
+                'last_name' => $validated['last_name'] ?? $student->last_name,
+                'first_name' => $validated['first_name'] ?? $student->first_name,
+                'middle_name' => $validated['middle_name'] ?? $student->middle_name,
+                'extension_name' => $validated['extension_name'] ?? $student->extension_name,
             ]);
         });
 

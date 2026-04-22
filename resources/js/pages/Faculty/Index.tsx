@@ -84,56 +84,6 @@ export default function FacultyIndex({ facultyList, filters }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Faculty" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto p-4">
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-                    <Card className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white">
-                        <CardHeader>
-                            <CardTitle>Total Faculty</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-3xl font-bold">
-                            {facultyList.total ?? 0}
-                        </CardContent>
-                    </Card>
-
-                    <Card className="bg-gradient-to-r from-sky-500 to-cyan-500 text-white">
-                        <CardHeader>
-                            <CardTitle>Departments</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-3xl font-bold">
-                            {/* placeholder */}0
-                        </CardContent>
-                    </Card>
-
-                    <Card className="bg-gradient-to-r from-orange-400 to-rose-500 text-white">
-                        <CardHeader>
-                            <CardTitle>Positions</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-3xl font-bold">
-                            {/* placeholder */}0
-                        </CardContent>
-                    </Card>
-
-                    <Card className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white">
-                        <CardHeader>
-                            <CardTitle>Active</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-3xl font-bold">
-                            {facultyList.total ?? 0}
-                        </CardContent>
-                    </Card>
-                </div>
-
-                <Card className="mt-2 border-green-100 bg-green-50">
-                    <CardContent>
-                        <div className="flex items-center gap-4">
-                            <div className="text-sm font-medium">Quick Tip</div>
-                            <div className="text-sm text-muted-foreground">
-                                Click a faculty row to open their profile, edit
-                                details, or manage records.
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-
                 <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <Button
                         variant="default"

@@ -13,6 +13,13 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import type { Staff, StaffUpdateRequest } from '@/types/staff';
 
 interface Props {
@@ -25,6 +32,12 @@ export default function StaffEditDialog({ open, setOpen, staff }: Props) {
     const { data, setData, put, reset, processing, errors } =
         useForm<StaffUpdateRequest>({
             name: staff.user.name,
+            last_name: staff.user.last_name ?? '',
+            first_name: staff.user.first_name ?? '',
+            middle_name: staff.user.middle_name ?? '',
+            extension_name: staff.user.extension_name ?? '',
+            security_question: staff.user.security_question ?? '',
+            security_answer: staff.user.security_answer ?? '',
             username: staff.user.username,
             email: staff.user.email,
             password: '',
@@ -61,15 +74,41 @@ export default function StaffEditDialog({ open, setOpen, staff }: Props) {
                 </DialogHeader>
                 <form onSubmit={submit}>
                     <div className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="name">Name</Label>
-                            <Input
-                                id="name"
-                                placeholder="Full name"
-                                value={data.name}
-                                onChange={handleTextChange}
-                            />
-                            <InputError message={errors.name as any} />
+                        <div className="flex items-center justify-between space-x-4">
+                            <div className="w-1/3 space-y-2">
+                                <Label htmlFor="last_name">Last name</Label>
+                                <Input
+                                    id="last_name"
+                                    placeholder="Last name"
+                                    value={data.last_name ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError message={errors.last_name as any} />
+                            </div>
+                            <div className="w-1/3 space-y-2">
+                                <Label htmlFor="first_name">First name</Label>
+                                <Input
+                                    id="first_name"
+                                    placeholder="First name"
+                                    value={data.first_name ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError
+                                    message={errors.first_name as any}
+                                />
+                            </div>
+                            <div className="w-1/3 space-y-2">
+                                <Label htmlFor="middle_name">Middle name</Label>
+                                <Input
+                                    id="middle_name"
+                                    placeholder="Middle name"
+                                    value={data.middle_name ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError
+                                    message={errors.middle_name as any}
+                                />
+                            </div>
                         </div>
                         <div className="flex items-center justify-between space-x-4">
                             <div className="w-1/2 space-y-2">
@@ -154,6 +193,101 @@ export default function StaffEditDialog({ open, setOpen, staff }: Props) {
                                 onChange={handleTextChange}
                             />
                             <InputError message={errors.position as any} />
+                        </div>
+                        <div className="flex items-center justify-between space-x-4">
+                            <div className="w-1/2 space-y-2">
+                                <Label htmlFor="security_question">
+                                    Security Question
+                                </Label>
+                                <Select
+                                    value={
+                                        data.security_question &&
+                                        data.security_question !== ''
+                                            ? data.security_question
+                                            : 'none'
+                                    }
+                                    onValueChange={(val) =>
+                                        setData(
+                                            'security_question',
+                                            val === 'none' ? '' : val,
+                                        )
+                                    }
+                                >
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue>
+                                            {data.security_question ||
+                                                'Select a security question'}
+                                        </SelectValue>
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">
+                                            Select a question
+                                        </SelectItem>
+                                        {data.security_question &&
+                                        data.security_question !== 'none' ? (
+                                            <SelectItem
+                                                value={data.security_question}
+                                            >
+                                                {data.security_question}
+                                            </SelectItem>
+                                        ) : null}
+                                        <SelectItem
+                                            value={
+                                                "What was your first pet's name?"
+                                            }
+                                        >
+                                            What was your first pet's name?
+                                        </SelectItem>
+                                        <SelectItem
+                                            value={
+                                                "What is your mother's maiden name?"
+                                            }
+                                        >
+                                            What is your mother's maiden name?
+                                        </SelectItem>
+                                        <SelectItem
+                                            value={
+                                                'What was the name of your first school?'
+                                            }
+                                        >
+                                            What was the name of your first
+                                            school?
+                                        </SelectItem>
+                                        <SelectItem
+                                            value={
+                                                'What is your favorite color?'
+                                            }
+                                        >
+                                            What is your favorite color?
+                                        </SelectItem>
+                                        <SelectItem
+                                            value={
+                                                'In what city were you born?'
+                                            }
+                                        >
+                                            In what city were you born?
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <InputError
+                                    message={errors.security_question as any}
+                                />
+                            </div>
+                            <div className="w-1/2 space-y-2">
+                                <Label htmlFor="security_answer">
+                                    Security Answer
+                                </Label>
+                                <Input
+                                    id="security_answer"
+                                    type="text"
+                                    placeholder="Answer"
+                                    value={data.security_answer ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError
+                                    message={errors.security_answer as any}
+                                />
+                            </div>
                         </div>
                         <Button
                             className="w-full"

@@ -117,7 +117,7 @@ export default function StudentsIndex({
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Students" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto p-4">
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                     <Card className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white">
                         <CardHeader>
                             <CardTitle>Total Students</CardTitle>
@@ -142,15 +142,6 @@ export default function StudentsIndex({
                         </CardHeader>
                         <CardContent className="text-3xl font-bold">
                             {yearLevels.length}
-                        </CardContent>
-                    </Card>
-
-                    <Card className="bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white">
-                        <CardHeader>
-                            <CardTitle>Active</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-3xl font-bold">
-                            {studentList.total ?? 0}
                         </CardContent>
                     </Card>
                 </div>

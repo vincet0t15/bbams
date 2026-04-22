@@ -48,6 +48,12 @@ class FacultyController extends Controller
                         'name' => $f->user?->name,
                         'email' => $f->user?->email,
                         'username' => $f->user?->username,
+                        'last_name' => $f->user?->last_name ?? null,
+                        'first_name' => $f->user?->first_name ?? null,
+                        'middle_name' => $f->user?->middle_name ?? null,
+                        'extension_name' => $f->user?->extension_name ?? null,
+                        'security_question' => $f->user?->security_question ?? null,
+                        'security_answer' => $f->user?->security_answer ?? null,
                     ],
                 ];
             }),
@@ -61,14 +67,14 @@ class FacultyController extends Controller
             'username' => ['required', 'string', 'max:255', 'unique:users,username'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => $this->passwordRules(),
-            'security_question' => ['nullable', 'string', 'max:255'],
-            'security_answer' => ['nullable', 'string', 'max:255'],
-            'employee_no' => ['nullable', 'string', 'max:50', 'unique:faculties,employee_no'],
-            'department' => ['nullable', 'string', 'max:100'],
-            'position' => ['nullable', 'string', 'max:100'],
-            'last_name' => ['nullable', 'string', 'max:255'],
-            'first_name' => ['nullable', 'string', 'max:255'],
-            'middle_name' => ['nullable', 'string', 'max:255'],
+            'security_question' => ['required', 'string', 'max:255'],
+            'security_answer' => ['required', 'string', 'max:255'],
+            'employee_no' => ['required', 'string', 'max:50', 'unique:faculties,employee_no'],
+            'department' => ['required', 'string', 'max:100'],
+            'position' => ['required', 'string', 'max:100'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'middle_name' => ['required', 'string', 'max:255'],
             'extension_name' => ['nullable', 'string', 'max:255'],
         ]);
 
@@ -112,11 +118,18 @@ class FacultyController extends Controller
         ]);
 
         $validated = $request->validate([
-            ...$this->profileRules($faculty->user_id),
+            'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'middle_name' => ['required', 'string', 'max:255'],
+            'extension_name' => ['nullable', 'string', 'max:50'],
+            'username' => $this->usernameRules($faculty->user_id),
+            'email' => $this->emailRules($faculty->user_id),
             'password' => ['nullable', 'string', Password::default(), 'confirmed'],
-            'employee_no' => ['nullable', 'string', 'max:50', 'unique:faculties,employee_no,' . $faculty->id],
-            'department' => ['nullable', 'string', 'max:100'],
-            'position' => ['nullable', 'string', 'max:100'],
+            'security_question' => ['required', 'string', 'max:255'],
+            'security_answer' => ['required', 'string', 'max:255'],
+            'employee_no' => ['required', 'string', 'max:50', 'unique:faculties,employee_no,' . $faculty->id],
+            'department' => ['required', 'string', 'max:100'],
+            'position' => ['required', 'string', 'max:100'],
         ]);
 
         DB::transaction(function () use ($faculty, $validated) {
