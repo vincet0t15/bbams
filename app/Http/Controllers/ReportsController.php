@@ -50,7 +50,10 @@ class ReportsController extends Controller
             })
             ->when($eventId && $eventId !== 'all', fn($q) => $q->where('event_id', $eventId))
             ->when($role && $role !== 'all', function ($q) use ($role) {
-                $q->whereHas('user.roles', fn($rq) => $rq->where('name', $role));
+                $q->whereHas('user', function ($uq) use ($role) {
+                    $uq->where('account_type', $role)
+                        ->orWhereHas('roles', fn($rq) => $rq->where('name', $role));
+                });
             })
             ->when($courseId && $courseId !== 'all', function ($q) use ($courseId) {
                 $q->whereHas('user.student', fn($sq) => $sq->where('course_id', $courseId));
@@ -126,7 +129,10 @@ class ReportsController extends Controller
             })
             ->when($eventId && $eventId !== 'all', fn($q) => $q->where('event_id', $eventId))
             ->when($role && $role !== 'all', function ($q) use ($role) {
-                $q->whereHas('user.roles', fn($rq) => $rq->where('name', $role));
+                $q->whereHas('user', function ($uq) use ($role) {
+                    $uq->where('account_type', $role)
+                        ->orWhereHas('roles', fn($rq) => $rq->where('name', $role));
+                });
             })
             ->when($courseId && $courseId !== 'all', function ($q) use ($courseId) {
                 $q->whereHas('user.student', fn($sq) => $sq->where('course_id', $courseId));

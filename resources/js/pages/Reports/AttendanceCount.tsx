@@ -1,5 +1,5 @@
 import { Head, router, useForm } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import Pagination from '@/components/paginationData';
 import { Badge } from '@/components/ui/badge';
@@ -101,6 +101,17 @@ export default function AttendanceCountReport({
         role: filters.role || 'all',
         course_id: filters.course_id || 'all',
     });
+
+    useEffect(() => {
+        setData({
+            search: filters.search || '',
+            event_id: filters.event_id || 'all',
+            start_date: filters.start_date || '',
+            end_date: filters.end_date || '',
+            role: filters.role || 'all',
+            course_id: filters.course_id || 'all',
+        } as any);
+    }, [filters]);
 
     const [isFiltering, setIsFiltering] = useState(false);
 
