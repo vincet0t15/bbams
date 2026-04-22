@@ -98,6 +98,14 @@ export default function DtrSelect({
             query.role = current.role;
         }
 
+        if (current.event_id && current.event_id !== 'all') {
+            query.event_id = current.event_id;
+        }
+
+        if (current.month) {
+            query.month = dayjs(current.month).format('YYYY-MM');
+        }
+
         return Object.keys(query).length ? query : undefined;
     };
 

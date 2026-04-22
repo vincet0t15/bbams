@@ -348,22 +348,36 @@ class AttendanceLogController extends Controller
     {
         $search = $request->input('search');
         $role = $request->input('role');
+        $month = $request->input('month');
+        $eventId = $request->input('event_id');
+
+        // compute month range if provided
+        $start = $month ? Carbon::createFromFormat('Y-m', $month)->startOfMonth() : null;
+        $end = $start ? $start->copy()->endOfMonth() : null;
 
         $users = User::query()
             ->with('roles')
             ->whereDoesntHave('roles', fn($q) => $q->where('name', 'super_admin'))
-            ->when($role && $role === 'student', fn($q) => $q
-                ->whereHas('student', fn($sq) => $sq->whereNull('deleted_at')))
-            ->when($role && $role === 'faculty', fn($q) => $q
-                ->whereHas('faculty', fn($sq) => $sq->whereNull('deleted_at')))
-            ->when($role && $role === 'staff', fn($q) => $q
-                ->whereHas('staff', fn($sq) => $sq->whereNull('deleted_at')))
-            ->when($role && $role === 'all' || ! $role, fn($q) => $q
-                ->where(function ($q) {
-                    $q->whereHas('student', fn($sq) => $sq->whereNull('deleted_at'))
-                        ->orWhereHas('faculty', fn($sq) => $sq->whereNull('deleted_at'))
-                        ->orWhereHas('staff', fn($sq) => $sq->whereNull('deleted_at'));
-                }))
+            // If a specific role filter is provided, match by account_type first,
+            // falling back to Spatie role name when needed.
+            ->when($role && $role !== 'all', fn($q) => $q->where(function ($sq) use ($role) {
+                $sq->where('account_type', $role)
+                    ->orWhereHas('roles', fn($rq) => $rq->where('name', $role));
+            }))
+            // If no specific role (or role=all), include users who are student/faculty/staff
+            ->when(! $role || $role === 'all', fn($q) => $q->where(function ($sq) {
+                $sq->whereIn('account_type', ['student', 'faculty', 'staff'])
+                    ->orWhereHas('student', fn($r) => $r->whereNull('deleted_at'))
+                    ->orWhereHas('faculty', fn($r) => $r->whereNull('deleted_at'))
+                    ->orWhereHas('staff', fn($r) => $r->whereNull('deleted_at'));
+            }))
+            // If month (and optionally event) provided, restrict to users who have attendance logs in that range
+            ->when($start && $end, fn($q) => $q->whereHas('attendanceLogs', function ($alq) use ($start, $end, $eventId) {
+                $alq->whereBetween('date_time', [$start, $end]);
+                if ($eventId) {
+                    $alq->where('event_id', $eventId);
+                }
+            }))
             ->when($search, function ($q, $search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
@@ -383,6 +397,8 @@ class AttendanceLogController extends Controller
                 'title' => $event->getAttribute($eventTitleColumn),
             ]);
 
+        $defaultMonth = $request->input('month') ?? now()->format('Y-m');
+
         return Inertia::render('DTR/Select', [
             'userList' => $users->through(function (User $u) {
                 return [
@@ -395,7 +411,7 @@ class AttendanceLogController extends Controller
             }),
             'events' => $events,
             'filters' => $request->only(['search', 'role']),
-            'defaultMonth' => now()->format('Y-m'),
+            'defaultMonth' => $defaultMonth,
         ]);
     }
 
