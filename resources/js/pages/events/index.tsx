@@ -84,24 +84,38 @@ export default function EventsIndex({ eventList, filters }: Props) {
         };
 
         const resolveTotalFromPayload = (data, keyName) => {
-            const payload = keyName ? data?.props?.[keyName] ?? data : data;
+            const payload = keyName ? (data?.props?.[keyName] ?? data) : data;
             const maybeTotal =
                 (typeof payload?.total === 'number' ? payload.total : null) ||
-                (typeof payload?.meta?.total === 'number' ? payload.meta.total : null) ||
-                (typeof payload?.data?.total === 'number' ? payload.data.total : null) ||
-                (typeof payload?.data?.meta?.total === 'number' ? payload.data.meta.total : null) ||
-                (Array.isArray(payload?.data) ? payload.data.length :
-                    (Array.isArray(payload) ? payload.length : 0));
+                (typeof payload?.meta?.total === 'number'
+                    ? payload.meta.total
+                    : null) ||
+                (typeof payload?.data?.total === 'number'
+                    ? payload.data.total
+                    : null) ||
+                (typeof payload?.data?.meta?.total === 'number'
+                    ? payload.data.meta.total
+                    : null) ||
+                (Array.isArray(payload?.data)
+                    ? payload.data.length
+                    : Array.isArray(payload)
+                      ? payload.length
+                      : 0);
 
             return Number(maybeTotal ?? 0);
         };
 
-        fetch('/faculties', { headers: jsonHeaders, credentials: 'same-origin' })
+        fetch('/faculties', {
+            headers: jsonHeaders,
+            credentials: 'same-origin',
+        })
             .then((res) => {
                 if (!res.ok) throw new Error('Network response was not ok');
                 return res.json();
             })
-            .then((data) => setFacultiesTotal(resolveTotalFromPayload(data, 'facultyList')))
+            .then((data) =>
+                setFacultiesTotal(resolveTotalFromPayload(data, 'facultyList')),
+            )
             .catch(() => setFacultiesTotal(0));
 
         fetch('/staff', { headers: jsonHeaders, credentials: 'same-origin' })
@@ -109,7 +123,9 @@ export default function EventsIndex({ eventList, filters }: Props) {
                 if (!res.ok) throw new Error('Network response was not ok');
                 return res.json();
             })
-            .then((data) => setStaffTotal(resolveTotalFromPayload(data, 'staffList')))
+            .then((data) =>
+                setStaffTotal(resolveTotalFromPayload(data, 'staffList')),
+            )
             .catch(() => setStaffTotal(0));
     }, []);
 
@@ -117,12 +133,10 @@ export default function EventsIndex({ eventList, filters }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Events" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto p-4">
-                <div className="flex w-full items-start gap-4">
-                    <div className="w-1/3 rounded-md bg-gradient-to-r from-emerald-500 to-teal-500 p-4 text-white">
-                        <div className="text-sm font-medium">Total Events</div>
-                        <div className="text-3xl font-bold">
-                            {eventList.total ?? 0}
-                        </div>
+                <div className="rounded-md bg-gradient-to-r from-emerald-500 to-teal-500 p-4 text-white">
+                    <div className="text-sm font-medium">Total Events</div>
+                    <div className="text-3xl font-bold">
+                        {eventList.total ?? 0}
                     </div>
                 </div>
 
