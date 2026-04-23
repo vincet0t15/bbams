@@ -1,6 +1,7 @@
 import { Head, router, useForm } from '@inertiajs/react';
 import { PlusIcon } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import dayjs from 'dayjs';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import Pagination from '@/components/paginationData';
 import { Button } from '@/components/ui/button';
@@ -76,6 +77,12 @@ export default function EventsIndex({ eventList, filters }: Props) {
         setOpenDelete(true);
     };
 
+    const formatDateTime = (val?: string | null) => {
+        if (!val) return '-';
+        const parsed = dayjs(val);
+        return parsed.isValid() ? parsed.format('YYYY-MM-DD - h:mm A') : '-';
+    };
+
     useEffect(() => {
         const jsonHeaders = {
             Accept: 'application/json',
@@ -83,7 +90,10 @@ export default function EventsIndex({ eventList, filters }: Props) {
             'X-Inertia': 'true',
         };
 
-        const resolveTotalFromPayload = (data, keyName) => {
+        const resolveTotalFromPayload = (
+            data: any,
+            keyName?: string,
+        ): number => {
             const payload = keyName ? (data?.props?.[keyName] ?? data) : data;
             const maybeTotal =
                 (typeof payload?.total === 'number' ? payload.total : null) ||
@@ -225,10 +235,10 @@ export default function EventsIndex({ eventList, filters }: Props) {
                                             {event.location || '-'}
                                         </TableCell>
                                         <TableCell className="text-sm">
-                                            {event.start_at || '-'}
+                                            {formatDateTime(event.start_at)}
                                         </TableCell>
                                         <TableCell className="text-sm">
-                                            {event.end_at || '-'}
+                                            {formatDateTime(event.end_at)}
                                         </TableCell>
                                         <TableCell className="flex gap-2 text-sm">
                                             <Button
