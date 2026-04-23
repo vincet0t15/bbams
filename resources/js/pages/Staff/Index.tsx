@@ -84,6 +84,14 @@ export default function StaffIndex({ staffList, filters }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Staff" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto p-4">
+                <div className="w-full">
+                    <div className="w-full rounded-md bg-gradient-to-r from-emerald-500 to-teal-500 p-4 text-white">
+                        <div className="text-sm font-medium">Total Staff</div>
+                        <div className="text-3xl font-bold">
+                            {staffList.total ?? 0}
+                        </div>
+                    </div>
+                </div>
                 <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <Button
                         variant="default"

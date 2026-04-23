@@ -36,6 +36,12 @@ class StaffController extends Controller
             ->paginate(50)
             ->withQueryString();
 
+        // Only return plain JSON for non-Inertia JSON/XHR requests.
+        // Inertia requests include the `X-Inertia` header and must receive an Inertia response.
+        if (($request->expectsJson() || $request->ajax() || $request->header('X-Requested-With') === 'XMLHttpRequest') && ! $request->header('X-Inertia')) {
+            return response()->json(['total' => $staff->total()]);
+        }
+
         return Inertia::render('Staff/Index', [
             'staffList' => $staff->through(function (Staff $s) {
                 return [

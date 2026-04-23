@@ -84,6 +84,16 @@ export default function FacultyIndex({ facultyList, filters }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Faculty" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto p-4">
+                <div className="w-full">
+                    <div className="w-full rounded-md bg-gradient-to-r from-violet-500 to-indigo-500 p-4 text-white">
+                        <div className="text-sm font-medium">
+                            Total Faculties
+                        </div>
+                        <div className="text-3xl font-bold">
+                            {facultyList.total ?? 0}
+                        </div>
+                    </div>
+                </div>
                 <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <Button
                         variant="default"

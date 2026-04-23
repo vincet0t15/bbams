@@ -36,6 +36,12 @@ class FacultyController extends Controller
             ->paginate(50)
             ->withQueryString();
 
+        // Only return plain JSON for non-Inertia JSON/XHR requests.
+        // Inertia requests include the `X-Inertia` header and must receive an Inertia response.
+        if (($request->expectsJson() || $request->ajax() || $request->header('X-Requested-With') === 'XMLHttpRequest') && ! $request->header('X-Inertia')) {
+            return response()->json(['total' => $faculties->total()]);
+        }
+
         return Inertia::render('Faculty/Index', [
             'facultyList' => $faculties->through(function (Faculty $f) {
                 return [

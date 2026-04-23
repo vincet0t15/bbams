@@ -1,6 +1,6 @@
 import { Head, router, useForm } from '@inertiajs/react';
 import { PlusIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import Pagination from '@/components/paginationData';
 import { Button } from '@/components/ui/button';
@@ -44,6 +44,8 @@ export default function EventsIndex({ eventList, filters }: Props) {
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+    const [facultiesTotal, setFacultiesTotal] = useState<number | null>(null);
+    const [staffTotal, setStaffTotal] = useState<number | null>(null);
     const { data, setData } = useForm({
         search: filters.search || '',
     });
@@ -74,37 +76,52 @@ export default function EventsIndex({ eventList, filters }: Props) {
         setOpenDelete(true);
     };
 
+    useEffect(() => {
+        const jsonHeaders = {
+            Accept: 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Inertia': 'true',
+        };
+
+        const resolveTotalFromPayload = (data, keyName) => {
+            const payload = keyName ? data?.props?.[keyName] ?? data : data;
+            const maybeTotal =
+                (typeof payload?.total === 'number' ? payload.total : null) ||
+                (typeof payload?.meta?.total === 'number' ? payload.meta.total : null) ||
+                (typeof payload?.data?.total === 'number' ? payload.data.total : null) ||
+                (typeof payload?.data?.meta?.total === 'number' ? payload.data.meta.total : null) ||
+                (Array.isArray(payload?.data) ? payload.data.length :
+                    (Array.isArray(payload) ? payload.length : 0));
+
+            return Number(maybeTotal ?? 0);
+        };
+
+        fetch('/faculties', { headers: jsonHeaders, credentials: 'same-origin' })
+            .then((res) => {
+                if (!res.ok) throw new Error('Network response was not ok');
+                return res.json();
+            })
+            .then((data) => setFacultiesTotal(resolveTotalFromPayload(data, 'facultyList')))
+            .catch(() => setFacultiesTotal(0));
+
+        fetch('/staff', { headers: jsonHeaders, credentials: 'same-origin' })
+            .then((res) => {
+                if (!res.ok) throw new Error('Network response was not ok');
+                return res.json();
+            })
+            .then((data) => setStaffTotal(resolveTotalFromPayload(data, 'staffList')))
+            .catch(() => setStaffTotal(0));
+    }, []);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Events" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto p-4">
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-                    <div className="col-span-1">
-                        <div className="rounded-md bg-gradient-to-r from-emerald-500 to-teal-500 p-4 text-white">
-                            <div className="text-sm font-medium">
-                                Total Events
-                            </div>
-                            <div className="text-3xl font-bold">
-                                {eventList.total ?? 0}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-span-1">
-                        <div className="rounded-md bg-gradient-to-r from-sky-500 to-cyan-500 p-4 text-white">
-                            <div className="text-sm font-medium">Upcoming</div>
-                            <div className="text-3xl font-bold">0</div>
-                        </div>
-                    </div>
-                    <div className="col-span-1">
-                        <div className="rounded-md bg-gradient-to-r from-orange-400 to-rose-500 p-4 text-white">
-                            <div className="text-sm font-medium">Ongoing</div>
-                            <div className="text-3xl font-bold">0</div>
-                        </div>
-                    </div>
-                    <div className="col-span-1">
-                        <div className="rounded-md bg-gradient-to-r from-violet-500 to-fuchsia-500 p-4 text-white">
-                            <div className="text-sm font-medium">Past</div>
-                            <div className="text-3xl font-bold">0</div>
+                <div className="flex w-full items-start gap-4">
+                    <div className="w-1/3 rounded-md bg-gradient-to-r from-emerald-500 to-teal-500 p-4 text-white">
+                        <div className="text-sm font-medium">Total Events</div>
+                        <div className="text-3xl font-bold">
+                            {eventList.total ?? 0}
                         </div>
                     </div>
                 </div>
