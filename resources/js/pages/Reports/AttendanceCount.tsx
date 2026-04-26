@@ -25,6 +25,7 @@ import {
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
+import { Printer } from 'lucide-react';
 
 type CountRow = {
     user: { id: number; name: string; username: string; role: string | null };
@@ -183,6 +184,18 @@ export default function AttendanceCountReport({
         setData('search', e.target.value);
     };
 
+    const handlePrint = () => {
+        const query = buildQuery();
+        const params = new URLSearchParams();
+        if (query) {
+            Object.entries(query).forEach(([key, value]) => {
+                params.append(key, value);
+            });
+        }
+        const printUrl = `/reports/attendance-count/print${params.toString() ? '?' + params.toString() : ''}`;
+        window.open(printUrl, '_blank');
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Attendance Count Report" />
@@ -318,7 +331,7 @@ export default function AttendanceCountReport({
                 </div>
 
                 <div className="flex w-full flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-                    <div className="grid w-full gap-3 sm:grid-cols-2 lg:grid-cols-5">
+                    <div className="grid flex-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
                         {data.role === 'student' ? (
                             <div className="space-y-2">
                                 <Label>Program</Label>
@@ -414,6 +427,10 @@ export default function AttendanceCountReport({
                         </Button>
                         <Button variant="ghost" onClick={reset}>
                             Reset
+                        </Button>
+                        <Button variant="outline" onClick={handlePrint}>
+                            <Printer className="mr-2 h-4 w-4" />
+                            Print
                         </Button>
                     </div>
                 </div>

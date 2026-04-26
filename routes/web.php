@@ -85,6 +85,7 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
 
         // Reports
         Route::get('reports/attendance-count', [ReportsController::class, 'attendanceCount'])->name('reports.attendance-count');
+        Route::get('reports/attendance-count/print', [ReportsController::class, 'attendanceCountPrint'])->name('reports.attendance-count-print');
     });
 
     // Student, Faculty, Staff routes - Attendance Logs and DTR only
