@@ -453,7 +453,7 @@ export default function Register() {
 
                 <div className="text-center text-sm text-muted-foreground">
                     Already have an account?{' '}
-                    <TextLink href={login()}>Log in</TextLink>
+                    <TextLink href={login().url}>Log in</TextLink>
                 </div>
             </form>
         </AuthLayout>

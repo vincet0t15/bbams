@@ -138,7 +138,7 @@ export default function ForgotPassword() {
             });
 
             toast.success('Password reset successfully! You can now log in.');
-            window.location.href = login();
+            window.location.href = login().url;
         } catch (error: any) {
             if (error.response?.data?.errors) {
                 setErrors(error.response.data.errors);
@@ -202,28 +202,11 @@ export default function ForgotPassword() {
                         </Button>
                     )}
 
-                    <div className="flex gap-2">
-                        <Button
-                            type="button"
-                            variant="outline"
-                            className="flex-1"
-                            onClick={handleSendResetLink}
-                            disabled={processing}
-                        >
-                            {processing
-                                ? 'Sending…'
-                                : 'Send reset link by email'}
-                        </Button>
-                        {users.length > 1 && (
-                            <Button type="submit" className="w-40">
-                                Continue
-                            </Button>
-                        )}
-                    </div>
+                    
 
                     <div className="text-center text-sm text-muted-foreground">
                         Remember your password?{' '}
-                        <TextLink href={login()}>Log in</TextLink>
+                        <TextLink href={login().url}>Log in</TextLink>
                     </div>
                 </form>
             )}
@@ -367,7 +350,7 @@ export default function ForgotPassword() {
                         <Button
                             type="button"
                             className="w-40"
-                            onClick={() => (window.location.href = login())}
+                            onClick={() => (window.location.href = login().url)}
                         >
                             Go to Login
                         </Button>
