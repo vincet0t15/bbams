@@ -1,6 +1,10 @@
 export type User = {
     id: number;
     name: string;
+    first_name?: string | null;
+    middle_name?: string | null;
+    last_name?: string | null;
+    extension_name?: string | null;
     username: string;
     email: string;
     is_active: boolean;

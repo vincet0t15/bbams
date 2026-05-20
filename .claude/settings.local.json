@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__ide__getDiagnostics",
+      "Bash(php -l app/Http/Controllers/StudentController.php)",
+      "Bash(php -l app/Http/Controllers/StaffController.php)",
+      "Bash(php -l app/Http/Controllers/FacultyController.php)"
+    ]
+  }
+}

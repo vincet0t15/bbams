@@ -22,6 +22,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'extension_name',
         'username',
         'email',
         'password',
@@ -76,5 +80,22 @@ class User extends Authenticatable
     public function attendanceLogs()
     {
         return $this->hasMany(AttendanceLog::class);
+    }
+
+    public function getFullNameAttribute(): string
+    {
+        $parts = array_filter([
+            $this->first_name,
+            $this->middle_name,
+            $this->last_name,
+        ]);
+
+        $name = implode(' ', $parts);
+
+        if ($this->extension_name) {
+            $name .= ' ' . $this->extension_name;
+        }
+
+        return $name ?: $this->name;
     }
 }

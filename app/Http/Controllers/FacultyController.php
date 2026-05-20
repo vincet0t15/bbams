@@ -88,6 +88,10 @@ class FacultyController extends Controller
             $fullName = trim(($validated['first_name'] ?? '') . ' ' . ($validated['middle_name'] ?? '') . ' ' . ($validated['last_name'] ?? ''));
             $user = User::create([
                 'name' => $fullName ?: $validated['username'],
+                'first_name' => $validated['first_name'] ?? null,
+                'middle_name' => $validated['middle_name'] ?? null,
+                'last_name' => $validated['last_name'] ?? null,
+                'extension_name' => $validated['extension_name'] ?? null,
                 'username' => $validated['username'],
                 'email' => $validated['email'],
                 'password' => $validated['password'],

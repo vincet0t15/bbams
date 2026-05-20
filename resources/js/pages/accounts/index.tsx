@@ -24,6 +24,10 @@ type AccountRow = {
     email: string;
     is_active: boolean;
     account_type: string;
+    first_name?: string | null;
+    middle_name?: string | null;
+    last_name?: string | null;
+    extension_name?: string | null;
 };
 
 type Props = {

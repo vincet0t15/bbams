@@ -33,11 +33,15 @@ class UserController extends Controller
         return Inertia::render('accounts/index', [
             'userList' => $accounts->through(fn(User $user) => [
                 'id' => $user->id,
-                'name' => $user->name,
+                'name' => $user->full_name,
                 'username' => $user->username,
                 'email' => $user->email,
                 'is_active' => $user->is_active,
                 'roles' => $user->roles->pluck('name')->values(),
+                'first_name' => $user->first_name,
+                'middle_name' => $user->middle_name,
+                'last_name' => $user->last_name,
+                'extension_name' => $user->extension_name,
             ]),
             'roles' => Role::query()->orderBy('name')->pluck('name')->values(),
             'filters' => $request->only(['search', 'role']),
