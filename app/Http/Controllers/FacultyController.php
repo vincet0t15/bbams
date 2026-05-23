@@ -162,6 +162,10 @@ class FacultyController extends Controller
                 'employee_no' => $validated['employee_no'] ?? null,
                 'department' => $validated['department'] ?? null,
                 'position' => $validated['position'] ?? null,
+                'last_name' => $validated['last_name'] ?? $faculty->last_name,
+                'first_name' => $validated['first_name'] ?? $faculty->first_name,
+                'middle_name' => $validated['middle_name'] ?? $faculty->middle_name,
+                'extension_name' => $validated['extension_name'] ?? $faculty->extension_name,
             ]);
         });
 

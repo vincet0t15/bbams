@@ -47,8 +47,14 @@ class CreateNewUser implements CreatesNewUsers
 
         Log::info('Validation passed, creating user');
 
+        $fullName = trim(($input['first_name'] ?? '') . ' ' . ($input['middle_name'] ?? '') . ' ' . ($input['last_name'] ?? ''));
+
         $user = User::create([
-            'name' => $input['username'],
+            'name' => $fullName ?: $input['username'],
+            'first_name' => $input['first_name'] ?? null,
+            'middle_name' => $input['middle_name'] ?? null,
+            'last_name' => $input['last_name'] ?? null,
+            'extension_name' => $input['extension_name'] ?? null,
             'username' => $input['username'],
             'email' => $input['email'],
             'password' => $input['password'],

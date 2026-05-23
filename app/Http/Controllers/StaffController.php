@@ -162,6 +162,10 @@ class StaffController extends Controller
                 'employee_no' => $validated['employee_no'] ?? null,
                 'department' => $validated['department'] ?? null,
                 'position' => $validated['position'] ?? null,
+                'last_name' => $validated['last_name'] ?? $staff->last_name,
+                'first_name' => $validated['first_name'] ?? $staff->first_name,
+                'middle_name' => $validated['middle_name'] ?? $staff->middle_name,
+                'extension_name' => $validated['extension_name'] ?? $staff->extension_name,
             ]);
         });
 
