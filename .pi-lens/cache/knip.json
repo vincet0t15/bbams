@@ -1,0 +1,1674 @@
+{
+  "success": true,
+  "issues": [
+    {
+      "type": "file",
+      "name": "resources/js/app.tsx",
+      "file": "resources/js/app.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/ssr.tsx",
+      "file": "resources/js/ssr.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/css/app.css",
+      "file": "resources/css/app.css"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/alert-error.tsx",
+      "file": "resources/js/components/alert-error.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/app-content.tsx",
+      "file": "resources/js/components/app-content.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/app-header.tsx",
+      "file": "resources/js/components/app-header.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/app-logo-icon.tsx",
+      "file": "resources/js/components/app-logo-icon.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/app-logo.tsx",
+      "file": "resources/js/components/app-logo.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/app-shell.tsx",
+      "file": "resources/js/components/app-shell.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/app-sidebar-header.tsx",
+      "file": "resources/js/components/app-sidebar-header.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/app-sidebar.tsx",
+      "file": "resources/js/components/app-sidebar.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/appearance-tabs.tsx",
+      "file": "resources/js/components/appearance-tabs.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/breadcrumbs.tsx",
+      "file": "resources/js/components/breadcrumbs.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/delete-user.tsx",
+      "file": "resources/js/components/delete-user.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/heading.tsx",
+      "file": "resources/js/components/heading.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/input-error.tsx",
+      "file": "resources/js/components/input-error.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/nav-footer.tsx",
+      "file": "resources/js/components/nav-footer.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/nav-main.tsx",
+      "file": "resources/js/components/nav-main.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/nav-user.tsx",
+      "file": "resources/js/components/nav-user.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/paginationData.tsx",
+      "file": "resources/js/components/paginationData.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/password-input.tsx",
+      "file": "resources/js/components/password-input.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/print-footer.tsx",
+      "file": "resources/js/components/print-footer.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/text-link.tsx",
+      "file": "resources/js/components/text-link.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/two-factor-recovery-codes.tsx",
+      "file": "resources/js/components/two-factor-recovery-codes.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/two-factor-setup-modal.tsx",
+      "file": "resources/js/components/two-factor-setup-modal.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/user-info.tsx",
+      "file": "resources/js/components/user-info.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/user-menu-content.tsx",
+      "file": "resources/js/components/user-menu-content.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/dashboard.tsx",
+      "file": "resources/js/pages/dashboard.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/welcome.tsx",
+      "file": "resources/js/pages/welcome.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/lib/utils.ts",
+      "file": "resources/js/lib/utils.ts"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/types/index.ts",
+      "file": "resources/js/types/index.ts"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/types/navigation.ts",
+      "file": "resources/js/types/navigation.ts"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/types/ui.ts",
+      "file": "resources/js/types/ui.ts"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/layouts/app-layout.tsx",
+      "file": "resources/js/layouts/app-layout.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/layouts/auth-layout.tsx",
+      "file": "resources/js/layouts/auth-layout.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/hooks/use-appearance.tsx",
+      "file": "resources/js/hooks/use-appearance.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/hooks/use-clipboard.ts",
+      "file": "resources/js/hooks/use-clipboard.ts"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/hooks/use-current-url.ts",
+      "file": "resources/js/hooks/use-current-url.ts"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/hooks/use-initials.tsx",
+      "file": "resources/js/hooks/use-initials.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/hooks/use-mobile-navigation.ts",
+      "file": "resources/js/hooks/use-mobile-navigation.ts"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/hooks/use-mobile.tsx",
+      "file": "resources/js/hooks/use-mobile.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/hooks/use-two-factor-auth.ts",
+      "file": "resources/js/hooks/use-two-factor-auth.ts"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/alert.tsx",
+      "file": "resources/js/components/ui/alert.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/avatar.tsx",
+      "file": "resources/js/components/ui/avatar.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/badge.tsx",
+      "file": "resources/js/components/ui/badge.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/breadcrumb.tsx",
+      "file": "resources/js/components/ui/breadcrumb.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/button.tsx",
+      "file": "resources/js/components/ui/button.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/card.tsx",
+      "file": "resources/js/components/ui/card.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/checkbox.tsx",
+      "file": "resources/js/components/ui/checkbox.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/collapsible.tsx",
+      "file": "resources/js/components/ui/collapsible.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/date-time-picker.tsx",
+      "file": "resources/js/components/ui/date-time-picker.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/dialog.tsx",
+      "file": "resources/js/components/ui/dialog.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/dropdown-menu.tsx",
+      "file": "resources/js/components/ui/dropdown-menu.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/icon.tsx",
+      "file": "resources/js/components/ui/icon.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/input-otp.tsx",
+      "file": "resources/js/components/ui/input-otp.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/input.tsx",
+      "file": "resources/js/components/ui/input.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/label.tsx",
+      "file": "resources/js/components/ui/label.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/navigation-menu.tsx",
+      "file": "resources/js/components/ui/navigation-menu.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/placeholder-pattern.tsx",
+      "file": "resources/js/components/ui/placeholder-pattern.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/select.tsx",
+      "file": "resources/js/components/ui/select.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/separator.tsx",
+      "file": "resources/js/components/ui/separator.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/sheet.tsx",
+      "file": "resources/js/components/ui/sheet.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/sidebar.tsx",
+      "file": "resources/js/components/ui/sidebar.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/skeleton.tsx",
+      "file": "resources/js/components/ui/skeleton.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/sonner.tsx",
+      "file": "resources/js/components/ui/sonner.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/spinner.tsx",
+      "file": "resources/js/components/ui/spinner.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/table.tsx",
+      "file": "resources/js/components/ui/table.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/tabs.tsx",
+      "file": "resources/js/components/ui/tabs.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/textarea.tsx",
+      "file": "resources/js/components/ui/textarea.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/toggle-group.tsx",
+      "file": "resources/js/components/ui/toggle-group.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/toggle.tsx",
+      "file": "resources/js/components/ui/toggle.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/tooltip.tsx",
+      "file": "resources/js/components/ui/tooltip.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/accounts/index.tsx",
+      "file": "resources/js/pages/accounts/index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/AttendanceLogs/Index.tsx",
+      "file": "resources/js/pages/AttendanceLogs/Index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/AttendanceLogs/MyLogs.tsx",
+      "file": "resources/js/pages/AttendanceLogs/MyLogs.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/auth/confirm-password.tsx",
+      "file": "resources/js/pages/auth/confirm-password.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/auth/forgot-password.tsx",
+      "file": "resources/js/pages/auth/forgot-password.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/auth/login.tsx",
+      "file": "resources/js/pages/auth/login.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/auth/register.tsx",
+      "file": "resources/js/pages/auth/register.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/auth/reset-password.tsx",
+      "file": "resources/js/pages/auth/reset-password.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/auth/two-factor-challenge.tsx",
+      "file": "resources/js/pages/auth/two-factor-challenge.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/auth/verify-email.tsx",
+      "file": "resources/js/pages/auth/verify-email.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/bin/index.tsx",
+      "file": "resources/js/pages/bin/index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/events/create.tsx",
+      "file": "resources/js/pages/events/create.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/events/delete.tsx",
+      "file": "resources/js/pages/events/delete.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/events/edit.tsx",
+      "file": "resources/js/pages/events/edit.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/events/index.tsx",
+      "file": "resources/js/pages/events/index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Reports/Attendance.tsx",
+      "file": "resources/js/pages/Reports/Attendance.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Reports/AttendanceCount.tsx",
+      "file": "resources/js/pages/Reports/AttendanceCount.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Reports/AttendanceCountPrint.tsx",
+      "file": "resources/js/pages/Reports/AttendanceCountPrint.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/settings/appearance.tsx",
+      "file": "resources/js/pages/settings/appearance.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/settings/password.tsx",
+      "file": "resources/js/pages/settings/password.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/settings/profile.tsx",
+      "file": "resources/js/pages/settings/profile.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/settings/two-factor.tsx",
+      "file": "resources/js/pages/settings/two-factor.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Courses/create.tsx",
+      "file": "resources/js/pages/Courses/create.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Courses/delete.tsx",
+      "file": "resources/js/pages/Courses/delete.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Courses/edit.tsx",
+      "file": "resources/js/pages/Courses/edit.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Courses/Index.tsx",
+      "file": "resources/js/pages/Courses/Index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Faculty/create.tsx",
+      "file": "resources/js/pages/Faculty/create.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Faculty/delete.tsx",
+      "file": "resources/js/pages/Faculty/delete.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Faculty/edit.tsx",
+      "file": "resources/js/pages/Faculty/edit.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Faculty/Index.tsx",
+      "file": "resources/js/pages/Faculty/Index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/DTR/index.tsx",
+      "file": "resources/js/pages/DTR/index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/DTR/MyDTR.tsx",
+      "file": "resources/js/pages/DTR/MyDTR.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/DTR/Select.tsx",
+      "file": "resources/js/pages/DTR/Select.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Staff/create.tsx",
+      "file": "resources/js/pages/Staff/create.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Staff/delete.tsx",
+      "file": "resources/js/pages/Staff/delete.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Staff/edit.tsx",
+      "file": "resources/js/pages/Staff/edit.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Staff/Index.tsx",
+      "file": "resources/js/pages/Staff/Index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Students/create.tsx",
+      "file": "resources/js/pages/Students/create.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Students/delete.tsx",
+      "file": "resources/js/pages/Students/delete.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Students/edit.tsx",
+      "file": "resources/js/pages/Students/edit.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Students/Index.tsx",
+      "file": "resources/js/pages/Students/Index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/users/index.tsx",
+      "file": "resources/js/pages/users/index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/YearLevels/create.tsx",
+      "file": "resources/js/pages/YearLevels/create.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/YearLevels/delete.tsx",
+      "file": "resources/js/pages/YearLevels/delete.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/YearLevels/edit.tsx",
+      "file": "resources/js/pages/YearLevels/edit.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/YearLevels/Index.tsx",
+      "file": "resources/js/pages/YearLevels/Index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/layouts/app/app-header-layout.tsx",
+      "file": "resources/js/layouts/app/app-header-layout.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/layouts/app/app-sidebar-layout.tsx",
+      "file": "resources/js/layouts/app/app-sidebar-layout.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/layouts/auth/auth-card-layout.tsx",
+      "file": "resources/js/layouts/auth/auth-card-layout.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/layouts/auth/auth-simple-layout.tsx",
+      "file": "resources/js/layouts/auth/auth-simple-layout.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/layouts/auth/auth-split-layout.tsx",
+      "file": "resources/js/layouts/auth/auth-split-layout.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/layouts/settings/layout.tsx",
+      "file": "resources/js/layouts/settings/layout.tsx"
+    },
+    {
+      "type": "dependency",
+      "name": "@headlessui/react",
+      "file": "package.json",
+      "line": 32
+    },
+    {
+      "type": "dependency",
+      "name": "@inertiajs/react",
+      "file": "package.json",
+      "line": 33
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-avatar",
+      "file": "package.json",
+      "line": 34
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-checkbox",
+      "file": "package.json",
+      "line": 35
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-collapsible",
+      "file": "package.json",
+      "line": 36
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-dialog",
+      "file": "package.json",
+      "line": 37
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-dropdown-menu",
+      "file": "package.json",
+      "line": 38
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-label",
+      "file": "package.json",
+      "line": 39
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-navigation-menu",
+      "file": "package.json",
+      "line": 40
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-select",
+      "file": "package.json",
+      "line": 41
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-separator",
+      "file": "package.json",
+      "line": 42
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-slot",
+      "file": "package.json",
+      "line": 43
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-toggle",
+      "file": "package.json",
+      "line": 44
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-toggle-group",
+      "file": "package.json",
+      "line": 45
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-tooltip",
+      "file": "package.json",
+      "line": 46
+    },
+    {
+      "type": "dependency",
+      "name": "@types/react",
+      "file": "package.json",
+      "line": 48
+    },
+    {
+      "type": "dependency",
+      "name": "@types/react-dom",
+      "file": "package.json",
+      "line": 49
+    },
+    {
+      "type": "dependency",
+      "name": "class-variance-authority",
+      "file": "package.json",
+      "line": 51
+    },
+    {
+      "type": "dependency",
+      "name": "clsx",
+      "file": "package.json",
+      "line": 52
+    },
+    {
+      "type": "dependency",
+      "name": "concurrently",
+      "file": "package.json",
+      "line": 53
+    },
+    {
+      "type": "dependency",
+      "name": "dayjs",
+      "file": "package.json",
+      "line": 54
+    },
+    {
+      "type": "dependency",
+      "name": "input-otp",
+      "file": "package.json",
+      "line": 56
+    },
+    {
+      "type": "dependency",
+      "name": "lucide-react",
+      "file": "package.json",
+      "line": 58
+    },
+    {
+      "type": "dependency",
+      "name": "next-themes",
+      "file": "package.json",
+      "line": 59
+    },
+    {
+      "type": "dependency",
+      "name": "radix-ui",
+      "file": "package.json",
+      "line": 60
+    },
+    {
+      "type": "dependency",
+      "name": "react",
+      "file": "package.json",
+      "line": 61
+    },
+    {
+      "type": "dependency",
+      "name": "react-dom",
+      "file": "package.json",
+      "line": 62
+    },
+    {
+      "type": "dependency",
+      "name": "sonner",
+      "file": "package.json",
+      "line": 63
+    },
+    {
+      "type": "dependency",
+      "name": "tailwind-merge",
+      "file": "package.json",
+      "line": 64
+    },
+    {
+      "type": "dependency",
+      "name": "tailwindcss",
+      "file": "package.json",
+      "line": 65
+    },
+    {
+      "type": "dependency",
+      "name": "tw-animate-css",
+      "file": "package.json",
+      "line": 66
+    },
+    {
+      "type": "unlisted",
+      "name": "@inertiajs/core",
+      "file": "resources/js/types/filter.d.ts",
+      "line": 1
+    },
+    {
+      "type": "export",
+      "name": "User",
+      "file": "resources/js/types/auth.ts",
+      "line": 1
+    },
+    {
+      "type": "export",
+      "name": "TwoFactorSetupData",
+      "file": "resources/js/types/auth.ts",
+      "line": 25
+    },
+    {
+      "type": "export",
+      "name": "TwoFactorSecretKey",
+      "file": "resources/js/types/auth.ts",
+      "line": 30
+    }
+  ],
+  "unusedExports": [
+    {
+      "type": "export",
+      "name": "User",
+      "file": "resources/js/types/auth.ts",
+      "line": 1
+    },
+    {
+      "type": "export",
+      "name": "TwoFactorSetupData",
+      "file": "resources/js/types/auth.ts",
+      "line": 25
+    },
+    {
+      "type": "export",
+      "name": "TwoFactorSecretKey",
+      "file": "resources/js/types/auth.ts",
+      "line": 30
+    }
+  ],
+  "unusedFiles": [
+    {
+      "type": "file",
+      "name": "resources/js/app.tsx",
+      "file": "resources/js/app.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/ssr.tsx",
+      "file": "resources/js/ssr.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/css/app.css",
+      "file": "resources/css/app.css"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/alert-error.tsx",
+      "file": "resources/js/components/alert-error.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/app-content.tsx",
+      "file": "resources/js/components/app-content.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/app-header.tsx",
+      "file": "resources/js/components/app-header.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/app-logo-icon.tsx",
+      "file": "resources/js/components/app-logo-icon.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/app-logo.tsx",
+      "file": "resources/js/components/app-logo.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/app-shell.tsx",
+      "file": "resources/js/components/app-shell.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/app-sidebar-header.tsx",
+      "file": "resources/js/components/app-sidebar-header.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/app-sidebar.tsx",
+      "file": "resources/js/components/app-sidebar.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/appearance-tabs.tsx",
+      "file": "resources/js/components/appearance-tabs.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/breadcrumbs.tsx",
+      "file": "resources/js/components/breadcrumbs.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/delete-user.tsx",
+      "file": "resources/js/components/delete-user.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/heading.tsx",
+      "file": "resources/js/components/heading.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/input-error.tsx",
+      "file": "resources/js/components/input-error.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/nav-footer.tsx",
+      "file": "resources/js/components/nav-footer.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/nav-main.tsx",
+      "file": "resources/js/components/nav-main.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/nav-user.tsx",
+      "file": "resources/js/components/nav-user.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/paginationData.tsx",
+      "file": "resources/js/components/paginationData.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/password-input.tsx",
+      "file": "resources/js/components/password-input.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/print-footer.tsx",
+      "file": "resources/js/components/print-footer.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/text-link.tsx",
+      "file": "resources/js/components/text-link.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/two-factor-recovery-codes.tsx",
+      "file": "resources/js/components/two-factor-recovery-codes.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/two-factor-setup-modal.tsx",
+      "file": "resources/js/components/two-factor-setup-modal.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/user-info.tsx",
+      "file": "resources/js/components/user-info.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/user-menu-content.tsx",
+      "file": "resources/js/components/user-menu-content.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/dashboard.tsx",
+      "file": "resources/js/pages/dashboard.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/welcome.tsx",
+      "file": "resources/js/pages/welcome.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/lib/utils.ts",
+      "file": "resources/js/lib/utils.ts"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/types/index.ts",
+      "file": "resources/js/types/index.ts"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/types/navigation.ts",
+      "file": "resources/js/types/navigation.ts"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/types/ui.ts",
+      "file": "resources/js/types/ui.ts"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/layouts/app-layout.tsx",
+      "file": "resources/js/layouts/app-layout.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/layouts/auth-layout.tsx",
+      "file": "resources/js/layouts/auth-layout.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/hooks/use-appearance.tsx",
+      "file": "resources/js/hooks/use-appearance.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/hooks/use-clipboard.ts",
+      "file": "resources/js/hooks/use-clipboard.ts"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/hooks/use-current-url.ts",
+      "file": "resources/js/hooks/use-current-url.ts"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/hooks/use-initials.tsx",
+      "file": "resources/js/hooks/use-initials.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/hooks/use-mobile-navigation.ts",
+      "file": "resources/js/hooks/use-mobile-navigation.ts"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/hooks/use-mobile.tsx",
+      "file": "resources/js/hooks/use-mobile.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/hooks/use-two-factor-auth.ts",
+      "file": "resources/js/hooks/use-two-factor-auth.ts"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/alert.tsx",
+      "file": "resources/js/components/ui/alert.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/avatar.tsx",
+      "file": "resources/js/components/ui/avatar.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/badge.tsx",
+      "file": "resources/js/components/ui/badge.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/breadcrumb.tsx",
+      "file": "resources/js/components/ui/breadcrumb.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/button.tsx",
+      "file": "resources/js/components/ui/button.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/card.tsx",
+      "file": "resources/js/components/ui/card.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/checkbox.tsx",
+      "file": "resources/js/components/ui/checkbox.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/collapsible.tsx",
+      "file": "resources/js/components/ui/collapsible.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/date-time-picker.tsx",
+      "file": "resources/js/components/ui/date-time-picker.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/dialog.tsx",
+      "file": "resources/js/components/ui/dialog.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/dropdown-menu.tsx",
+      "file": "resources/js/components/ui/dropdown-menu.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/icon.tsx",
+      "file": "resources/js/components/ui/icon.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/input-otp.tsx",
+      "file": "resources/js/components/ui/input-otp.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/input.tsx",
+      "file": "resources/js/components/ui/input.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/label.tsx",
+      "file": "resources/js/components/ui/label.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/navigation-menu.tsx",
+      "file": "resources/js/components/ui/navigation-menu.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/placeholder-pattern.tsx",
+      "file": "resources/js/components/ui/placeholder-pattern.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/select.tsx",
+      "file": "resources/js/components/ui/select.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/separator.tsx",
+      "file": "resources/js/components/ui/separator.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/sheet.tsx",
+      "file": "resources/js/components/ui/sheet.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/sidebar.tsx",
+      "file": "resources/js/components/ui/sidebar.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/skeleton.tsx",
+      "file": "resources/js/components/ui/skeleton.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/sonner.tsx",
+      "file": "resources/js/components/ui/sonner.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/spinner.tsx",
+      "file": "resources/js/components/ui/spinner.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/table.tsx",
+      "file": "resources/js/components/ui/table.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/tabs.tsx",
+      "file": "resources/js/components/ui/tabs.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/textarea.tsx",
+      "file": "resources/js/components/ui/textarea.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/toggle-group.tsx",
+      "file": "resources/js/components/ui/toggle-group.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/toggle.tsx",
+      "file": "resources/js/components/ui/toggle.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/components/ui/tooltip.tsx",
+      "file": "resources/js/components/ui/tooltip.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/accounts/index.tsx",
+      "file": "resources/js/pages/accounts/index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/AttendanceLogs/Index.tsx",
+      "file": "resources/js/pages/AttendanceLogs/Index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/AttendanceLogs/MyLogs.tsx",
+      "file": "resources/js/pages/AttendanceLogs/MyLogs.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/auth/confirm-password.tsx",
+      "file": "resources/js/pages/auth/confirm-password.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/auth/forgot-password.tsx",
+      "file": "resources/js/pages/auth/forgot-password.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/auth/login.tsx",
+      "file": "resources/js/pages/auth/login.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/auth/register.tsx",
+      "file": "resources/js/pages/auth/register.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/auth/reset-password.tsx",
+      "file": "resources/js/pages/auth/reset-password.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/auth/two-factor-challenge.tsx",
+      "file": "resources/js/pages/auth/two-factor-challenge.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/auth/verify-email.tsx",
+      "file": "resources/js/pages/auth/verify-email.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/bin/index.tsx",
+      "file": "resources/js/pages/bin/index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/events/create.tsx",
+      "file": "resources/js/pages/events/create.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/events/delete.tsx",
+      "file": "resources/js/pages/events/delete.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/events/edit.tsx",
+      "file": "resources/js/pages/events/edit.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/events/index.tsx",
+      "file": "resources/js/pages/events/index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Reports/Attendance.tsx",
+      "file": "resources/js/pages/Reports/Attendance.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Reports/AttendanceCount.tsx",
+      "file": "resources/js/pages/Reports/AttendanceCount.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Reports/AttendanceCountPrint.tsx",
+      "file": "resources/js/pages/Reports/AttendanceCountPrint.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/settings/appearance.tsx",
+      "file": "resources/js/pages/settings/appearance.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/settings/password.tsx",
+      "file": "resources/js/pages/settings/password.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/settings/profile.tsx",
+      "file": "resources/js/pages/settings/profile.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/settings/two-factor.tsx",
+      "file": "resources/js/pages/settings/two-factor.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Courses/create.tsx",
+      "file": "resources/js/pages/Courses/create.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Courses/delete.tsx",
+      "file": "resources/js/pages/Courses/delete.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Courses/edit.tsx",
+      "file": "resources/js/pages/Courses/edit.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Courses/Index.tsx",
+      "file": "resources/js/pages/Courses/Index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Faculty/create.tsx",
+      "file": "resources/js/pages/Faculty/create.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Faculty/delete.tsx",
+      "file": "resources/js/pages/Faculty/delete.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Faculty/edit.tsx",
+      "file": "resources/js/pages/Faculty/edit.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Faculty/Index.tsx",
+      "file": "resources/js/pages/Faculty/Index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/DTR/index.tsx",
+      "file": "resources/js/pages/DTR/index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/DTR/MyDTR.tsx",
+      "file": "resources/js/pages/DTR/MyDTR.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/DTR/Select.tsx",
+      "file": "resources/js/pages/DTR/Select.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Staff/create.tsx",
+      "file": "resources/js/pages/Staff/create.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Staff/delete.tsx",
+      "file": "resources/js/pages/Staff/delete.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Staff/edit.tsx",
+      "file": "resources/js/pages/Staff/edit.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Staff/Index.tsx",
+      "file": "resources/js/pages/Staff/Index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Students/create.tsx",
+      "file": "resources/js/pages/Students/create.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Students/delete.tsx",
+      "file": "resources/js/pages/Students/delete.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Students/edit.tsx",
+      "file": "resources/js/pages/Students/edit.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/Students/Index.tsx",
+      "file": "resources/js/pages/Students/Index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/users/index.tsx",
+      "file": "resources/js/pages/users/index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/YearLevels/create.tsx",
+      "file": "resources/js/pages/YearLevels/create.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/YearLevels/delete.tsx",
+      "file": "resources/js/pages/YearLevels/delete.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/YearLevels/edit.tsx",
+      "file": "resources/js/pages/YearLevels/edit.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/pages/YearLevels/Index.tsx",
+      "file": "resources/js/pages/YearLevels/Index.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/layouts/app/app-header-layout.tsx",
+      "file": "resources/js/layouts/app/app-header-layout.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/layouts/app/app-sidebar-layout.tsx",
+      "file": "resources/js/layouts/app/app-sidebar-layout.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/layouts/auth/auth-card-layout.tsx",
+      "file": "resources/js/layouts/auth/auth-card-layout.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/layouts/auth/auth-simple-layout.tsx",
+      "file": "resources/js/layouts/auth/auth-simple-layout.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/layouts/auth/auth-split-layout.tsx",
+      "file": "resources/js/layouts/auth/auth-split-layout.tsx"
+    },
+    {
+      "type": "file",
+      "name": "resources/js/layouts/settings/layout.tsx",
+      "file": "resources/js/layouts/settings/layout.tsx"
+    }
+  ],
+  "unusedDeps": [
+    {
+      "type": "dependency",
+      "name": "@headlessui/react",
+      "file": "package.json",
+      "line": 32
+    },
+    {
+      "type": "dependency",
+      "name": "@inertiajs/react",
+      "file": "package.json",
+      "line": 33
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-avatar",
+      "file": "package.json",
+      "line": 34
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-checkbox",
+      "file": "package.json",
+      "line": 35
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-collapsible",
+      "file": "package.json",
+      "line": 36
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-dialog",
+      "file": "package.json",
+      "line": 37
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-dropdown-menu",
+      "file": "package.json",
+      "line": 38
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-label",
+      "file": "package.json",
+      "line": 39
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-navigation-menu",
+      "file": "package.json",
+      "line": 40
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-select",
+      "file": "package.json",
+      "line": 41
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-separator",
+      "file": "package.json",
+      "line": 42
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-slot",
+      "file": "package.json",
+      "line": 43
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-toggle",
+      "file": "package.json",
+      "line": 44
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-toggle-group",
+      "file": "package.json",
+      "line": 45
+    },
+    {
+      "type": "dependency",
+      "name": "@radix-ui/react-tooltip",
+      "file": "package.json",
+      "line": 46
+    },
+    {
+      "type": "dependency",
+      "name": "@types/react",
+      "file": "package.json",
+      "line": 48
+    },
+    {
+      "type": "dependency",
+      "name": "@types/react-dom",
+      "file": "package.json",
+      "line": 49
+    },
+    {
+      "type": "dependency",
+      "name": "class-variance-authority",
+      "file": "package.json",
+      "line": 51
+    },
+    {
+      "type": "dependency",
+      "name": "clsx",
+      "file": "package.json",
+      "line": 52
+    },
+    {
+      "type": "dependency",
+      "name": "concurrently",
+      "file": "package.json",
+      "line": 53
+    },
+    {
+      "type": "dependency",
+      "name": "dayjs",
+      "file": "package.json",
+      "line": 54
+    },
+    {
+      "type": "dependency",
+      "name": "input-otp",
+      "file": "package.json",
+      "line": 56
+    },
+    {
+      "type": "dependency",
+      "name": "lucide-react",
+      "file": "package.json",
+      "line": 58
+    },
+    {
+      "type": "dependency",
+      "name": "next-themes",
+      "file": "package.json",
+      "line": 59
+    },
+    {
+      "type": "dependency",
+      "name": "radix-ui",
+      "file": "package.json",
+      "line": 60
+    },
+    {
+      "type": "dependency",
+      "name": "react",
+      "file": "package.json",
+      "line": 61
+    },
+    {
+      "type": "dependency",
+      "name": "react-dom",
+      "file": "package.json",
+      "line": 62
+    },
+    {
+      "type": "dependency",
+      "name": "sonner",
+      "file": "package.json",
+      "line": 63
+    },
+    {
+      "type": "dependency",
+      "name": "tailwind-merge",
+      "file": "package.json",
+      "line": 64
+    },
+    {
+      "type": "dependency",
+      "name": "tailwindcss",
+      "file": "package.json",
+      "line": 65
+    },
+    {
+      "type": "dependency",
+      "name": "tw-animate-css",
+      "file": "package.json",
+      "line": 66
+    }
+  ],
+  "unlistedDeps": [
+    {
+      "type": "unlisted",
+      "name": "@inertiajs/core",
+      "file": "resources/js/types/filter.d.ts",
+      "line": 1
+    }
+  ],
+  "summary": "Found 159 issues"
+}

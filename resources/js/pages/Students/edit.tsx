@@ -86,7 +86,7 @@ export default function StudentEditDialog({
                 <form onSubmit={submit}>
                     <div className="space-y-4">
                         <div className="flex items-center justify-between space-x-4">
-                            <div className="w-1/3 space-y-2">
+                            <div className="w-full space-y-2">
                                 <Label htmlFor="last_name">Last name</Label>
                                 <Input
                                     id="last_name"
@@ -96,7 +96,7 @@ export default function StudentEditDialog({
                                 />
                                 <InputError message={errors.last_name as any} />
                             </div>
-                            <div className="w-1/3 space-y-2">
+                            <div className="w-full space-y-2">
                                 <Label htmlFor="first_name">First name</Label>
                                 <Input
                                     id="first_name"
@@ -108,7 +108,9 @@ export default function StudentEditDialog({
                                     message={errors.first_name as any}
                                 />
                             </div>
-                            <div className="w-1/3 space-y-2">
+                        </div>
+                        <div className="flex items-center justify-between space-x-4">
+                            <div className="w-full space-y-2">
                                 <Label htmlFor="middle_name">Middle name</Label>
                                 <Input
                                     id="middle_name"
@@ -118,6 +120,20 @@ export default function StudentEditDialog({
                                 />
                                 <InputError
                                     message={errors.middle_name as any}
+                                />
+                            </div>
+                            <div className="w-full space-y-2">
+                                <Label htmlFor="extension_name">
+                                    Suffix name
+                                </Label>
+                                <Input
+                                    id="extension_name"
+                                    placeholder="e.g., Jr., Sr., III"
+                                    value={data.extension_name ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError
+                                    message={errors.extension_name as any}
                                 />
                             </div>
                         </div>

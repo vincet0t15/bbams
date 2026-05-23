@@ -39,6 +39,7 @@ export default function StudentCreateDialog({
             last_name: '',
             first_name: '',
             middle_name: '',
+            extension_name: '',
             username: '',
             email: '',
             password: '',
@@ -89,7 +90,7 @@ export default function StudentCreateDialog({
                 <form onSubmit={submit}>
                     <div className="space-y-4">
                         <div className="flex items-center justify-between space-x-4">
-                            <div className="w-1/3 space-y-2">
+                            <div className="w-full space-y-2">
                                 <Label htmlFor="last_name">Last name</Label>
                                 <Input
                                     id="last_name"
@@ -99,7 +100,7 @@ export default function StudentCreateDialog({
                                 />
                                 <InputError message={errors.last_name as any} />
                             </div>
-                            <div className="w-1/3 space-y-2">
+                            <div className="w-full space-y-2">
                                 <Label htmlFor="first_name">First name</Label>
                                 <Input
                                     id="first_name"
@@ -111,7 +112,9 @@ export default function StudentCreateDialog({
                                     message={errors.first_name as any}
                                 />
                             </div>
-                            <div className="w-1/3 space-y-2">
+                        </div>
+                        <div className="flex items-center justify-between space-x-4">
+                            <div className="w-full space-y-2">
                                 <Label htmlFor="middle_name">Middle name</Label>
                                 <Input
                                     id="middle_name"
@@ -123,9 +126,23 @@ export default function StudentCreateDialog({
                                     message={errors.middle_name as any}
                                 />
                             </div>
+                            <div className="w-full space-y-2">
+                                <Label htmlFor="extension_name">
+                                    Suffix name
+                                </Label>
+                                <Input
+                                    id="extension_name"
+                                    placeholder="e.g., Jr., Sr., III"
+                                    value={data.extension_name ?? ''}
+                                    onChange={handleTextChange}
+                                />
+                                <InputError
+                                    message={errors.extension_name as any}
+                                />
+                            </div>
                         </div>
                         <div className="flex items-center justify-between space-x-4">
-                            <div className="w-1/2 space-y-2">
+                            <div className="w-full space-y-2">
                                 <Label htmlFor="username">Username</Label>
                                 <Input
                                     id="username"
@@ -135,7 +152,7 @@ export default function StudentCreateDialog({
                                 />
                                 <InputError message={errors.username as any} />
                             </div>
-                            <div className="w-1/2 space-y-2">
+                            <div className="w-full space-y-2">
                                 <Label htmlFor="email">Email</Label>
                                 <Input
                                     id="email"
@@ -148,7 +165,7 @@ export default function StudentCreateDialog({
                             </div>
                         </div>
                         <div className="flex items-center justify-between space-x-4">
-                            <div className="w-1/2 space-y-2">
+                            <div className="w-full space-y-2">
                                 <Label htmlFor="password">Password</Label>
                                 <Input
                                     id="password"
@@ -159,7 +176,7 @@ export default function StudentCreateDialog({
                                 />
                                 <InputError message={errors.password as any} />
                             </div>
-                            <div className="w-1/2 space-y-2">
+                            <div className="w-full space-y-2">
                                 <Label htmlFor="password_confirmation">
                                     Confirm Password
                                 </Label>
@@ -173,7 +190,7 @@ export default function StudentCreateDialog({
                             </div>
                         </div>
                         <div className="flex items-center justify-between space-x-4">
-                            <div className="w-1/2 space-y-2">
+                            <div className="w-full space-y-2">
                                 <Label htmlFor="student_no">Student No</Label>
                                 <Input
                                     id="student_no"
@@ -185,7 +202,7 @@ export default function StudentCreateDialog({
                                     message={errors.student_no as any}
                                 />
                             </div>
-                            <div className="w-1/2 space-y-2">
+                            <div className="w-full space-y-2">
                                 <Label>Program</Label>
                                 <Select
                                     value={
@@ -222,7 +239,7 @@ export default function StudentCreateDialog({
                         </div>
 
                         <div className="flex items-center justify-between space-x-4">
-                            <div className="w-1/2 space-y-2">
+                            <div className="w-full space-y-2">
                                 <Label htmlFor="security_question">
                                     Security Question
                                 </Label>
@@ -264,7 +281,7 @@ export default function StudentCreateDialog({
                                     message={errors.security_question as any}
                                 />
                             </div>
-                            <div className="w-1/2 space-y-2">
+                            <div className="w-full space-y-2">
                                 <Label htmlFor="security_answer">
                                     Security Answer
                                 </Label>
@@ -281,7 +298,7 @@ export default function StudentCreateDialog({
                             </div>
                         </div>
                         <div className="flex items-center justify-between space-x-4">
-                            <div className="w-1/2 space-y-2">
+                            <div className="w-full space-y-2">
                                 <Label>Year Level</Label>
                                 <Select
                                     value={
@@ -317,7 +334,7 @@ export default function StudentCreateDialog({
                                     message={errors.year_level_id as any}
                                 />
                             </div>
-                            <div className="w-1/2 space-y-2">
+                            <div className="w-full space-y-2">
                                 <Label htmlFor="section">Section</Label>
                                 <Input
                                     id="section"

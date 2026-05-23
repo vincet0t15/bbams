@@ -1,0 +1,4 @@
+{
+  "signature": "resources/js/pages/Faculty/create.tsx::Unresolved from this turn — resources/js/pages/Faculty/create.tsx:\n🔴 STOP — 1 issue(s) must be fixed:\n  L22: import/order: `@/components/ui/label` import should occur before import of `@/components/ui/select`",
+  "sessionId": "lens-mphwsp0q-dd6d8ba9"
+}

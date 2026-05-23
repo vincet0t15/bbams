@@ -22,6 +22,7 @@ export interface StudentCreateRequest {
     last_name?: string;
     first_name?: string;
     middle_name?: string;
+    extension_name?: string;
     username: string;
     email: string;
     password: string;

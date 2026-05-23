@@ -1,0 +1,67 @@
+{
+  "files": {
+    "resources/js/pages/Students/create.tsx": {
+      "modifiedRanges": [
+        {
+          "start": 1,
+          "end": 369
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-23T06:17:21.520Z"
+    },
+    "resources/js/pages/Staff/create.tsx": {
+      "modifiedRanges": [
+        {
+          "start": 1,
+          "end": 288
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-23T06:17:22.269Z"
+    },
+    "resources/js/pages/Faculty/create.tsx": {
+      "modifiedRanges": [
+        {
+          "start": 1,
+          "end": 291
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-23T06:17:22.995Z"
+    },
+    "resources/js/pages/Students/edit.tsx": {
+      "modifiedRanges": [
+        {
+          "start": 1,
+          "end": 383
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-23T06:17:23.680Z"
+    },
+    "resources/js/pages/Staff/edit.tsx": {
+      "modifiedRanges": [
+        {
+          "start": 1,
+          "end": 329
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-23T06:17:24.421Z"
+    },
+    "resources/js/pages/Faculty/edit.tsx": {
+      "modifiedRanges": [
+        {
+          "start": 1,
+          "end": 331
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-23T06:17:25.137Z"
+    }
+  },
+  "turnCycles": 0,
+  "maxCycles": 3,
+  "lastUpdated": "2026-05-23T06:17:25.137Z"
+}
